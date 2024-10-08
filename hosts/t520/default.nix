@@ -15,7 +15,7 @@
 
     # software
     bittorrent.enable = true;
-    distrobox.enable = true;
+    # distrobox.enable = true;
     # plasma.enable = true;
     # syncoid.enable = true;
     # vercel.enable = true;
