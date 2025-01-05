@@ -4,10 +4,9 @@
     monitors = [
       {
         name = "eDP-1";
-        width = 1920;
-        height = 1080;
+        width = 1600;
+        height = 900;
         refreshRate = 60;
-        scale = 0.50;
         workspaces = [
           1
           2
