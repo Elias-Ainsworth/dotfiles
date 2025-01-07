@@ -35,9 +35,16 @@
     pathofbuilding.enable = false;
     rclip.enable = true;
     wallfacer.enable = true;
+    waybar = {
+      enable = true;
+      hidden = false;
+      # waybar.persistentWorkspaces = true;
+    };
 
-    terminal.package = pkgs.ghostty;
-    terminal.size = 12;
+    terminal = {
+      package = pkgs.ghostty;
+      size = 12;
+    };
 
     persist = {
       home.directories = [

@@ -3,7 +3,7 @@
   custom = {
     monitors = [
       {
-        name = "eDP-1";
+        name = "LVDS-1";
         width = 1600;
         height = 900;
         refreshRate = 60;
