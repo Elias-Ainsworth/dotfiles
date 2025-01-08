@@ -73,7 +73,7 @@ in
             "$mod_SHIFT, w, exec, rofi-epub-menu"
             "$mod_CTRL, w, exec, rofi-pdf-menu"
             "$mod, t, exec, jerry"
-            "$mod, v, exec, $term nvim"
+            "$mod, v, exec, $term -e nvim"
             "$mod_SHIFT, v, exec, ${lib.getExe pkgs.custom.shell.rofi-edit-proj}"
             ''$mod, period, exec, focusorrun "dotfiles - VSCodium" "codium ${config.home.homeDirectory}/projects/dotfiles"''
             ''$mod_SHIFT, period, exec, focusorrun "nixpkgs - VSCodium" "codium ${config.home.homeDirectory}/projects/nixpkgs"''
