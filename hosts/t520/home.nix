@@ -3,9 +3,9 @@
   custom = {
     monitors = [
       {
-        name = "LVDS-1";
-        width = 1600;
-        height = 900;
+        name = "VGA-1";
+        width = 1920;
+        height = 1080;
         refreshRate = 60;
         workspaces = [
           1
@@ -13,12 +13,21 @@
           3
           4
           5
+        ];
+      }
+      {
+        name = "LVDS-1";
+        width = 1600;
+        height = 900;
+        refreshRate = 60;
+        workspaces = [
           6
           7
           8
           9
           10
         ];
+        defaultWorkspace = 6;
       }
     ];
 
