@@ -3,9 +3,9 @@
   custom = {
     monitors = [
       {
-        name = "VGA-1";
-        width = 1920;
-        height = 1080;
+        name = "LVDS-1";
+        width = 1600;
+        height = 900;
         refreshRate = 60;
         workspaces = [
           1
@@ -13,21 +13,12 @@
           3
           4
           5
-        ];
-      }
-      {
-        name = "LVDS-1";
-        width = 1600;
-        height = 900;
-        refreshRate = 60;
-        workspaces = [
           6
           7
           8
           9
           10
         ];
-        defaultWorkspace = 6;
       }
     ];
 
@@ -39,6 +30,7 @@
       lock = true;
       qtile = false;
     };
+    music.enable = true;
     obs-studio.enable = false;
     pathofbuilding.enable = false;
     rclip.enable = true;
@@ -52,6 +44,12 @@
     };
 
     terminal.package = pkgs.ghostty;
+
+    persist = {
+      home.directories = [
+        "Downloads"
+      ];
+    };
   };
 
   # home = {
