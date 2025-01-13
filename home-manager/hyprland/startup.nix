@@ -35,21 +35,23 @@ lib.mkIf config.custom.hyprland.enable {
 
       # browsers
       "hyprctl dispatch workspace 1"
-      (openOnWorkspace 1 "brave --incognito")
       (openOnWorkspace 1 "brave --profile-directory=Default")
 
-      # file manager
-      (openOnWorkspace 4 "nemo")
-
       # terminal
-      (openOnWorkspace 7 "$term")
+      (openOnWorkspace 1 "$term")
 
-      # firefox
-      (openOnWorkspace 9 (lib.getExe config.programs.firefox.package))
-
-      # download desktop
-      (openOnWorkspace 10 "$term nvim ${config.xdg.userDirs.desktop}/yt.txt")
-      (openOnWorkspace 10 "$term")
+      # # file manager
+      # (openOnWorkspace 4 "nemo")
+      #
+      # # terminal
+      # (openOnWorkspace 7 "$term")
+      #
+      # # firefox
+      # (openOnWorkspace 9 (lib.getExe config.programs.firefox.package))
+      #
+      # # download desktop
+      # (openOnWorkspace 10 "$term nvim ${config.xdg.userDirs.desktop}/yt.txt")
+      # (openOnWorkspace 10 "$term")
     ];
   };
 
