@@ -32,6 +32,7 @@
     gaming.enable = false;
     ghostty.enable = true;
     helix.enable = false;
+    music.enable = true;
     pathofbuilding.enable = false;
     rclip.enable = true;
     wallfacer.enable = true;
@@ -49,7 +50,6 @@
     persist = {
       home.directories = [
         "Downloads"
-        "Music"
       ];
     };
   };
