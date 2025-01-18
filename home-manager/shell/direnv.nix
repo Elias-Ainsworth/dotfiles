@@ -1,5 +1,4 @@
-{ config, lib, ... }:
-{
+_: {
   programs.direnv = {
     enable = true;
     silent = true;
@@ -7,22 +6,17 @@
   };
 
   # vim support
-  programs.nixvim = {
-    plugins.direnv.enable = true;
-    globals = {
-      direnv_silent_load = 1;
-    };
-  };
+  # programs.nixvim = {
+  #   plugins.direnv.enable = true;
+  #   globals = {
+  #     direnv_silent_load = 1;
+  #   };
+  # };
 
   custom.shell.packages = {
-    # mkdevenv = ''nix flake init --template github:elias-ainsworth/dotfiles#"$1"'';
-    mkdevenv = {
-      text = lib.custom.direnvCargoRunQuiet {
-        dir = "${config.home.homeDirectory}/projects/mkdevenv";
-      };
-    };
-    rmdevenv = ''rm -rf .direnv .devenv'';
-    rmdirenv = ''rm -rf .direnv .devenv'';
+    mkdevenv = ''nix flake init --template github:iynaix/dotfiles#"$1"'';
+    rmdevenv = ''rm .direnv .devenv'';
+    rmdirenv = ''rm .direnv .devenv'';
   };
 
   custom.persist = {
