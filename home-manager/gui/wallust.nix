@@ -94,7 +94,8 @@ in
           # use pywal template syntax here
           {
             wallpaper = "{{wallpaper}}";
-            fallback = "${../gits-catppuccin.jpg}";
+            # fallback = "${../gits-catppuccin.jpg}";
+            fallback = "${../unknown.jpeg}";
             inherit (config.custom) monitors;
             inherit (config.custom.wallust) colorscheme;
             inherit host;

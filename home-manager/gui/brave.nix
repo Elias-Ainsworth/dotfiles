@@ -18,10 +18,13 @@ lib.mkIf (!config.custom.headless) {
       { id = "fhlinfpmdlijegjlpgedcmglkakaghnk"; }
       # Bitwarden
       { id = "nngceckbapebfimnlniiiahkandclblb"; }
+      # Daily.dev
+      { id = "jlmpjdjjbgclbocgajdjefcidcncaied"; }
       # Dark Reader
       { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; }
+      # F*ck Honey!
       # Honey
-      { id = "bmnlcjabgnpnenekpadlanbbkooimhnj"; }
+      # { id = "bmnlcjabgnpnenekpadlanbbkooimhnj"; }
       # JSON Viewer
       { id = "gbmdgpbipfallnflgajpaliibnhdgobh"; }
       # Looty
@@ -36,6 +39,8 @@ lib.mkIf (!config.custom.headless) {
       { id = "kbmfpngjjgdllneeigpgjifpgocmfgmb"; }
       # Return YouTube Dislike
       { id = "gebbhagfogifgggkldgodflihgfeippi"; }
+      # Rust Search Extension
+      { id = "ennpfpdlaclocpomkiablnmbppdnlhoh"; }
       # Session Manager
       { id = "mghenlmbmjcpehccoangkdpagbcbkdpc"; }
       # SponsorBlock for YouTube - Skip Sponsorships

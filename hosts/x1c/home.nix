@@ -31,7 +31,7 @@
     deadbeef.enable = true;
     gaming.enable = false;
     ghostty.enable = true;
-    helix.enable = false;
+    # helix.enable = false;
     music.enable = true;
     pathofbuilding.enable = false;
     rclip.enable = true;

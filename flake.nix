@@ -38,20 +38,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    helix = {
-      url = "github:helix-editor/helix";
-      # inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nil = {
-      url = "github:oxalica/nil";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nixd = {
-      url = "github:nix-community/nixd";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # helix = {
+    #   url = "github:helix-editor/helix";
+    #   # inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
@@ -68,18 +58,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixcord = {
-      url = "github:kaylorben/nixcord";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    tuido = {
-      url = "gitlab:Oglo12/tuido";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -88,42 +68,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    lobster = {
-      url = "github:justchokingaround/lobster";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     mamelon = {
       url = "github:elias-ainsworth/mamelon-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    yuki-code = {
-      url = "github:elias-ainsworth/yuki-code-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # NOTE: This will require your git SSH access to the repo.
-    # disable ghostty by commenting out the following input and setting
-    # the hm option config.custom.ghostty.enable = false
-    #
-    # WARNING: Do NOT pin the `nixpkgs` input, as that will
-    # declare the cache useless. If you do, you will have
-    # to compile LLVM, Zig and Ghostty itself on your machine,
-    # which will take a very very long time.
-    # ghostty = {
-    #   url = "git+ssh://git@github.com/mitchellh/ghostty";
-    # };
   };
 
   # flake-utils is unnecessary
   # https://ayats.org/blog/no-flake-utils/
   outputs =
-    inputs@{
-      nixpkgs,
-      self,
-      ...
-    }:
+    inputs@{ nixpkgs, self, ... }:
     let
       system = "x86_64-linux";
       pkgs = import inputs.nixpkgs {
