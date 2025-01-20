@@ -20,7 +20,7 @@ _: {
     ./vscode.nix
     ./wallust.nix
     ./waybar.nix
-    ./weeb.nix
+    ./weeb
     ./zathura.nix
   ];
 }

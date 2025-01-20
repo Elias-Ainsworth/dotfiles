@@ -119,7 +119,6 @@
     custom = {
       fonts.packages = with pkgs; [
         inputs.mamelon.packages.${system}.default
-        # inputs.yuki-code.packages.${system}.default
         nerd-fonts.geist-mono
         nerd-fonts.jetbrains-mono
         noto-fonts
