@@ -15,6 +15,7 @@
     ./fish.nix
     ./git.nix
     # ./helix # I don't really use helix anymore so :shrug:...
+    ./helix.nix
     ./iamb
     ./jujutsu.nix
     ./music-player.nix
