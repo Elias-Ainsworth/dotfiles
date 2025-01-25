@@ -37,6 +37,11 @@
 {
   # execute shebangs that assume hardcoded shell paths
   services.envfs.enable = true;
+  # envfs sets usrbinenv activation script to "" with mkForce
+  system.activationScripts.usrbinenv = lib.mkOverride (50 - 1) ''
+    mkdir -p /usr/bin
+    chmod 0755 /usr/bin
+  '';
 
   # run unpatched binaries on nixos
   programs.nix-ld.enable = true;
@@ -127,7 +132,7 @@
       # build and push config for laptop
       nsw-remote = ''
         pushd ${dots} > /dev/null
-        nixos-rebuild switch --target-host "root@''${2:-${user}-framework}" --flake ".#''${2:-framework}"
+        nixos-rebuild switch --target-host "root@''${1:-${user}-framework}" --flake ".#''${2:-framework}"
         popd > /dev/null
       '';
     };
@@ -184,14 +189,12 @@
         substituters = [
           "https://hyprland.cachix.org"
           "https://nix-community.cachix.org"
-          "https://ghostty.cachix.org"
         ];
         # allow building and pushing of laptop config from desktop
         trusted-users = [ user ];
         trusted-public-keys = [
           "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-          "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
         ];
       };
       # // lib.optionalAttrs (config.nix.package.pname == "lix") {

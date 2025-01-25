@@ -22,6 +22,7 @@
       }
     ];
 
+    btop.disks = [ "/dev/sda" ];
     deadbeef.enable = true;
     gaming.enable = true;
     ghostty.enable = true;
