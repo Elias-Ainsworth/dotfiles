@@ -19,7 +19,7 @@
     ./iamb
     ./jujutsu.nix
     ./music-player.nix
-    ./neovim
+    ./neovim.nix
     ./nix.nix
     ./rice.nix
     ./ripgrep.nix
