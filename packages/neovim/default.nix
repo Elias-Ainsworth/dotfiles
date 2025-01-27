@@ -17,6 +17,7 @@
       enable = true;
       name = "catppuccin";
       style = "mocha";
+      transparent = true;
     };
 
     extraPlugins = with pkgs.vimPlugins; {
