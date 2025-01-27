@@ -13,8 +13,20 @@ let
     _callPackage (path + "/default.nix") (
       extraOverrides // { source = lib.filterAttrs (k: _: !(lib.hasPrefix "override" k)) firstSource; }
     );
+  repo_url = "https://raw.githubusercontent.com/elias-ainsworth/dotfiles";
 in
 {
+  install = pkgs.writeShellApplication {
+    name = "thorneos-install";
+    runtimeInputs = [ pkgs.curl ];
+    text = "sh <(curl -L ${repo_url}/main/install.sh)";
+  };
+  recover = pkgs.writeShellApplication {
+    name = "thorneos-recover";
+    runtimeInputs = [ pkgs.curl ];
+    text = "sh <(curl -L ${repo_url}/main/recover.sh)";
+  };
+
   # neovim config via nvf
   neovim-iynaix =
     (inputs.nvf.lib.neovimConfiguration {
