@@ -27,11 +27,10 @@
       }
     ];
 
-    bambu.enable = false;
+    btop.disks = [ "nvme0n1" ];
     deadbeef.enable = true;
     gaming.enable = false;
     ghostty.enable = true;
-    # helix.enable = false;
     music.enable = true;
     pathofbuilding.enable = false;
     rclip.enable = true;
