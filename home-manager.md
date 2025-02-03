@@ -1,4 +1,4 @@
-# Iynaix's Home Manager Config
+# Elias Ainsworth's Home Manager Config
 
 ### Install Nix on Other Linux Distros
 
@@ -30,9 +30,11 @@ Reboot.
 
 ### Post Install
 
-- Install `kitty` on the host OS, the nix package requires [nixGL](https://github.com/guibou/nixGL) to run.
+- Install `kitty` on the host OS, the nix package requires
+  [nixGL](https://github.com/guibou/nixGL) to run.
 
 ### TODO
+
 - gtk theme doesn't seem to be working
 - hyprland stuff
   - hyprland

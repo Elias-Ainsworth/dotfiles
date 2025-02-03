@@ -48,8 +48,8 @@ lib.mkIf config.custom.hyprland.enable {
       (openOnWorkspace 9 (lib.getExe config.programs.firefox.package))
 
       # download desktop
-      (openOnWorkspace 10 "$term nvim ${config.xdg.userDirs.desktop}/yt.txt")
-      (openOnWorkspace 10 "$term")
+      (openOnWorkspace 10 "$term -e nvim ${config.xdg.userDirs.desktop}/yt.txt")
+      (openOnWorkspace 10 "$term -e")
     ];
   };
 
