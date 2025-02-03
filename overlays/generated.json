@@ -43,7 +43,7 @@
     },
     "wallust": {
         "cargoLocks": null,
-        "date": "2025-01-23",
+        "date": "2025-01-29",
         "extract": null,
         "name": "wallust",
         "passthru": null,
@@ -53,17 +53,17 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "b36e650a394d620b27ad5df3c88e2fccc3c9acd8",
-            "sha256": "sha256-keas1c6O+fr8ientFHzKsqnH5pH/Msw7MM3hbtKqYjM=",
+            "rev": "e3c2c64557ddb1ff69a1ee80ff485864f454b763",
+            "sha256": "sha256-LLQT0Hohh9vUQGE9YcK1JDGrQOGI31CQP9RfXZf26FQ=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://codeberg.org/explosion-mental/wallust"
         },
-        "version": "b36e650a394d620b27ad5df3c88e2fccc3c9acd8"
+        "version": "e3c2c64557ddb1ff69a1ee80ff485864f454b763"
     },
     "yazi-plugins": {
         "cargoLocks": null,
-        "date": "2025-01-24",
+        "date": "2025-01-30",
         "extract": null,
         "name": "yazi-plugins",
         "passthru": null,
@@ -75,12 +75,12 @@
             "name": null,
             "owner": "yazi-rs",
             "repo": "plugins",
-            "rev": "8ed253716c60f3279518ce34c74ca053530039d8",
-            "sha256": "sha256-xY2yVCLLcXRyFfnmyP6h5Fw+4kwOZhEOCWVZrRwXnTA=",
+            "rev": "02d18be03812415097e83c6a912924560e4cec6d",
+            "sha256": "sha256-1FZ8wcf2VVp6ZWY27vm1dUU1KAL32WwoYbNA/8RUAog=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "8ed253716c60f3279518ce34c74ca053530039d8"
+        "version": "02d18be03812415097e83c6a912924560e4cec6d"
     },
     "yazi-time-travel": {
         "cargoLocks": null,
@@ -117,11 +117,11 @@
             "name": null,
             "owner": "yt-dlp",
             "repo": "yt-dlp",
-            "rev": "2025.01.15",
-            "sha256": "sha256-d9RGlANDkjRInIVADCrzx8+wn4wVc04J7Wn0c1q4N7k=",
+            "rev": "2025.01.26",
+            "sha256": "sha256-bjvyyCvUpZNGxkFz2ce6pXDSKXJROKZphs9RV4CBs5M=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "2025.01.15"
+        "version": "2025.01.26"
     }
 }

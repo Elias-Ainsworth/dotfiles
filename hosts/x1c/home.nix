@@ -32,6 +32,8 @@
     gaming.enable = false;
     ghostty.enable = true;
     music.enable = true;
+    modelling3d.enable = true;
+    printing3d.enable = true;
     pathofbuilding.enable = false;
     rclip.enable = true;
     wallfacer.enable = true;

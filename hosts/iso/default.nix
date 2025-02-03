@@ -1,6 +1,7 @@
 {
   inputs,
   lib,
+  self,
   system ? "x86_64-linux",
   ...
 }:
@@ -21,17 +22,17 @@ let
             environment = {
               systemPackages = with pkgs; [
                 (pkgs.writeShellApplication {
-                  name = "elias-ainsworthos-install";
+                  name = "thorneos-install";
                   runtimeInputs = [ pkgs.curl ];
                   text = "sh <(curl -L ${repo_url}/main/install.sh)";
                 })
                 (pkgs.writeShellApplication {
-                  name = "elias-ainsworthos-recover";
+                  name = "thorneos-recover";
                   runtimeInputs = [ pkgs.curl ];
                   text = "sh <(curl -L ${repo_url}/main/recover.sh)";
                 })
                 (pkgs.writeShellApplication {
-                  name = "elias-ainsworthos-reinstall";
+                  name = "thorneos-reinstall";
                   runtimeInputs = [ pkgs.curl ];
                   text = "sh <(curl -L ${repo_url}/main/recover.sh)";
                 })
@@ -40,7 +41,16 @@ let
                 home-manager
                 tree
                 yazi
+                # custom neovim
+                self.packages.${system}.neovim-iynaix
               ];
+
+              variables = {
+                EDITOR = "nvim";
+                VISUAL = "nvim";
+                NIXPKGS_ALLOW_UNFREE = "1";
+              };
+
               shellAliases = {
                 eza = "eza '--icons' '--group-directories-first' '--header' '--octal-permissions' '--hyperlink'";
                 ls = "eza";
@@ -48,6 +58,9 @@ let
                 la = "eza -a";
                 lla = "eza -la";
                 y = "yazi";
+                nano = "nvim";
+                neovim = "nvim";
+                v = "nvim";
               };
             };
 
@@ -74,10 +87,6 @@ let
             programs = {
               # bye bye nano
               nano.enable = false;
-              neovim = {
-                enable = true;
-                defaultEditor = true;
-              };
             };
 
             # enable SSH in the boot process.
@@ -107,12 +116,10 @@ let
                 substituters = [
                   "https://hyprland.cachix.org"
                   "https://nix-community.cachix.org"
-                  "https://ghostty.cachix.org"
                 ];
                 trusted-public-keys = [
                   "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
                   "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-                  "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
                 ];
               };
             };
@@ -138,10 +145,10 @@ in
 {
   kde-iso =
     mkIso inputs.nixpkgs-stable inputs.home-manager-stable
-      "installation-cd-graphical-calamares-plasma5";
+      "installation-cd-graphical-calamares-plasma6";
   minimal-iso = mkIso inputs.nixpkgs-stable inputs.home-manager-stable "installation-cd-minimal";
   kde-iso-unstable =
     mkIso inputs.nixpkgs inputs.home-manager
-      "installation-cd-graphical-calamares-plasma5";
+      "installation-cd-graphical-calamares-plasma6";
   minimal-iso-unstable = mkIso inputs.nixpkgs inputs.home-manager "installation-cd-minimal";
 }

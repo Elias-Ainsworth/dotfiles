@@ -31,6 +31,8 @@
       lock = true;
       qtile = false;
     };
+    modelling3d.enable = true;
+    printing3d.enable = true;
     music.enable = true;
     obs-studio.enable = false;
     pathofbuilding.enable = false;

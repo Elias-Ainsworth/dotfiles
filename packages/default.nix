@@ -13,16 +13,19 @@ let
     _callPackage (path + "/default.nix") (
       extraOverrides // { source = lib.filterAttrs (k: _: !(lib.hasPrefix "override" k)) firstSource; }
     );
-  repo_url = "https://raw.githubusercontent.com/elias-ainsworth/dotfiles";
+  repo_url = "https://raw.githubusercontent.com/iynaix/dotfiles";
 in
-{
+rec {
+  default = install;
+
   install = pkgs.writeShellApplication {
-    name = "thorneos-install";
+    name = "iynaixos-install";
     runtimeInputs = [ pkgs.curl ];
     text = "sh <(curl -L ${repo_url}/main/install.sh)";
   };
+
   recover = pkgs.writeShellApplication {
-    name = "thorneos-recover";
+    name = "iynaixos-recover";
     runtimeInputs = [ pkgs.curl ];
     text = "sh <(curl -L ${repo_url}/main/recover.sh)";
   };
@@ -31,7 +34,7 @@ in
   neovim-iynaix =
     (inputs.nvf.lib.neovimConfiguration {
       inherit pkgs;
-      modules = [ ./neovim ];
+      modules = [ ./neovim-iynaix ];
     }).neovim;
 
   # ricing glue

@@ -8,8 +8,12 @@
 {
   # Bootloader.
   boot = {
-    # enable stage-1 bootloader
-    initrd.systemd.enable = true;
+    initrd = {
+      # enable stage-1 bootloader
+      systemd.enable = true;
+      # always allow booting from usb
+      availableKernelModules = [ "uas" ];
+    };
     loader = {
       efi = {
         canTouchEfiVariables = true;
@@ -21,9 +25,16 @@
         efiSupport = true;
         theme = pkgs.custom.distro-grub-themes-nixos;
       };
+      timeout = 3;
     };
     supportedFilesystems.ntfs = true;
   };
+
+  # faster boot times
+  systemd.services.NetworkManager-wait-online.wantedBy = lib.mkForce [ ];
+
+  # reduce journald logs
+  services.journald.extraConfig = ''SystemMaxUse=50M'';
 
   custom.shell.packages = {
     reboot-to-windows = {
