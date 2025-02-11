@@ -27,7 +27,6 @@
       }
     ];
 
-    btop.disks = [ "nvme0n1" ];
     deadbeef.enable = true;
     gaming.enable = false;
     ghostty.enable = true;
