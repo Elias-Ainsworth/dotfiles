@@ -27,9 +27,11 @@ in
           pkgs.procps
           config.programs.hyprlock.package
         ];
-        text = ''pidof hyprlock || hyprlock'';
+        text = # sh
+          ''pidof hyprlock || hyprlock'';
       };
     };
+
     home.packages = [ config.custom.shell.packages.lock ];
 
     wayland.windowManager.hyprland.settings = {
@@ -71,8 +73,7 @@ in
             background = map (mon: {
               monitor = "${mon.name}";
               # add trailing comment with monitor name for wallpaper to replace later
-              # path = "/tmp/swww__${mon.name}.webp";
-              path = "{{wallpaper}} # ${mon.name}";
+              path = "/tmp/swww__${mon.name}.webp";
               color = "${rgba "background" 1}";
             }) config.custom.monitors;
 

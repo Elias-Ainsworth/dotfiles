@@ -7,7 +7,7 @@
 }:
 let
   mkYaziPlugin = name: text: {
-    "${name}" = toString (pkgs.writeTextDir "${name}.yazi/init.lua" text) + "/${name}.yazi";
+    "${name}" = toString (pkgs.writeTextDir "${name}.yazi/main.lua" text) + "/${name}.yazi";
   };
 in
 lib.mkMerge [
@@ -23,10 +23,11 @@ lib.mkMerge [
         time-travel = pkgs.custom.yazi-time-travel.src;
       };
 
-      initLua = ''
-        require("full-border"):setup({ type = ui.Border.ROUNDED })
-        require("git"):setup()
-      '';
+      initLua = # lua
+        ''
+          require("full-border"):setup({ type = ui.Border.ROUNDED })
+          require("git"):setup()
+        '';
 
       settings = {
         log = {
@@ -43,6 +44,16 @@ lib.mkMerge [
           sort_reverse = false;
           linemode = "size";
           show_hidden = true;
+        };
+        opener = {
+          # activate direnv before opening files
+          # https://github.com/sxyazi/yazi/discussions/1083
+          edit = [
+            {
+              run = "direnv exec . $EDITOR $1";
+              block = true;
+            }
+          ];
         };
         # settings for plugins
         plugin = {
@@ -114,7 +125,8 @@ lib.mkMerge [
               # dropping to shell
               {
                 on = "!";
-                run = ''shell "$SHELL" --block --confirm'';
+                run = # sh
+                  ''shell "$SHELL" --block --confirm'';
                 desc = "Open shell here";
               }
               # close input by a single Escape press
@@ -129,7 +141,8 @@ lib.mkMerge [
                   "g"
                   "r"
                 ];
-                run = ''shell 'ya pub dds-cd --str "$(git rev-parse --show-toplevel)"' --confirm'';
+                run = # sh
+                  ''shell 'ya pub dds-cd --str "$(git rev-parse --show-toplevel)"' --confirm'';
                 desc = "Cd to root of current git repo";
               }
             ]
@@ -175,7 +188,7 @@ lib.mkMerge [
                   "z"
                   "h"
                 ];
-                run = "plugin time-travel --args=prev";
+                run = "plugin time-travel prev";
                 desc = "Go to previous snapshot";
               }
               {
@@ -183,7 +196,7 @@ lib.mkMerge [
                   "z"
                   "l"
                 ];
-                run = "plugin time-travel --args=next";
+                run = "plugin time-travel next";
                 desc = "Go to next snapshot";
               }
               {
@@ -191,7 +204,7 @@ lib.mkMerge [
                   "z"
                   "e"
                 ];
-                run = "plugin time-travel --args=exit";
+                run = "plugin time-travel exit";
                 desc = "Exit browsing snapshots";
               }
             ];
@@ -278,11 +291,11 @@ lib.mkMerge [
       keymap.manager.prepend_keymap = [
         {
           on = "k";
-          run = "plugin arrow --args=-1";
+          run = "plugin arrow -1";
         }
         {
           on = "j";
-          run = "plugin arrow --args=1";
+          run = "plugin arrow 1";
         }
       ];
     };

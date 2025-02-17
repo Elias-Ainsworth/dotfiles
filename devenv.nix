@@ -17,19 +17,21 @@ inputs.devenv.lib.mkShell {
           cargo-edit
           pkg-config
           glib
-          gexiv2
+          gexiv2 # for reading metadata
         ];
 
         languages.rust.enable = true;
 
         scripts = {
-          crb.exec = ''
-            cargo run --manifest-path "packages/dotfiles-rs/Cargo.toml" --bin "$1" -- "''${@:2}"
-          '';
+          crb.exec = # sh
+            ''
+              cargo run --manifest-path "packages/dotfiles-rs/Cargo.toml" --bin "$1" -- "''${@:2}"
+            '';
 
-          crrb.exec = ''
-            cargo run --manifest-path "packages/dotfiles-rs/Cargo.toml" --release --bin "$1" -- "''${@:2}"
-          '';
+          crrb.exec = # sh
+            ''
+              cargo run --manifest-path "packages/dotfiles-rs/Cargo.toml" --release --bin "$1" -- "''${@:2}"
+            '';
         };
 
         pre-commit = {

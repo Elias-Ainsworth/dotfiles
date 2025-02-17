@@ -13,7 +13,7 @@
             width = 3440;
             height = 1440;
             refreshRate = 144;
-            vrr = true;
+            # vrr = true;
             position = "1440x1080";
             workspaces = [
               1
@@ -44,7 +44,7 @@
                 width = 3840;
                 height = 2160;
                 position = "1754x0";
-                scale = 1.5;
+                scale = 2.0;
                 workspaces = [
                   9
                 ];
@@ -54,7 +54,7 @@
                 width = 2256;
                 height = 1504;
                 position = "4880x1080";
-                scale = 2.0;
+                scale = 1.5;
                 vertical = true;
                 workspaces = [
                   8
@@ -83,12 +83,14 @@
 
       framework_vertical.enable = false;
       deadbeef.enable = true;
-      ghostty.enable = false;
+      ghostty.enable = true;
       hyprland = {
         plugin = "hyprnstack";
         lock = false;
         qtile = false;
       };
+      modelling3d.enable = true;
+      printing3d.enable = true;
       obs-studio.enable = false;
       pathofbuilding.enable = true;
       rclip.enable = true;

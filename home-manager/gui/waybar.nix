@@ -21,7 +21,7 @@ in
         description = "Additional waybar config (wallust templating can be used)";
       };
       idleInhibitor = mkEnableOption "Idle inhibitor" // {
-        default = host == "desktop" || host == "t520";
+        default = host == "desktop";
       };
       extraCss = mkOption {
         type = types.lines;
@@ -135,19 +135,6 @@ in
           #   default = "·";
           #   urgent = "󰊠";
           # };
-          format = "{icon}";
-          format-icons = {
-            "1" = "一";
-            "2" = "二";
-            "3" = "三";
-            "4" = "四";
-            "5" = "五";
-            "6" = "六";
-            "7" = "七";
-            "8" = "八";
-            "9" = "九";
-            "10" = "十";
-          };
         };
 
         # "hyprland/window" = {
@@ -186,7 +173,7 @@ in
                 format-ethernet = " ";
                 # rofi wifi script
                 on-click = lib.getExe pkgs.custom.rofi-wifi-menu;
-                on-click-right = "${config.custom.terminal.exec} nmtui";
+                on-click-right = "${config.custom.terminal.exec} -e nmtui";
               }
             else
               { format-ethernet = ""; }
@@ -236,16 +223,17 @@ in
                   @define-color complementary {{color4}};
                 ''
                 + (lib.concatMapStringsSep "\n" (name: ''@define-color ${name} {{${name}}};'') colorNames);
-              baseModuleCss = ''
-                font-family: ${config.custom.fonts.regular};
-                font-weight: bold;
-                color: @accent;
-                transition: none;
-                text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-                border-bottom:  2px solid transparent;
-                padding-left: ${margin};
-                padding-right: ${margin};
-              '';
+              baseModuleCss = # css
+                ''
+                  font-family: ${config.custom.fonts.regular};
+                  font-weight: bold;
+                  color: @accent;
+                  transition: none;
+                  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+                  border-bottom:  2px solid transparent;
+                  padding-left: ${margin};
+                  padding-right: ${margin};
+                '';
               mkModuleClassName =
                 mod:
                 "#${

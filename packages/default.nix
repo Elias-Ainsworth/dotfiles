@@ -1,4 +1,8 @@
-{ inputs, pkgs, ... }:
+{
+  inputs,
+  pkgs,
+  ...
+}:
 let
   inherit (pkgs) lib callPackage;
   # injects a source parameter from nvfetcher
@@ -21,13 +25,15 @@ rec {
   install = pkgs.writeShellApplication {
     name = "thorneos-install";
     runtimeInputs = [ pkgs.curl ];
-    text = "sh <(curl -L ${repo_url}/main/install.sh)";
+    text = # sh
+      "sh <(curl -L ${repo_url}/main/install.sh)";
   };
 
   recover = pkgs.writeShellApplication {
     name = "thorneos-recover";
     runtimeInputs = [ pkgs.curl ];
-    text = "sh <(curl -L ${repo_url}/main/recover.sh)";
+    text = # sh
+      "sh <(curl -L ${repo_url}/main/recover.sh)";
   };
 
   # neovim config via nvf
@@ -35,6 +41,16 @@ rec {
     (inputs.nvf.lib.neovimConfiguration {
       inherit pkgs;
       modules = [ ./neovim-iynaix ];
+    }).neovim;
+
+  # full neovim with nixd setup (requires path to dotfiles repo)
+  neovim-iynaixos =
+    (inputs.nvf.lib.neovimConfiguration {
+      inherit pkgs;
+      modules = [ ./neovim-iynaix ];
+      extraSpecialArgs = {
+        dots = "/persist/home/elias-ainsworth/projects/dotfiles";
+      };
     }).neovim;
 
   # ricing glue

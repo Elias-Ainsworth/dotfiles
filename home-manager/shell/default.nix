@@ -14,10 +14,10 @@
     ./eza.nix
     ./fish.nix
     ./git.nix
-    # ./helix # I don't really use helix anymore so :shrug:...
     ./helix.nix
     ./iamb
     ./jujutsu.nix
+    ./meli.nix
     ./music-player.nix
     ./neovim.nix
     ./nix.nix
@@ -84,7 +84,7 @@
         fx # terminal json viewer and processor
         htop
         jq
-        mdcat # terminal markdown viewer and processor
+        mdt # terminal markdown viewer and processor
         ouch # better compression and decompression utility
         procs # better ps
         sd # better sed
@@ -109,17 +109,20 @@
           (pkgs.symlinkJoin {
             name = "batman";
             paths = [ pkgs.bat-extras.batman ];
-            postBuild = ''
-              mkdir -p $out/share/bash-completion/completions
-              echo 'complete -F _comp_cmd_man batman' > $out/share/bash-completion/completions/batman
-              mkdir -p $out/share/fish/vendor_completions.d
-              echo 'complete batman --wraps man' > $out/share/fish/vendor_completions.d/batman.fish
-              mkdir -p $out/share/zsh/site-functions
-              cat << EOF > $out/share/zsh/site-functions/_batman
-              #compdef batman
-              _man "$@"
-              EOF
-            '';
+            postBuild = # sh
+              ''
+                mkdir -p $out/share/bash-completion/completions
+                echo 'complete -F _comp_cmd_man batman' > $out/share/bash-completion/completions/batman
+
+                mkdir -p $out/share/fish/vendor_completions.d
+                echo 'complete batman --wraps man' > $out/share/fish/vendor_completions.d/batman.fish
+
+                mkdir -p $out/share/zsh/site-functions
+                cat << EOF > $out/share/zsh/site-functions/_batman
+                #compdef batman
+                _man "$@"
+                EOF
+              '';
             meta.mainProgram = "batman";
           })
         ];

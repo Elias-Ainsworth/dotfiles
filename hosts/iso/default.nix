@@ -26,17 +26,20 @@ let
                   (pkgs.writeShellApplication {
                     name = "thorneos-install";
                     runtimeInputs = [ pkgs.curl ];
-                    text = "sh <(curl -L ${repo_url}/main/install.sh)";
+                    text = # sh
+                      "sh <(curl -L ${repo_url}/main/install.sh)";
                   })
                   (pkgs.writeShellApplication {
                     name = "thorneos-recover";
                     runtimeInputs = [ pkgs.curl ];
-                    text = "sh <(curl -L ${repo_url}/main/recover.sh)";
+                    text = # sh
+                      "sh <(curl -L ${repo_url}/main/recover.sh)";
                   })
                   (pkgs.writeShellApplication {
                     name = "thorneos-reinstall";
                     runtimeInputs = [ pkgs.curl ];
-                    text = "sh <(curl -L ${repo_url}/main/recover.sh)";
+                    text = # sh
+                      "sh <(curl -L ${repo_url}/main/recover.sh)";
                   })
                   bat
                   btop
