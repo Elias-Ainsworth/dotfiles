@@ -1,5 +1,7 @@
 { pkgs, ... }:
 {
-  home.packages = [ pkgs.meli ];
-  config.custom.persist.home.directories = [ ".config/meli" ];
+  config = {
+    home.packages = [ pkgs.meli ];
+    custom.persist.home.directories = [ ".config/meli" ];
+  };
 }
