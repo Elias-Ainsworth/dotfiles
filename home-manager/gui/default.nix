@@ -16,6 +16,7 @@ _: {
     ./pqiv.nix
     ./qt.nix
     ./rofi.nix
+    ./study.nix
     ./vlc.nix
     ./vscode.nix
     ./wallust.nix

@@ -35,6 +35,7 @@
     printing3d.enable = true;
     pathofbuilding.enable = false;
     rclip.enable = true;
+    study.enable = true;
     wallfacer.enable = true;
     waybar = {
       enable = true;

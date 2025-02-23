@@ -1,7 +1,7 @@
 let
-  cplusplus = {
-    path = ./cpp;
-    description = "C++ dev environment";
+  c = {
+    path = ./c;
+    description = "C dev environment";
   };
 
   javascript = {
@@ -26,13 +26,13 @@ let
 in
 {
   inherit
-    cplusplus
+    c
     javascript
     python
     rust
     rust-stable
     ;
-  cpp = cplusplus;
+  # c = c;
   js = javascript;
   ts = javascript;
   py = python;
