@@ -110,6 +110,7 @@
       # harpoon
       # luasnip
 
+      clang.enable = true;
       bash.enable = true;
       html.enable = true;
       lua.enable = true;
