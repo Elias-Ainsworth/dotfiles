@@ -4,12 +4,15 @@
   pkgs,
   ...
 }:
+let
+  inherit (lib) mkIf mkEnableOption;
+in
 {
-  options.custom = with lib; {
+  options.custom = {
     study.enable = mkEnableOption "study";
   };
 
-  config = lib.mkIf config.custom.study.enable {
+  config = mkIf config.custom.study.enable {
     home.packages = with pkgs; [
       anki
       bibletime

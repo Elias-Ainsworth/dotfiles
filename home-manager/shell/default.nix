@@ -24,7 +24,9 @@ in
     ./fish.nix
     ./git.nix
     ./helix.nix
+    ./iamb
     ./jujutsu.nix
+    ./music-player.nix
     ./neovim.nix
     ./nix.nix
     ./rice.nix

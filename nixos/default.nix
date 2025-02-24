@@ -31,6 +31,8 @@ in
     ./boot.nix
     ./configuration.nix
     ./docker.nix
+    ./exercism.nix
+    ./gaming.nix
     ./gh.nix
     ./hdds.nix
     ./hyprland.nix
@@ -48,6 +50,7 @@ in
     ./users.nix
     ./vercel.nix
     ./virt-manager.nix
+    ./weeb.nix
     ./zfs.nix
   ];
 
