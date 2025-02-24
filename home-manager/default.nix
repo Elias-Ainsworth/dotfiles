@@ -7,6 +7,23 @@
   user,
   ...
 }:
+let
+  inherit (lib)
+    hasPrefix
+    mapAttrsToList
+    mkEnableOption
+    mkOption
+    optional
+    optionals
+    ;
+  inherit (lib.types)
+    attrsOf
+    listOf
+    nullOr
+    package
+    str
+    ;
+in
 {
   imports = [
     ./hardware.nix
@@ -16,30 +33,30 @@
     ./shell
   ];
 
-  options.custom = with lib; {
+  options.custom = {
     autologinCommand = mkOption {
-      type = types.nullOr types.str;
+      type = nullOr str;
       default = null;
       description = "Command to run after autologin";
     };
     fonts = {
       regular = mkOption {
-        type = types.str;
+        type = str;
         default = "Geist";
         description = "The font to use for regular text";
       };
       weeb = mkOption {
-        type = types.str;
+        type = str;
         default = "Mamelon";
         description = "The font to use for weeb text";
       };
       monospace = mkOption {
-        type = types.str;
+        type = str;
         default = "JetBrainsMono Nerd Font"; # Idk I honestly like both default = "Geist Mono NerdFont";
         description = "The font to use for monospace text";
       };
       packages = mkOption {
-        type = types.listOf types.package;
+        type = listOf package;
         description = "The packages to install for the fonts";
       };
     };
@@ -48,7 +65,7 @@
       description = "Whether to enable headless mode, no GUI programs will be available";
     };
     symlinks = mkOption {
-      type = types.attrsOf types.str;
+      type = attrsOf str;
       default = { };
       description = "Symlinks to create in the format { dest = src;}";
     };

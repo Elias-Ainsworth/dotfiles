@@ -4,6 +4,9 @@
   pkgs,
   ...
 }:
+let
+  inherit (lib) getExe;
+in
 {
   custom = {
     monitors = [
@@ -58,7 +61,7 @@
   wayland.windowManager.hyprland.settings = {
     exec-once = [
       # don't blind me on startup
-      "${lib.getExe pkgs.brightnessctl} s 75%"
+      "${getExe pkgs.brightnessctl} s 75%"
     ];
   };
 }

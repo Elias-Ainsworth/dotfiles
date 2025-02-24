@@ -9,9 +9,10 @@
       file = {
         ".config/Miru/settings.json" = {
           force = true;
-          text = ''
-            {"angle":"default","player":"/etc/profiles/per-user/elias-ainsworth/bin/mpv","torrentPath":"/home/elias-ainsworth/Anime/"}
-          '';
+          text = # json
+            ''
+              {"angle":"default","player":"/etc/profiles/per-user/elias-ainsworth/bin/mpv","torrentPath":"/home/elias-ainsworth/Anime/"}
+            '';
         };
       };
     };
