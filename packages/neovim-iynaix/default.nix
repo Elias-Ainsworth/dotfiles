@@ -19,6 +19,7 @@
       enable = true;
       name = "catppuccin";
       style = "mocha";
+      transparent = true;
     };
 
     extraPlugins = with pkgs.vimPlugins; {
@@ -154,9 +155,18 @@
       trouble.enable = true;
       # lspSignature?
       # mappings?
+      mappings = {
+        goToDefinition = "gd";
+      };
     };
 
-    autocomplete.nvim-cmp.enable = true;
+    autocomplete.nvim-cmp = {
+      enable = true;
+      mappings = {
+        next = "<C-n>";
+        previous = "<C-p>";
+      };
+    };
     autopairs.nvim-autopairs.enable = true;
     binds.whichKey.enable = true;
     comments.comment-nvim.enable = true;

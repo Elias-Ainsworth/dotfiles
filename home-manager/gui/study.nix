@@ -17,6 +17,7 @@ in
       anki
       bibletime
       kjv
+      lowfi
       pom
     ];
 
