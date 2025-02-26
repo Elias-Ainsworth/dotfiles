@@ -6,7 +6,7 @@ use std::{path::Path, process::Stdio};
 pub fn backup(args: BackupArgs) {
     let target = args
         .target
-        .unwrap_or_else(|| full_path("/persist/home/elias-ainsworth/Pictures/Walpapers"));
+        .unwrap_or_else(|| full_path("/home/elias-ainsworth/"));
 
     execute::command_args!(
         "rsync",
