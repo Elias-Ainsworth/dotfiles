@@ -2,6 +2,9 @@
 {
   home = {
     packages = [ pkgs.koji ];
+    shellAliases = {
+      "commit" = "pre-commit && koji";
+    };
 
     # TODO: Implement custom Koji config.
     # file = {

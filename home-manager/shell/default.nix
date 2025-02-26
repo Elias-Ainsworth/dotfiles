@@ -26,6 +26,7 @@ in
     ./helix.nix
     ./iamb
     ./jujutsu.nix
+    ./koji.nix
     ./music-player.nix
     ./neovim.nix
     ./nix.nix

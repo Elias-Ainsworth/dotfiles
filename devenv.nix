@@ -12,6 +12,7 @@ inputs.devenv.lib.mkShell {
           sops
           cachix
           deadnix
+          koji
           statix
           nixd
           cargo-edit
@@ -54,6 +55,18 @@ inputs.devenv.lib.mkShell {
               enable = true;
               excludes = [ "generated.nix" ];
             };
+            # TODO: Eventually set up koji via pre-commit.
+            # custom-koji = {
+            #   enable = true;
+            #   entry = "${pkgs.koji}/bin/koji";
+            #   pass_filenames = false;
+            #   after = [
+            #     "deadnix"
+            #     "nixfmt-rfc-style"
+            #     "statix"
+            #   ];
+            #   language = "system";
+            # };
           };
         };
       }
