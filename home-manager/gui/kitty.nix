@@ -2,6 +2,7 @@
   config,
   isNixOS,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -50,7 +51,7 @@ in
 
     home.shellAliases = {
       # change color on ssh
-      ssh = "kitten ssh --kitten=color_scheme=Dracula";
+      ssh = mkIf (terminal.package == pkgs.kitty) "kitten ssh --kitten=color_scheme=Dracula";
     };
 
     # remove padding while in neovim
