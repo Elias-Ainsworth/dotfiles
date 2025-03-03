@@ -4,11 +4,14 @@
   pkgs,
   ...
 }:
-lib.mkIf (!config.custom.headless) {
+let
+  inherit (lib) mkIf;
+in
+mkIf (!config.custom.headless) {
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium;
-    extensions = with pkgs.vscode-extensions; [
+    profiles.default.extensions = with pkgs.vscode-extensions; [
       aaron-bond.better-comments
       bbenoist.nix
       bradlc.vscode-tailwindcss

@@ -4,9 +4,7 @@ use execute::Execute;
 use std::{path::Path, process::Stdio};
 
 pub fn backup(args: BackupArgs) {
-    let target = args
-        .target
-        .unwrap_or_else(|| full_path("/home/elias-ainsworth/"));
+    let target = args.target.unwrap_or_else(|| full_path("/media/6TBRED"));
 
     execute::command_args!(
         "rsync",
@@ -49,7 +47,7 @@ fn rsync(
 
 pub fn remote(args: RemoteArgs) {
     let user = whoami::username();
-    let remote_host = args.hostname.unwrap_or_else(|| format!("{user}-framework"));
+    let remote_host = args.hostname.unwrap_or_else(|| "framework".to_string());
 
     // backup to default location before syncing with remote
     backup(BackupArgs { target: None });

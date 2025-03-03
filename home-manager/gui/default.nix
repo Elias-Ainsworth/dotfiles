@@ -4,11 +4,11 @@ _: {
     ./brave.nix
     ./deadbeef.nix
     ./dunst.nix
-    ./firefox.nix
     ./gaming.nix
     ./ghostty.nix
     ./gtk.nix
     ./kitty.nix
+    ./librewolf.nix
     ./mpv.nix
     ./nemo.nix
     ./obs-studio.nix

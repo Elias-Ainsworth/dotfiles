@@ -37,7 +37,7 @@ in
         description = "Additional waybar config (wallust templating can be used)";
       };
       idleInhibitor = mkEnableOption "Idle inhibitor" // {
-        default = host == "desktop";
+        default = host == "desktop" || host == "desktop";
       };
       extraCss = mkOption {
         type = lines;
@@ -52,7 +52,6 @@ in
   config = mkIf config.custom.waybar.enable {
     programs.waybar = {
       enable = isNixOS;
-      package = pkgs.waybar.override { cavaSupport = false; };
       systemd.enable = true;
     };
 

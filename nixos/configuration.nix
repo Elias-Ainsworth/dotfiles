@@ -1,11 +1,10 @@
 {
   pkgs,
-  user,
   host,
   ...
 }:
 {
-  networking.hostName = "${user}-${host}"; # Define your hostname.
+  networking.hostName = host; # Define your hostname.
 
   # Enable networking
   networking.networkmanager.enable = true;
