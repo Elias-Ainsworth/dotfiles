@@ -3,13 +3,13 @@
 {
   path-of-building = {
     pname = "path-of-building";
-    version = "v2.50.0";
+    version = "v2.52.3";
     src = fetchFromGitHub {
       owner = "PathOfBuildingCommunity";
       repo = "PathOfBuilding";
-      rev = "v2.50.0";
+      rev = "v2.52.3";
       fetchSubmodules = false;
-      sha256 = "sha256-mclbLRYFNWgn/f4CyaINJlLq06uWh0+ks82Lger4w9w=";
+      sha256 = "sha256-hwluSZGYRMN32dSLIe8Cs6l6R84V5fNCuHYtoc7+b00=";
     };
   };
   swww = {
@@ -26,29 +26,29 @@
   };
   wallust = {
     pname = "wallust";
-    version = "550603699dbe27cbc492b7fca290553bd7ce64bf";
+    version = "3854ca1dbe6c2659d32476037f47e532b1486466";
     src = fetchgit {
       url = "https://codeberg.org/explosion-mental/wallust";
-      rev = "550603699dbe27cbc492b7fca290553bd7ce64bf";
+      rev = "3854ca1dbe6c2659d32476037f47e532b1486466";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [ ];
-      sha256 = "sha256-PNBtIFpMhCAn3u4cP5BW31HMXcQqWLQSpMU33y6O3PQ=";
+      sha256 = "sha256-FixX0ro9pf6fD4lVEg8YK94TG3O8K6+hmx6fvaqkPXY=";
     };
-    date = "2025-02-09";
+    date = "2025-03-02";
   };
   yazi-plugins = {
     pname = "yazi-plugins";
-    version = "8945e543ebbaa25de155b7101a917eba007252f2";
+    version = "3d0c7c6be9dbdf64a387a9a141eb8d22863db8d7";
     src = fetchFromGitHub {
       owner = "yazi-rs";
       repo = "plugins";
-      rev = "8945e543ebbaa25de155b7101a917eba007252f2";
+      rev = "3d0c7c6be9dbdf64a387a9a141eb8d22863db8d7";
       fetchSubmodules = false;
-      sha256 = "sha256-ko/vvItKtQSz5rbP3TMb4R1bywW2q8hj7E/A++vhVqQ=";
+      sha256 = "sha256-4e+jcvJPPNhtfTxr7g+INpyyRrevXY3oxKqzdin6ENw=";
     };
-    date = "2025-02-10";
+    date = "2025-03-02";
   };
   yazi-time-travel = {
     pname = "yazi-time-travel";
@@ -64,13 +64,13 @@
   };
   yt-dlp = {
     pname = "yt-dlp";
-    version = "2025.01.26";
+    version = "2025.02.19";
     src = fetchFromGitHub {
       owner = "yt-dlp";
       repo = "yt-dlp";
-      rev = "2025.01.26";
+      rev = "2025.02.19";
       fetchSubmodules = false;
-      sha256 = "sha256-bjvyyCvUpZNGxkFz2ce6pXDSKXJROKZphs9RV4CBs5M=";
+      sha256 = "sha256-otgB9rrv6mgqLdRCuxhZirl5npNQhIKdzFLBrfPer4M=";
     };
   };
 }
