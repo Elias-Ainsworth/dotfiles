@@ -4,9 +4,19 @@ let
     description = "C dev environment";
   };
 
+  cplusplus = {
+    path = ./cplusplus;
+    description = "C++ dev environment";
+  };
+
   javascript = {
     path = ./javascript;
     description = "Javascript / Typescript dev environment";
+  };
+
+  latex = {
+    path = ./latex;
+    description = "LaTex / Tex dev environment";
   };
 
   python = {
@@ -27,14 +37,19 @@ in
 {
   inherit
     c
+    cplusplus
     javascript
+    latex
     python
     rust
     rust-stable
     ;
-  # c = c;
+
+  # c = c would be fucking stupid
+  cpp = cplusplus;
   js = javascript;
   ts = javascript;
+  lx = latex;
   py = python;
   rs = rust;
   rs-stable = rust-stable;
