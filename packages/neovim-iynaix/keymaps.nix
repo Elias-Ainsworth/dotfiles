@@ -22,6 +22,8 @@ in
       (mkKeymap "n" "<C-S>" ":w<CR>")
       (mkKeymap "i" "<C-S>" "<C-O>:up<CR>")
       (mkKeymap "v" "<C-S>" "<C-C>:up<CR>")
+      # H to go to the beginning of the line
+      (mkKeymap "n" "H" "^")
       # L to go to the end of the line
       (mkKeymap "n" "L" "$")
       # Y copies to end of line
@@ -81,6 +83,8 @@ in
       (mkKeymap "n" "<C-K>" ":cprevious<CR>")
       # vim fugitive
       (mkKeymap "n" "<leader>gs" ":G<CR>")
+      # easier oil keybind
+      (mkKeymap "n" "<leader>o" ":Oil<CR>")
     ];
   };
 }

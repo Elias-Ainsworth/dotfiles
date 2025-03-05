@@ -28,7 +28,15 @@
       };
       oil = {
         package = oil-nvim;
-        setup = "require('oil').setup()";
+        setup = # lua
+          ''
+            require('oil').setup({
+                    keymaps = {
+                      ["H"] = "actions.parent",
+                      ["L"] = "actions.select",
+                    },
+                  })
+          '';
       };
       rooter = {
         package = vim-rooter;
@@ -285,6 +293,7 @@
       clang.enable = true;
       bash.enable = true;
       html.enable = true;
+      haskell.enable = true;
       lua.enable = true;
       markdown = {
         enable = true;
@@ -305,6 +314,7 @@
           };
         };
       };
+      ocaml.enable = true;
       python.enable = true;
       rust = {
         enable = true;
