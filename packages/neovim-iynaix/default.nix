@@ -358,13 +358,6 @@
     git.enable = true;
     # enable dashboard?
     lazy.enable = true;
-    leetcode-nvim = {
-      enable = true;
-      setupOpts = {
-        arg = "leet";
-        lang = "rust";
-      };
-    };
     notes.todo-comments.enable = true;
     projects.project-nvim = {
       enable = true;
@@ -405,6 +398,13 @@
       smartcolumn.enable = true;
     };
     utility = {
+      leetcode-nvim = {
+        enable = true;
+        setupOpts = {
+          arg = "leet";
+          lang = "rust";
+        };
+      };
       motion.leap.enable = true;
       # preview.markdownPreview.enable
       surround.enable = true;
