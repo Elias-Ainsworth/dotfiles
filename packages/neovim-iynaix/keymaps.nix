@@ -24,8 +24,10 @@ in
       (mkKeymap "v" "<C-S>" "<C-C>:up<CR>")
       # H to go to the beginning of the line
       (mkKeymap "n" "H" "^")
+      (mkKeymap "v" "H" "^")
       # L to go to the end of the line
       (mkKeymap "n" "L" "$")
+      (mkKeymap "v" "L" "$")
       # Y copies to end of line
       (mkKeymap "n" "Y" "y$")
       # keep cursor in place when joining lines
@@ -84,7 +86,11 @@ in
       # vim fugitive
       (mkKeymap "n" "<leader>gs" ":G<CR>")
       # easier oil keybind
-      (mkKeymap "n" "<leader>o" ":Oil<CR>")
+      (mkKeymapWithOpts "n" "<leader>o" ":Oil<CR>" { desc = "+Oil"; })
+      # easier window keybind
+      (mkKeymapWithOpts [ "n" "x" ] "<leader>w" "<cmd>:WhichKey<C-W><CR>" { desc = "+Window"; })
+      # easier buffer delete keybind
+      (mkKeymap "n" "<S-E>" "<M-D>")
     ];
   };
 }

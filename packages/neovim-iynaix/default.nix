@@ -358,8 +358,28 @@
     git.enable = true;
     # enable dashboard?
     lazy.enable = true;
+    leetcode-nvim = {
+      enable = true;
+      setupOpts = {
+        arg = "leet";
+        lang = "rust";
+      };
+    };
     notes.todo-comments.enable = true;
-    projects.project-nvim.enable = true;
+    projects.project-nvim = {
+      enable = true;
+      setupOpts = {
+        detection_methods = [
+          "lsp"
+          "pattern"
+        ];
+        patterns = [
+          ">projects/"
+          ">projects/playground/"
+          "=flake.nix"
+        ];
+      };
+    };
     snippets.luasnip.enable = true;
     statusline.lualine.enable = true;
     tabline.nvimBufferline = {
