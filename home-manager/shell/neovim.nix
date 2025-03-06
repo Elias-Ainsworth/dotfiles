@@ -56,6 +56,8 @@ in
 
   custom.persist = {
     home.directories = [
+      ".local/share/nvf" # data directory
+      ".local/state/nvf" # persistent session info
       ".local/share/nvim" # data directory
       ".local/state/nvim" # persistent session info
       ".supermaven"

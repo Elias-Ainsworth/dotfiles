@@ -391,6 +391,12 @@
         gitStatus = "<leader>gs";
         liveGrep = "<leader>/";
       };
+      setupOpts = {
+        defaults.mappings = {
+          i."<S-BS>" = lib.generators.mkLuaInline "require('telescope.actions').delete_buffer";
+          n."dd" = lib.generators.mkLuaInline "require('telescope.actions').delete_buffer";
+        };
+      };
     };
     treesitter.autotagHtml = true;
     ui = {
