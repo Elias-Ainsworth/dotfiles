@@ -368,8 +368,9 @@
         ];
         patterns = [
           ">projects/"
-          ">projects/playground/"
+          ">playground/"
           "=flake.nix"
+          "=.envrc"
         ];
       };
     };
