@@ -215,7 +215,7 @@ in
       terminal-exec = {
         enable = true;
         settings = {
-          default = [ "${config.hm.custom.terminal.package.pname}.desktop" ];
+          default = [ config.hm.custom.terminal.desktop ];
         };
       };
     };

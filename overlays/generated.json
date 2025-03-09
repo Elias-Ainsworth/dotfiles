@@ -22,7 +22,7 @@
     },
     "swww": {
         "cargoLocks": null,
-        "date": "2025-01-17",
+        "date": "2025-03-05",
         "extract": null,
         "name": "swww",
         "passthru": null,
@@ -34,12 +34,12 @@
             "name": null,
             "owner": "LGFae",
             "repo": "swww",
-            "rev": "3e2e2ba8f44469a1446138ee97d2988e22b093bf",
-            "sha256": "sha256-XBwgv80YfLZ70XYVEnR0nA7Rz5jP241D5FiwrTg7tDk=",
+            "rev": "412326e40a399e61e15a31147569e97c69900dba",
+            "sha256": "sha256-brdkJiO8RGebFz9lElNNDYKGmfuQiGuuy30eKoFhUbY=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "3e2e2ba8f44469a1446138ee97d2988e22b093bf"
+        "version": "412326e40a399e61e15a31147569e97c69900dba"
     },
     "wallust": {
         "cargoLocks": null,
@@ -63,7 +63,7 @@
     },
     "yazi-plugins": {
         "cargoLocks": null,
-        "date": "2025-03-02",
+        "date": "2025-03-08",
         "extract": null,
         "name": "yazi-plugins",
         "passthru": null,
@@ -75,12 +75,12 @@
             "name": null,
             "owner": "yazi-rs",
             "repo": "plugins",
-            "rev": "3d0c7c6be9dbdf64a387a9a141eb8d22863db8d7",
-            "sha256": "sha256-4e+jcvJPPNhtfTxr7g+INpyyRrevXY3oxKqzdin6ENw=",
+            "rev": "2bf70d880e02db95394de360668325b46f804791",
+            "sha256": "sha256-0A5UVbrP9+GRvX14VQm4Yxw+P9Ca5gtlk9qkLCVf5+Q=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "3d0c7c6be9dbdf64a387a9a141eb8d22863db8d7"
+        "version": "2bf70d880e02db95394de360668325b46f804791"
     },
     "yazi-time-travel": {
         "cargoLocks": null,

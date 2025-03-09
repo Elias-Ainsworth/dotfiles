@@ -410,6 +410,10 @@
         setupOpts = {
           arg = "leet";
           lang = "rust";
+          storage.home = {
+            _type = "lua-inline";
+            expr = "vim.fn.expand('~/projects/leetcode/')";
+          };
         };
       };
       motion.leap.enable = true;

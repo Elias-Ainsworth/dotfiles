@@ -46,8 +46,14 @@ in
     terminal = {
       package = mkOption {
         type = package;
-        default = pkgs.kitty;
+        default = config.programs.ghostty.package;
         description = "Terminal package to use.";
+      };
+
+      desktop = mkOption {
+        type = str;
+        default = "${config.custom.terminal.package.pname}.desktop";
+        description = "Name of desktop file for the terminal";
       };
 
       exec = mkOption {
@@ -87,17 +93,15 @@ in
     home.packages =
       with pkgs;
       [
-        dysk # better disk info
+        # dysk # better disk info
         ets # add timestamp to beginning of each line
         fd # better find
         fx # terminal json viewer and processor
         htop
         jq
-        mdt # terminal markdown viewer and processor
-        ouch # better compression and decompression utility
-        procs # better ps
         sd # better sed
-        ugrep # grep, with boolean query patterns, e.g. ug --files -e "A" --and "B"
+        # grep, with boolean query patterns, e.g. ug --files -e "A" --and "B"
+        ugrep
       ]
       # add custom user created shell packages
       ++ (attrValues config.custom.shell.packages);
