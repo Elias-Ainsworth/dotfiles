@@ -33,9 +33,9 @@ in
         '';
         network.startWhenNeeded = true;
       };
+      mpdris2.enable = true;
+      mpd-discord-rpc.enable = true;
+      playerctld.enable = true;
     };
-    mpdris2.enable = true;
-    mpd-discord-rpc.enable = true;
-    playerctld.enable = true;
   };
 }
