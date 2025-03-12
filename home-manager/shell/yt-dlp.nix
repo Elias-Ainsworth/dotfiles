@@ -35,8 +35,7 @@ let
 
       '';
   };
-  # Function to create yt-dlp music wrapper for both individual tracks and playlists
-
+  # Function to create yt-dlp music wrapper for individual tracks
   mkMusicWrapper = _args: {
     runtimeInputs = with pkgs; [
       yt-dlp
@@ -76,6 +75,47 @@ let
           popd > /dev/null
       '';
   };
+  # Function to create yt-dlp music wrapper for individual tracks
+  mkMusicPlaylistWrapper = _args: {
+    runtimeInputs = with pkgs; [
+      yt-dlp
+      gawk
+    ];
+    text = # sh
+      ''
+                  is_flag() { [[ "$1" == -* ]]; }
+
+                  args=()
+                  has_positional=false
+
+                  for arg in "$@"; do
+                      if ! is_flag "$arg"; then
+                          has_positional=true
+                      fi
+                      args+=("$arg")
+                  done
+
+                  if ! $has_positional; then
+                      while IFS= read -r url; do
+                          [[ $url == http* ]] && args+=("$url")
+                      done < <(awk '!x[$0]++' "${config.xdg.userDirs.desktop}/ytmusic.txt")
+                  fi
+
+
+                pushd "${config.xdg.userDirs.music}" > /dev/null
+                      yt-dlp -f bestaudio \
+                          --extract-audio \
+                          --parse-metadata 'playlist_title:%(album)s' \
+                          --parse-metadata 'artist:%(artist)s' \
+                          --parse-metadata 'album_artist:%(album_artist)s' \
+                          --parse-metadata 'track:%(track_number)s' \
+                          --parse-metadata 'disc:%(disc_number)s' \
+                          --parse-metadata 'genre:%(genre)s' \
+        --output '%(playlist_title)s/%(title)s.%(ext)s' \
+                          "''${args[@]}"
+                  popd > /dev/null
+      '';
+  };
 in
 {
   programs.yt-dlp = {
@@ -102,7 +142,8 @@ in
     ytdl = mkYtDlpWrapper "--no-cache";
     ytaudio = mkYtDlpWrapper "--audio-format mp3 --extract-audio";
     ytmusic = mkMusicWrapper "";
-    ytmusiclist = mkMusicWrapper "--output '%(playlist_title)s/%(title)s.%(ext)s'";
+    #HACK: Make this work with mkMusicWrapper instead of another wrapper.
+    ytmusiclist = mkMusicPlaylistWrapper "";
     ytsub = mkYtDlpWrapper "--write-auto-sub --sub-lang='en,eng' --convert-subs srt";
     ytsubonly = mkYtDlpWrapper "--write-auto-sub --sub-lang='en,eng' --convert-subs srt --skip-download --write-subs";
     ytplaylist = mkYtDlpWrapper "--output '${config.xdg.userDirs.download}/%(playlist_index)d - %(title)s.%(ext)s'";

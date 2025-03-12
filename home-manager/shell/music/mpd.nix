@@ -13,8 +13,6 @@ in
   config = mkIf config.custom.mpd.enable {
 
     services = {
-      mpdris2.enable = true;
-      playerctld.enable = true;
       mpd = {
         enable = true;
         inherit musicDirectory;
@@ -36,5 +34,8 @@ in
         network.startWhenNeeded = true;
       };
     };
+    mpdris2.enable = true;
+    mpd-discord-rpc.enable = true;
+    playerctld.enable = true;
   };
 }
