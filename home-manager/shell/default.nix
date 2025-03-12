@@ -27,7 +27,7 @@ in
     ./iamb
     ./jujutsu.nix
     ./koji.nix
-    ./music-player.nix
+    ./music
     ./neovim.nix
     ./nix.nix
     ./rice.nix

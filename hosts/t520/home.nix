@@ -31,8 +31,10 @@
       qtile = false;
     };
     modelling3d.enable = true;
+    mpd.enable = true;
+    ncmpcpp.enable = true;
+    rmpc.enable = true;
     printing3d.enable = true;
-    music.enable = true;
     obs-studio.enable = false;
     pathofbuilding.enable = false;
     rclip.enable = true;
