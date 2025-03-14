@@ -26,19 +26,24 @@ let
 in
 {
   imports = [
+    ./beets.nix
     ./mpd.nix
     ./ncmpcpp.nix
     ./rmpc.nix
   ];
 
   options.custom = {
+    beets = {
+      enable = mkEnableOption "beets";
+      default = true;
+    };
     mpd = {
       enable = mkEnableOption "MPD";
       default = true;
     };
     ncmpcpp = {
       enable = mkEnableOption "ncmpcpp";
-      default = true;
+      default = false;
     };
     rmpc = {
       enable = mkEnableOption "rmpc";
@@ -93,5 +98,7 @@ in
     };
   };
 
-  config.custom.persist.home.directories = [ "Music" ];
+  config = {
+    custom.persist.home.directories = [ "Music" ];
+  };
 }

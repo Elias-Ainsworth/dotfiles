@@ -30,12 +30,12 @@ in
       }
     ];
 
+    beets.enable = true;
     deadbeef.enable = true;
     gaming.enable = false;
     ghostty.enable = true;
     modelling3d.enable = true;
     mpd.enable = true;
-    ncmpcpp.enable = true;
     rmpc.enable = true;
     printing3d.enable = true;
     pathofbuilding.enable = false;
