@@ -30,7 +30,7 @@ in
       boot = {
         # booting with zfs
         supportedFilesystems.zfs = true;
-        kernelPackages = pkgs.linuxPackages_xanmod;
+        kernelPackages = pkgs.linuxPackages_xanmod_latest;
         # lock xanmod version
         # kernelPackages =
         #   assert assertMsg (versionOlder pkgs.zfs_unstable.version "2.3")

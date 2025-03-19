@@ -22,11 +22,11 @@ let
       isGraphical = true;
       gtk3 = pkgs.__splicedPackages.gtk4.overrideAttrs (o: rec {
         version = "4.17.6";
+        patches = [ ]; # asahi patch doesn't apply
         src = pkgs.fetchurl {
           url = "mirror://gnome/sources/gtk/${lib.versions.majorMinor version}/gtk-${version}.tar.xz";
           hash = "sha256-366boSY/hK+oOklNsu0UxzksZ4QLZzC/om63n94eE6E=";
         };
-        patches = [ ]; # asahi patch doesn't apply
         postFixup = ''
           demos=(gtk4-demo gtk4-demo-application gtk4-widget-factory)
 
@@ -60,9 +60,6 @@ in
     programs.ghostty = {
       enable = true;
       package =
-        assert (
-          assertMsg (versionOlder pkgs.wayland-protocols.version "1.41") "wayland-protocols updated, update ghostty override"
-        );
         assert (assertMsg (versionOlder pkgs.gtk4.version "4.17") "gtk4 updated, remove ghostty override");
         ghostty-gtk-cursor-fix;
       enableBashIntegration = true;

@@ -8,9 +8,20 @@
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
-    };
 
-    pulseaudio.enable = false;
+      extraConfig = {
+        pipewire-pulse = {
+          switch-on-connect = {
+            "pulse.cmd" = [
+              {
+                cmd = "load-module";
+                args = [ "module-switch-on-connect" ];
+              }
+            ];
+          };
+        };
+      };
+    };
   };
 
   environment.systemPackages = with pkgs; [ pwvucontrol ];

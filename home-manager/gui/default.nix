@@ -7,7 +7,6 @@ _: {
     ./gaming.nix
     ./ghostty.nix
     ./gtk.nix
-    ./kitty.nix
     ./librewolf.nix
     ./mpv.nix
     ./nemo.nix
@@ -22,6 +21,7 @@ _: {
     ./wallust.nix
     ./waybar.nix
     ./weeb
+    ./wm.nix
     ./zathura.nix
   ];
 }

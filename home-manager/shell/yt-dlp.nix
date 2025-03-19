@@ -68,14 +68,14 @@ let
                   --parse-metadata 'playlist_title:%(album)s' \
                   --parse-metadata 'artist:%(artist)s' \
                   --parse-metadata 'album_artist:%(album_artist)s' \
-                  --parse-metadata 'track:%(track_number)s' \
-                  --parse-metadata 'disc:%(disc_number)s' \
+                  --parse-metadata 'track_number:%(track)s' \
+                  --parse-metadata 'disc_number:%(disc)s' \
                   --parse-metadata 'genre:%(genre)s' \
                   "''${args[@]}"
           popd > /dev/null
       '';
   };
-  # Function to create yt-dlp music wrapper for individual tracks
+  # Function to create yt-dlp music wrapper for playlists
   mkMusicPlaylistWrapper = _args: {
     runtimeInputs = with pkgs; [
       yt-dlp
@@ -98,14 +98,14 @@ let
                   if ! $has_positional; then
                       while IFS= read -r url; do
                           [[ $url == http* ]] && args+=("$url")
-                      done < <(awk '!x[$0]++' "${config.xdg.userDirs.desktop}/ytmusic.txt")
+                      done < <(awk '!x[$0]++' "${config.xdg.userDirs.desktop}/ytmusiclist.txt")
                   fi
 
 
                 pushd "${config.xdg.userDirs.music}" > /dev/null
                       yt-dlp -f bestaudio \
                           --extract-audio \
-                          --parse-metadata 'playlist_title:%(album)s' \
+                          --parse-metadata 'album:%(playlist_title)s' \
                           --parse-metadata 'artist:%(artist)s' \
                           --parse-metadata 'album_artist:%(album_artist)s' \
                           --parse-metadata 'track:%(track_number)s' \
