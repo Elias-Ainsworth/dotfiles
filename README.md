@@ -82,8 +82,8 @@ thorneos-recover
 
 - _Grandmaster_ [iynaix](https://github.com/iynaix) (Lin Xianyi), for being the
   author of the original nix [config](https://github.com/iynaix/dotfiles) I
-  forked and for bearing with my idiotic questions over on Vimjoyer's discord
-  server.
+  ~~stole~~ forked and for bearing with my idiotic questions over on Vimjoyer's
+  discord server.
 - Followed by _Master_ [diniamo](https://github.com/diniamo) for inspiring
   [chomky](https://github.com/justchokingaround), which then inspired my first
   (non-functional) nix configuration.

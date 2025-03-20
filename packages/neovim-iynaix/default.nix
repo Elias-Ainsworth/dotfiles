@@ -17,9 +17,11 @@
 
     theme = {
       enable = true;
-      name = "catppuccin";
-      style = "mocha";
-      transparent = true;
+      # name = "catppuccin";
+      # style = "mocha";
+      name = "kanagawa";
+      style = "dragon";
+      transparent = false;
     };
 
     extraPlugins = with pkgs.vimPlugins; {

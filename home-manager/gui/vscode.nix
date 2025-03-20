@@ -2,10 +2,27 @@
   config,
   lib,
   pkgs,
+  # vscode-utils,
   ...
 }:
 let
   inherit (lib) mkIf;
+  # inherit (vscode-utils) buildVscodeMarketplaceExtension;
+  # metaphore.kanagawa-vscode-color-theme = buildVscodeMarketplaceExtension {
+  #   mktplcRef = {
+  #     name = "kanagawa-vscode-color-theme";
+  #     publisher = "metaphore";
+  #     version = "0.5.0";
+  #     hash = lib.fakeHash;
+  #   };
+  #   meta = {
+  #     description = "A port of the Kanagawa Neovim color theme for Visual Studio Code, including all three flavors Wave, Dragon and Lotus.";
+  #     downloadPage = "https://open-vsx.org/extension/metaphore/kanagawa-vscode-color-theme";
+  #     homepage = "https://github.com/metapho-re/kanagawa-vscode-theme";
+  #     license = lib.licenses.mit;
+  #     maintainers = [ ];
+  #   };
+  # };
 in
 mkIf (!config.custom.headless) {
   programs.vscode = {
@@ -26,6 +43,7 @@ mkIf (!config.custom.headless) {
       graphql.vscode-graphql-syntax
       gruntfuggly.todo-tree
       jnoortheen.nix-ide
+      metaphore.kanagawa-vscode-color-theme
       mhutchie.git-graph
       mkhl.direnv
       ms-python.black-formatter

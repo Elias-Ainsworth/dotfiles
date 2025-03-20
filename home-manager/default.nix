@@ -110,7 +110,7 @@ in
           trash-cli
           xdg-utils
         ]
-        # ++ (lib.optional config.custom.helix.enable helix)
+        ++ (lib.optional config.custom.helix.enable helix)
         # home-manager executable only on nixos
         ++ (lib.optional isNixOS home-manager)
         # handle fonts
