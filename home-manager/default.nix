@@ -39,6 +39,18 @@ in
       default = null;
       description = "Command to run after autologin";
     };
+    colorscheme = {
+      theme = mkOption {
+        type = str;
+        default = "catppuccin";
+        description = "System colorscheme";
+      };
+      variant = mkOption {
+        type = str;
+        default = "mocha";
+        description = "System colorscheme variant";
+      };
+    };
     fonts = {
       regular = mkOption {
         type = str;
@@ -110,11 +122,11 @@ in
           trash-cli
           xdg-utils
         ]
-        ++ (lib.optional config.custom.helix.enable helix)
+        ++ (optional config.custom.helix.enable helix)
         # home-manager executable only on nixos
-        ++ (lib.optional isNixOS home-manager)
+        ++ (optional isNixOS home-manager)
         # handle fonts
-        ++ (lib.optionals (!isNixOS) config.custom.fonts.packages);
+        ++ (optionals (!isNixOS) config.custom.fonts.packages);
     };
 
     # Let Home Manager install and manage itself.
@@ -123,9 +135,9 @@ in
     # create symlinks
     systemd.user.tmpfiles.rules =
       let
-        normalizeHome = p: if (lib.hasPrefix "/home" p) then p else "${config.home.homeDirectory}/${p}";
+        normalizeHome = p: if (hasPrefix "/home" p) then p else "${config.home.homeDirectory}/${p}";
       in
-      lib.mapAttrsToList (dest: src: "L+ ${normalizeHome dest} - - - - ${src}") config.custom.symlinks;
+      mapAttrsToList (dest: src: "L+ ${normalizeHome dest} - - - - ${src}") config.custom.symlinks;
 
     xdg = {
       enable = true;

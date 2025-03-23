@@ -51,9 +51,9 @@ in
     # envfs sets usrbinenv activation script to "" with mkForce
     activationScripts.usrbinenv = mkOverride (50 - 1) ''
       if [ ! -d "/usr/bin" ]; then
-         mkdir -p /usr/bin
-         chmod 0755 /usr/bin
-       fi
+        mkdir -p /usr/bin
+        chmod 0755 /usr/bin
+      fi
     '';
 
     # make a symlink of flake within the generation (e.g. /run/current-system/src)
@@ -81,42 +81,6 @@ in
 
   custom.shell.packages =
     {
-      # set the current generation or given generation number as default to boot
-      ndefault = {
-        text = # sh
-          ''
-            if [ "$#" -eq 0 ]; then
-              sudo /run/current-system/bin/switch-to-configuration boot
-            else
-              sudo "/nix/var/nix/profiles/system-$1-link/bin/switch-to-configuration" boot
-            fi
-          '';
-        bashCompletion = # sh
-          ''
-            _ndefault() {
-                local profile_dir="/nix/var/nix/profiles"
-                local profiles=$(command ls -1 "$profile_dir" | \
-                    grep -E '^system-[0-9]+-link$' | \
-                    sed -E 's/^system-([0-9]+)-link$/\1/' | \
-                    sort -rnu)
-                COMPREPLY=($(compgen -W "$profiles" -- "''${COMP_WORDS[COMP_CWORD]}"))
-            }
-
-            complete -F _ndefault ndefault
-          '';
-        fishCompletion = # fish
-          ''
-            function _ndefault
-                set -l profile_dir "/nix/var/nix/profiles"
-                command ls -1 "$profile_dir" | \
-                  string match -r '^system-([0-9]+)-link$' | \
-                  string replace -r '^system-([0-9]+)-link$' '$1' | \
-                  sort -ru
-            end
-
-            complete --keep-order -c ndefault -f -a "(_ndefault)"
-          '';
-      };
       # build iso images
       nbuild-iso = {
         runtimeInputs = [ pkgs.nixos-generators ];
@@ -231,12 +195,17 @@ in
       # };
     };
 
-  # better nixos generation label
-  # https://reddit.com/r/NixOS/comments/16t2njf/small_trick_for_people_using_nixos_with_flakes/k2d0sxx/
-  system.nixos.label = concatStringsSep "-" (
-    (sort (x: y: x < y) config.system.nixos.tags)
-    ++ [ "${config.system.nixos.version}.${self.sourceInfo.shortRev or "dirty"}" ]
-  );
+  system = {
+    # use nixos-rebuild-ng to rebuild the system
+    rebuild.enableNg = true;
+
+    # better nixos generation label
+    # https://reddit.com/r/NixOS/comments/16t2njf/small_trick_for_people_using_nixos_with_flakes/k2d0sxx/
+    nixos.label = concatStringsSep "-" (
+      (sort (x: y: x < y) config.system.nixos.tags)
+      ++ [ "${config.system.nixos.version}.${self.sourceInfo.shortRev or "dirty"}" ]
+    );
+  };
 
   # enable man-db cache for fish to be able to find manpages
   # https://discourse.nixos.org/t/fish-shell-and-manual-page-completion-nixos-home-manager/15661

@@ -30,10 +30,15 @@ in
       }
     ];
 
+    colorscheme = {
+      theme = "kanagawa";
+      variant = "dragon";
+    };
     beets.enable = true;
     deadbeef.enable = true;
     gaming.enable = false;
     ghostty.enable = true;
+    helix.enable = true;
     modelling3d.enable = true;
     mpd.enable = true;
     rmpc.enable = true;

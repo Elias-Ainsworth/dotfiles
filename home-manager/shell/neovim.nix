@@ -6,6 +6,7 @@
 }:
 let
   inherit (lib) getExe;
+
   customNeovim = pkgs.custom.neovim-iynaixos;
   nvim-with-direnv = pkgs.writeShellApplication {
     name = "nvim-with-direnv";
@@ -30,6 +31,7 @@ in
       neovim = "nvim";
       v = "nvim";
     };
+
   };
 
   xdg = {

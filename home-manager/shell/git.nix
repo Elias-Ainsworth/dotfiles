@@ -6,69 +6,67 @@
   ...
 }:
 let
-  inherit (lib) mkIf optionalAttrs;
-
-  hasNixpkgsRepo = host == "desktop" || host == "framework" || host == "x1c";
+  hasNixpkgsRepo = host == "desktop" || host == "framework" || host == "x1c" || host == "t520";
 in
 {
   programs = {
     git = {
       enable = true;
-      userName = "Elias-Ainsworth";
+      userName = "Elias Ainsworth";
       userEmail = "pilum-murialis.toge@proton.me";
       difftastic = {
         enable = true;
         background = "dark";
       };
-      extraConfig =
-        {
-          init = {
-            defaultBranch = "main";
-          };
-          alias = {
-            # blame with ignore whitespace and track movement across all commits
-            blame = "blame -w -C -C -C";
-            diff = "diff --word-diff";
-          };
-          branch = {
-            master = {
-              merge = "refs/heads/master";
-            };
-            main = {
-              merge = "refs/heads/main";
-            };
-            sort = "-committerdate";
-          };
-          diff = {
-            tool = "nvim -d";
-            guitool = "code";
-            colorMoved = "default";
-          };
-          format = {
-            pretty = "format:%C(yellow)%h%Creset -%C(red)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset";
-          };
-          merge = {
-            conflictstyle = "diff3";
-          };
-          pull = {
-            rebase = true;
-          };
-          push = {
-            default = "simple";
-          };
-          # reuse record resolution: git automatically resolves conflicts using the recorded resolution
-          rerere = {
-            enabled = true;
-            autoUpdate = true;
-          };
-        }
-        // optionalAttrs hasNixpkgsRepo {
-          # background maintenance for large git repos:
-          # https://blog.gitbutler.com/git-tips-2-new-stuff-in-git/#git-maintenance
-          maintenance = mkIf (host == "desktop" || host == "framework" || host == "x1c") {
-            repo = "/persist${config.home.homeDirectory}/projects/nixpkgs";
-          };
+
+      maintenance = lib.mkIf hasNixpkgsRepo {
+        enable = true;
+        # background maintenance for large git repos:
+        # https://blog.gitbutler.com/git-tips-2-new-stuff-in-git/#git-maintenance
+        repositories = [ "/persist${config.home.homeDirectory}/projects/nixpkgs" ];
+      };
+
+      extraConfig = {
+        init = {
+          defaultBranch = "main";
         };
+        alias = {
+          # blame with ignore whitespace and track movement across all commits
+          blame = "blame -w -C -C -C";
+          diff = "diff --word-diff";
+        };
+        branch = {
+          master = {
+            merge = "refs/heads/master";
+          };
+          main = {
+            merge = "refs/heads/main";
+          };
+          sort = "-committerdate";
+        };
+        diff = {
+          tool = "nvim -d";
+          guitool = "code";
+          colorMoved = "default";
+        };
+        format = {
+          pretty = "format:%C(yellow)%h%Creset -%C(red)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset";
+        };
+        merge = {
+          conflictstyle = "diff3";
+        };
+        pull = {
+          rebase = true;
+        };
+        push = {
+          default = "simple";
+        };
+        # reuse record resolution: git automatically resolves conflicts using the recorded resolution
+        rerere = {
+          enabled = true;
+          autoUpdate = true;
+        };
+      };
     };
 
     lazygit.enable = true;
@@ -175,8 +173,8 @@ in
           fi
 
           # check if repo is forked and sync with upstream if it is
-          if gh repo view "iynaix/$REPO_NAME" >/dev/null 2>&1; then
-              gh repo sync "iynaix/$REPO_NAME" -b "$BRANCH"
+          if gh repo view "elias-ainsworth/$REPO_NAME" >/dev/null 2>&1; then
+              gh repo sync "elias-ainsworth/$REPO_NAME" -b "$BRANCH"
           fi
           git pull origin "$BRANCH"
         '';
@@ -186,7 +184,6 @@ in
   custom.persist = {
     home.directories = [
       ".config/lazygit"
-      ".config/systemd" # git maintenance systemd timers
     ];
   };
 }

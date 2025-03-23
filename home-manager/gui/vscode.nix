@@ -7,6 +7,7 @@
 }:
 let
   inherit (lib) mkIf;
+  #TODO: Figure this shit out...
   # inherit (vscode-utils) buildVscodeMarketplaceExtension;
   # metaphore.kanagawa-vscode-color-theme = buildVscodeMarketplaceExtension {
   #   mktplcRef = {
@@ -43,7 +44,7 @@ mkIf (!config.custom.headless) {
       graphql.vscode-graphql-syntax
       gruntfuggly.todo-tree
       jnoortheen.nix-ide
-      metaphore.kanagawa-vscode-color-theme
+      # metaphore.kanagawa-vscode-color-theme
       mhutchie.git-graph
       mkhl.direnv
       ms-python.black-formatter

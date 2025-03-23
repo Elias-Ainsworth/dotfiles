@@ -1,0 +1,8 @@
+* TODO:
+- Nushell: Ghostty Integration needed...
+- orgmode based blog?
+- is-a.dev website
+- wallpaper resets nemo icons
+- persistent USB image
+- rust utility to ping when nix/rust finishes
+

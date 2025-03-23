@@ -17,14 +17,66 @@
 
     theme = {
       enable = true;
+      transparent = true;
+
       # name = "catppuccin";
       # style = "mocha";
-      name = "kanagawa";
-      style = "dragon";
-      transparent = false;
     };
 
     extraPlugins = with pkgs.vimPlugins; {
+      kanagawa = {
+        package = kanagawa-nvim;
+        setup = # lua
+          ''
+            require("kanagawa").setup({
+                transparent = true,
+                theme = "dragon",
+                colors = {
+                    theme = {
+                        all = {
+                            ui = {
+                                bg_gutter = "none"
+                            },
+                        },
+                    },
+                },
+                overrides = function(colors)
+                    local theme = colors.theme
+                    return {
+                        NormalFloat = { bg = "none" },
+                        FloatBorder = { bg = "none" },
+                        FloatTitle = { bg = "none" },
+
+                        -- Save an hlgroup with dark background and dimmed foreground
+                        -- so that you can use it where your still want darker windows.
+                        -- E.g.: autocmd TermOpen * setlocal winhighlight=Normal:NormalDark
+                        NormalDark = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m3 },
+
+                        -- Popular plugins that open floats will link to NormalFloat by default;
+                        -- set their background accordingly if you wish to keep them dark and borderless
+                        LazyNormal = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
+                        MasonNormal = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
+
+                        -- Telescope
+                        TelescopeTitle = { fg = theme.ui.special, bold = true },
+                        TelescopePromptNormal = { bg = "none"--[[ theme.ui.bg_p1 ]] },
+                        TelescopePromptBorder = { fg = theme.ui.bg_m3, bg = "none"--[[ theme.ui.bg_p1 ]] },
+                        TelescopeResultsNormal = { fg = theme.ui.fg_dim, bg = "none"--[[ theme.ui.bg_m1 ]] },
+                        TelescopeResultsBorder = { fg = theme.ui.bg_m3, bg = "none"--[[ theme.ui.bg_m1 ]] },
+                        TelescopePreviewNormal = { bg = "none"--[[ theme.ui.bg_dim  ]]},
+                        TelescopePreviewBorder = { bg = "none"--[[ theme.ui.bg_dim ]], fg = theme.ui.bg_dim },
+
+                        -- Popup menu
+                        Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1, --[[  blend = vim.o.pumblend ]] },  -- add `blend = vim.o.pumblend` to enable transparency
+                        PmenuSel = { fg = "NONE", bg = theme.ui.bg_p2 },
+                        PmenuSbar = { bg = theme.ui.bg_m1 },
+                        PmenuThumb = { bg = theme.ui.bg_p2 },
+                    }
+                end,
+            })
+            vim.cmd("colorscheme kanagawa-dragon")
+          '';
+      };
       direnv = {
         package = direnv-vim;
       };
@@ -34,8 +86,8 @@
           ''
             require('oil').setup({
                     keymaps = {
-                      ["H"] = "actions.parent",
-                      ["L"] = "actions.select",
+                      ["h"] = "actions.parent",
+                      ["l"] = "actions.select",
                     },
                   })
           '';
@@ -70,10 +122,10 @@
     searchCase = "smart";
     useSystemClipboard = true;
 
-    # spellcheck = {
-    #   enable = true;
-    #   programmingWordlist.enable = true;
-    # };
+    spellcheck = {
+      enable = true;
+      programmingWordlist.enable = true;
+    };
 
     # autocmds
     luaConfigPost = # lua
@@ -351,16 +403,78 @@
       };
     };
     autopairs.nvim-autopairs.enable = true;
-    binds.whichKey.enable = true;
+    binds.whichKey = {
+      enable = true;
+      register = {
+        #TODO: Set <leader>a to not show when the option is available.
+        # "<leader>a" = "";
+        "<leader>gc" = "+Conflict";
+        "<leader>gd" = "+Diff";
+        "<leader>gr" = "+Reset";
+        "<leader>gs" = "+Stage";
+        "<leader>gt" = "+Toggle";
+        "<leader>h" = "+Harpoon";
+        "<leader>n" = "+Neorg";
+        "<leader>o" = "+Oil";
+        "<leader>t" = "+Todo";
+      };
+      # setupOpts = {
+      #   preset = "helix";
+      # };
+    };
     comments.comment-nvim.enable = true;
-    # filetree.nvimTree = {
-    #   enable = true;
-    #   openOnSetup = false;
-    # };
-    git.enable = true;
-    # enable dashboard?
+    git = {
+      enable = true;
+      git-conflict = {
+        mappings = {
+          both = "<leader>gcb";
+          none = "<leader>gc0";
+          ours = "<leader>gco";
+          theirs = "<leader>gct";
+        };
+      };
+      gitsigns = {
+        mappings = {
+          blameLine = "<leader>gl";
+          diffProject = "<leader>gdp";
+          diffThis = "<leader>gdt";
+          previewHunk = "<leader>gp";
+          resetBuffer = "<leader>grb";
+          resetHunk = "<leader>grh";
+          stageBuffer = "<leader>gsb";
+          stageHunk = "<leader>gsh";
+          undoStageHunk = "<leader>gsu";
+          toggleBlame = "<leader>gtb";
+          toggleDeleted = "<leader>gtd";
+        };
+      };
+    };
     lazy.enable = true;
-    notes.todo-comments.enable = true;
+    navigation.harpoon = {
+      enable = true;
+      mappings = {
+        markFile = "<leader>ha";
+        listMarks = "<leader>hl";
+        file1 = "<leader>hn";
+        file2 = "<leader>he";
+        file3 = "<leader>hi";
+        file4 = "<leader>ho";
+      };
+    };
+    notes = {
+      neorg = {
+        enable = true;
+        treesitter.enable = true;
+      };
+      todo-comments = {
+        enable = true;
+        mappings = {
+          trouble = "<leader>tr";
+          telescope = "<leader>tt";
+          quickFix = "<leader>tq";
+        };
+      };
+    };
     projects.project-nvim = {
       enable = true;
       setupOpts = {
@@ -391,13 +505,15 @@
         buffers = "<leader>fb";
         findFiles = "<leader>ff";
         gitBranches = "<leader>gb";
-        gitStatus = "<leader>gs";
+        gitStatus = "<leader>gT";
         liveGrep = "<leader>/";
       };
       setupOpts = {
-        defaults.mappings = {
-          i."<S-BS>" = lib.generators.mkLuaInline "require('telescope.actions').delete_buffer";
-          n."dd" = lib.generators.mkLuaInline "require('telescope.actions').delete_buffer";
+        defaults = {
+          mappings = {
+            i."<S-BS>" = lib.generators.mkLuaInline "require('telescope.actions').delete_buffer";
+            n."dd" = lib.generators.mkLuaInline "require('telescope.actions').delete_buffer";
+          };
         };
       };
     };

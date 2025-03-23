@@ -26,6 +26,7 @@ in
       shellAbbrs = config.home.shellAliases // {
         ehistory = "nvim ${config.xdg.dataHome}/fish/fish_history";
       };
+      #TODO: Use fish's default history search widget
       shellInit = # fish
         ''
           # shut up welcome message
@@ -71,7 +72,10 @@ in
 
   custom.persist = {
     home = {
-      cache.directories = [ ".local/share/fish" ];
+      cache.directories = [
+        ".config/fish"
+        ".local/share/fish"
+      ];
     };
   };
 }

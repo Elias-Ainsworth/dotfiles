@@ -1,6 +1,12 @@
 { config, lib, ... }:
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (config.custom) colorscheme;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    optionals
+    concatStringsSep
+    ;
 in
 {
   options.custom = {
@@ -11,8 +17,12 @@ in
     programs.helix = {
       enable = true;
       settings = {
-        # theme = "catppuccin_mocha";
-        theme = "kanagawa_dragon";
+        theme = concatStringsSep "" (
+          optionals (colorscheme.theme == "catppuccin") [
+            "${colorscheme.theme}_${colorscheme.variant}"
+          ]
+          ++ optionals (colorscheme.theme == "kanagawa") [ "${colorscheme.theme}-${colorscheme.variant}" ]
+        );
       };
     };
   };

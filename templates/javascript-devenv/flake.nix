@@ -7,6 +7,7 @@
 
   outputs =
     {
+      self,
       nixpkgs,
       devenv,
       systems,
@@ -14,7 +15,8 @@
     }@inputs:
     let
       forEachSystem =
-        function: nixpkgs.lib.genAttrs (import systems) (system: function nixpkgs.legacyPackages.${system});
+        function:
+        nixpkgs.lib.genAttrs [ "x86_64-linux" ] (system: function nixpkgs.legacyPackages.${system});
     in
     {
       devShells = forEachSystem (pkgs: {
@@ -25,20 +27,16 @@
               # https://devenv.sh/reference/options/
               dotenv.disableHint = true;
 
-              packages = with pkgs; [
-                python3Packages.flake8
-                python3Packages.black
-              ];
+              packages = [ ];
 
-              languages.python = {
-                enable = true;
-                venv.enable = true;
-              };
+              languages.javascript.enable = true;
+              languages.typescript.enable = true;
             }
           ];
         };
       });
 
-      packages = forEachSystem (pkgs: { });
+      packages = forEachSystem (pkgs: rec {
+      });
     };
 }

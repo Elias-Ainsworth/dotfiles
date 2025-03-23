@@ -30,6 +30,7 @@ in
     ./music
     ./neovim.nix
     ./nix.nix
+    ./nushell.nix
     ./rice.nix
     ./ripgrep.nix
     ./rust.nix
@@ -147,7 +148,7 @@ in
       fzf = {
         enable = true;
         enableBashIntegration = true;
-        enableFishIntegration = true;
+        enableFishIntegration = false;
       };
     };
 

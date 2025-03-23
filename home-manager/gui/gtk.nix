@@ -5,7 +5,15 @@
   ...
 }:
 let
-  inherit (lib) attrNames mkIf mkOption;
+  inherit (config.custom) colorscheme;
+  inherit (lib)
+    attrNames
+    mkIf
+    mkMerge
+    mkOption
+    optionals
+    concatStringsSep
+    ;
   inherit (lib.types) attrsOf enum str;
 in
 {
@@ -48,7 +56,10 @@ in
       home = {
         pointerCursor = {
           package = pkgs.simp1e-cursors;
-          name = "Simp1e-Catppuccin-Frappe";
+          name = concatStringsSep "" (
+            optionals (colorscheme.theme == "catppuccin") [ "Simp1e-Catppuccin-Frappe" ]
+            ++ optionals (colorscheme.theme == "kanagawa") [ "Simp1e-Gruvbox-Dark" ]
+          );
           size = 28;
           gtk.enable = true;
           x11.enable = true;
@@ -73,21 +84,39 @@ in
       gtk = {
         enable = true;
         theme = {
-          name = "catppuccin-mocha-${defaultAccent}-compact";
-          package = pkgs.catppuccin-gtk.override {
-            # allow all accents so the closest matching color can be selected by dotfiles-rs
-            accents = attrNames accents;
-            variant = "mocha";
-            tweaks = [
-              # "black" # black tweak for oled
-              # "rimless"
-            ];
-            size = "compact";
-          };
+          name = concatStringsSep "" (
+            optionals (colorscheme.theme == "catppuccin") [
+              "catppuccin-${colorscheme.variant}-${defaultAccent}-compact"
+            ]
+            ++ optionals (colorscheme.theme == "kanagawa") [ "Kanagawa-B" ]
+          );
+
+          package = mkMerge [
+            (mkIf (colorscheme.theme == "catppuccin") (
+              pkgs.catppuccin-gtk.override {
+                accents = attrNames accents; # Allow all accents
+                variant = "mocha";
+                tweaks = [
+                  # "black"  # Black tweak for OLED
+                  # "rimless"
+                ];
+                size = "compact";
+              }
+            ))
+            (mkIf (colorscheme.theme == "kanagawa") pkgs.kanagawa-gtk-theme)
+          ];
         };
         iconTheme = {
-          name = "Tela-${defaultAccent}-dark";
-          package = pkgs.custom.tela-dynamic-icon-theme.override { colors = accents; };
+          name = concatStringsSep "" (
+            optionals (colorscheme.theme == "catppuccin") [ "Tela-${defaultAccent}-dark" ]
+            ++ optionals (colorscheme.theme == "kanagawa") [ "Kanagawa" ]
+          );
+          package = mkMerge [
+            (mkIf (colorscheme.theme == "catppuccin") (
+              pkgs.custom.tela-dynamic-icon-theme.override { colors = accents; }
+            ))
+            (mkIf (colorscheme.theme == "kanagawa") pkgs.kanagawa-icon-theme)
+          ];
         };
         font = {
           name = config.custom.fonts.regular;

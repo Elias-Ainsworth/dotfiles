@@ -84,13 +84,17 @@ in
       (mkKeymap "n" "<C-J>" ":cnext<CR>")
       (mkKeymap "n" "<C-K>" ":cprevious<CR>")
       # vim fugitive
-      (mkKeymap "n" "<leader>gs" ":G<CR>")
+      (mkKeymapWithOpts "n" "<leader>G" ":G<CR>" { desc = "+Fugitive"; })
       # easier oil keybind
       (mkKeymapWithOpts "n" "<leader>o" ":Oil<CR>" { desc = "+Oil"; })
       # easier window keybind
       (mkKeymapWithOpts [ "n" "x" ] "<leader>w" "<cmd>:WhichKey<C-W><CR>" { desc = "+Window"; })
-      # easier buffer delete keybind
-      (mkKeymap "n" "<S-E>" "<M-D>")
+      # neorg
+      (mkKeymap [ "n" "x" ] "<leader>ni" "<cmd>:Neorg index<CR>")
+      (mkKeymap [ "n" "x" ] "<leader>nj" "<cmd>:Neorg journal<CR>")
+      (mkKeymap [ "n" "x" ] "<leader>nr" "<cmd>:Neorg return<CR>")
+      (mkKeymap [ "n" "x" ] "<leader>ns" "<cmd>:Neorg sync-parsers<CR>")
+      (mkKeymap [ "n" "x" ] "<leader>nw" "<cmd>:Neorg workspace<CR>")
     ];
   };
 }

@@ -39,10 +39,6 @@ let
     description = "Rust dev environment";
   };
 
-  rust-stable = {
-    path = ./rust-stable;
-    description = "Rust (latest stable from fenix) dev environment";
-  };
 in
 {
   inherit
@@ -54,7 +50,6 @@ in
     ocaml
     python
     rust
-    rust-stable
     ;
 
   # c = c would be fucking stupid
@@ -66,5 +61,4 @@ in
   ml = ocaml;
   py = python;
   rs = rust;
-  rs-stable = rust-stable;
 }

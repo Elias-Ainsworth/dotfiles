@@ -296,7 +296,8 @@ pub fn set_gtk_and_icon_theme(nixcolors: &NixColors, accent: &Rgb) {
     // requires the single quotes to be GVariant compatible for dconf
     let gvariant = |v: &str| format!("'{v}'");
 
-    let gtk_theme = format!("catppuccin-mocha-{variant}-compact");
+    // let gtk_theme = format!("catppuccin-mocha-{variant}-compact");
+    let gtk_theme = format!("Kanagawa-B");
     execute::command_args!("dconf", "write", "/org/gnome/desktop/interface/gtk-theme")
         .arg(gvariant(&gtk_theme))
         .execute()
@@ -311,7 +312,8 @@ pub fn set_gtk_and_icon_theme(nixcolors: &NixColors, accent: &Rgb) {
     );
 
     // requires the single quotes to be GVariant compatible for dconf
-    let icon_theme = format!("Tela-{variant}-dark");
+    // let icon_theme = format!("Tela-{variant}-dark");
+    let icon_theme = format!("Kanagawa-B");
     execute::command_args!("dconf", "write", "/org/gnome/desktop/interface/icon-theme")
         .arg(gvariant(&icon_theme))
         .execute()
