@@ -465,6 +465,9 @@
       neorg = {
         enable = true;
         treesitter.enable = true;
+        setupOpts = {
+          load."core.defaults" = true;
+        };
       };
       todo-comments = {
         enable = true;
