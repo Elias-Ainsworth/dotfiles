@@ -23,11 +23,9 @@ in
       (mkKeymap "i" "<C-S>" "<C-O>:up<CR>")
       (mkKeymap "v" "<C-S>" "<C-C>:up<CR>")
       # H to go to the beginning of the line
-      (mkKeymap "n" "H" "^")
-      (mkKeymap "v" "H" "^")
+      (mkKeymap [ "n" "v" "x" ] "H" "^")
       # L to go to the end of the line
-      (mkKeymap "n" "L" "$")
-      (mkKeymap "v" "L" "$")
+      (mkKeymap [ "n" "v" "x" ] "L" "$")
       # Y copies to end of line
       (mkKeymap "n" "Y" "y$")
       # keep cursor in place when joining lines
@@ -84,17 +82,37 @@ in
       (mkKeymap "n" "<C-J>" ":cnext<CR>")
       (mkKeymap "n" "<C-K>" ":cprevious<CR>")
       # vim fugitive
-      (mkKeymapWithOpts "n" "<leader>G" ":G<CR>" { desc = "+Fugitive"; })
+      (mkKeymapWithOpts "n" "<leader>G" ":G<CR>" { desc = "+Git [Fugitive]"; })
       # easier oil keybind
       (mkKeymapWithOpts "n" "<leader>o" ":Oil<CR>" { desc = "+Oil"; })
       # easier window keybind
       (mkKeymapWithOpts [ "n" "x" ] "<leader>w" "<cmd>:WhichKey<C-W><CR>" { desc = "+Window"; })
+      # easier buffer delete keybind
+      (mkKeymapWithOpts [ "n" "x" ] "<leader>bd" ":bd<CR>" { desc = "+Delete Buffer"; })
       # neorg
+      #TODO: Get this to work.
+      # (mkKeymapWithOpts "n" "<A-Space>" "<Plug>(neorg.qol.todo-items.task-cycle)" { desc = "Cycle Task [neorg]"; })
       (mkKeymap [ "n" "x" ] "<leader>ni" "<cmd>:Neorg index<CR>")
       (mkKeymap [ "n" "x" ] "<leader>nj" "<cmd>:Neorg journal<CR>")
       (mkKeymap [ "n" "x" ] "<leader>nr" "<cmd>:Neorg return<CR>")
-      (mkKeymap [ "n" "x" ] "<leader>ns" "<cmd>:Neorg sync-parsers<CR>")
-      (mkKeymap [ "n" "x" ] "<leader>nw" "<cmd>:Neorg workspace<CR>")
+      (mkKeymap [ "n" "x" ] "<leader>nwb" "<cmd>:Neorg workspace blog<CR>")
+      (mkKeymap [ "n" "x" ] "<leader>nwn" "<cmd>:Neorg workspace notes<CR>")
+      (mkKeymap [ "n" "x" ] "<leader>nwd" "<cmd>:Neorg workspace dotfiles<CR>")
+      # nabla
+      (mkKeymapWithOpts "n" "<leader>p" ":lua require('nabla').popup()<CR>" { desc = "+Nabla"; })
+      # tmux resizing
+      (mkKeymapWithOpts [ "i" "n" "v" "x" ] "<C-M-h>" "silent !tmux resize-pane -L 5<CR>" {
+        silent = true;
+      })
+      (mkKeymapWithOpts [ "i" "n" "v" "x" ] "<C-M-j>" "silent !tmux resize-pane -D 5<CR>" {
+        silent = true;
+      })
+      (mkKeymapWithOpts [ "i" "n" "v" "x" ] "<C-M-k>" "silent !tmux resize-pane -U 5<CR>" {
+        silent = true;
+      })
+      (mkKeymapWithOpts [ "i" "n" "v" "x" ] "<C-M-l>" "silent !tmux resize-pane -R 5<CR>" {
+        silent = true;
+      })
     ];
   };
 }

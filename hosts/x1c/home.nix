@@ -33,6 +33,8 @@ in
     colorscheme = {
       theme = "kanagawa";
       variant = "dragon";
+      transparent = true;
+      stylix = false;
     };
     beets.enable = true;
     deadbeef.enable = true;
@@ -46,6 +48,7 @@ in
     pathofbuilding.enable = false;
     rclip.enable = true;
     study.enable = true;
+    tmux.image = true;
     wallfacer.enable = true;
     waybar = {
       enable = true;

@@ -111,12 +111,7 @@ in
             optionals (colorscheme.theme == "catppuccin") [ "Tela-${defaultAccent}-dark" ]
             ++ optionals (colorscheme.theme == "kanagawa") [ "Kanagawa" ]
           );
-          package = mkMerge [
-            (mkIf (colorscheme.theme == "catppuccin") (
-              pkgs.custom.tela-dynamic-icon-theme.override { colors = accents; }
-            ))
-            (mkIf (colorscheme.theme == "kanagawa") pkgs.kanagawa-icon-theme)
-          ];
+          package = pkgs.custom.tela-dynamic-icon-theme.override { colors = accents; };
         };
         font = {
           name = config.custom.fonts.regular;

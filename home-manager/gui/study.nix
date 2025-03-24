@@ -18,7 +18,7 @@ in
       bibletime
       kjv
       lowfi
-      pom
+      porsmo
     ];
 
     custom.persist = {

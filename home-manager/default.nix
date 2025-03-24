@@ -18,6 +18,7 @@ let
     ;
   inherit (lib.types)
     attrsOf
+    bool
     listOf
     nullOr
     package
@@ -45,6 +46,17 @@ in
         default = "catppuccin";
         description = "System colorscheme";
       };
+      #TODO: Either make wallust work like stylix or add a stylix option.
+      stylix = mkOption {
+        type = bool;
+        default = false;
+        description = "Whether to enable stylix, wallust will not affect colorscheme";
+      };
+      transparent = mkOption {
+        type = bool;
+        default = false;
+        description = "Whether to enable transparency";
+      };
       variant = mkOption {
         type = str;
         default = "mocha";
@@ -64,7 +76,7 @@ in
       };
       monospace = mkOption {
         type = str;
-        default = "JetBrainsMono Nerd Font"; # Idk I honestly like both default = "Geist Mono NerdFont";
+        default = "JetBrainsMono Nerd Font"; # Idk I honestly like "Geist Mono NerdFont" as well.
         description = "The font to use for monospace text";
       };
       packages = mkOption {

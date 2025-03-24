@@ -312,8 +312,7 @@ pub fn set_gtk_and_icon_theme(nixcolors: &NixColors, accent: &Rgb) {
     );
 
     // requires the single quotes to be GVariant compatible for dconf
-    // let icon_theme = format!("Tela-{variant}-dark");
-    let icon_theme = format!("Kanagawa-B");
+    let icon_theme = format!("Tela-{variant}-dark");
     execute::command_args!("dconf", "write", "/org/gnome/desktop/interface/icon-theme")
         .arg(gvariant(&icon_theme))
         .execute()
