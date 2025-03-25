@@ -7,7 +7,7 @@
 let
   inherit (lib) getExe;
 
-  customNeovim = pkgs.custom.neovim-iynaixos;
+  customNeovim = pkgs.custom.thornevim-thorneos;
   nvim-with-direnv = pkgs.writeShellApplication {
     name = "nvim-with-direnv";
     runtimeInputs = [

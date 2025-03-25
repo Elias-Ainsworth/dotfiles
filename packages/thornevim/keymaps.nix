@@ -95,7 +95,8 @@ in
       # neorg
       (mkKeymapWithOpts [ "n" "x" ] "m" "<cmd>:WhichKey ,<CR>" { desc = "+Norg"; })
       #TODO: Get this to work.
-      (mkKeymapWithOpts "n" "<C-M-s>" "<Plug>(neorg.qol.todo-items.task-cycle)" {
+      (mkKeymapWithOpts "n" "<C-M-s>" "<Plug>(neorg.qol.todo-items.todo.task-cycle)" {
+
         desc = "Cycle Task [neorg]";
       })
       (mkKeymap [ "n" "x" ] "<leader>ni" "<cmd>:Neorg index<CR>")

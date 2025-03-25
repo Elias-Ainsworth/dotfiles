@@ -48,7 +48,7 @@ let
                   tree
                   yazi
                   # custom neovim
-                  self.packages.${system}.neovim-iynaix
+                  self.packages.${system}.thornevim
                 ]
                 ++ optionals (lib.hasInfix "plasma" isoPath) [ kitty ];
 

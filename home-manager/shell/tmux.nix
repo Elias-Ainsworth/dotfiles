@@ -57,7 +57,7 @@ in
     programs.tmux = {
       enable = true;
       terminal = "tmux-256color";
-      prefix = "M-Space";
+      prefix = "C-Space";
       mouse = true;
       keyMode = "vi";
       clock24 = true;

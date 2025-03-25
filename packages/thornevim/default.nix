@@ -196,11 +196,11 @@
         "<leader>o" = "+Oil";
         "<leader>t" = "+Todo";
         # Local Leader
-        "mc" = "+Code";
-        "mi" = "+Insert";
-        "ml" = "+List";
-        "mn" = "+Note";
-        "mt" = "+Todo";
+        ",c" = "+Code";
+        ",i" = "+Insert";
+        ",l" = "+List";
+        ",n" = "+Note";
+        ",t" = "+Todo";
       };
       #NOTE: If I feel like it:
       # setupOpts = {

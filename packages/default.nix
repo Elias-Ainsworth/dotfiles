@@ -37,17 +37,17 @@ rec {
   };
 
   # neovim config via nvf
-  neovim-iynaix =
+  thornevim =
     (inputs.nvf.lib.neovimConfiguration {
       inherit pkgs;
-      modules = [ ./neovim-iynaix ];
+      modules = [ ./thornevim ];
     }).neovim;
 
   # full neovim with nixd setup (requires path to dotfiles repo)
-  neovim-iynaixos =
+  thornevim-thorneos =
     (inputs.nvf.lib.neovimConfiguration {
       inherit pkgs;
-      modules = [ ./neovim-iynaix ];
+      modules = [ ./thornevim ];
       extraSpecialArgs = {
         dots = "/persist/home/elias-ainsworth/projects/dotfiles";
       };
