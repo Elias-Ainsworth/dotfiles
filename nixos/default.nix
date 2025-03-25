@@ -31,7 +31,6 @@ in
     ./boot.nix
     ./configuration.nix
     ./docker.nix
-    ./exercism.nix
     ./gaming.nix
     ./gh.nix
     ./hdds.nix
