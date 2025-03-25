@@ -107,10 +107,7 @@ in
           ];
         };
         iconTheme = {
-          name = concatStringsSep "" (
-            optionals (colorscheme.theme == "catppuccin") [ "Tela-${defaultAccent}-dark" ]
-            ++ optionals (colorscheme.theme == "kanagawa") [ "Kanagawa" ]
-          );
+          name = "Tela-${defaultAccent}-dark";
           package = pkgs.custom.tela-dynamic-icon-theme.override { colors = accents; };
         };
         font = {
