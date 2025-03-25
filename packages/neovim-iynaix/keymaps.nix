@@ -82,7 +82,10 @@ in
       (mkKeymap "n" "<C-J>" ":cnext<CR>")
       (mkKeymap "n" "<C-K>" ":cprevious<CR>")
       # vim fugitive
-      (mkKeymapWithOpts "n" "<leader>G" ":G<CR>" { desc = "+Git [Fugitive]"; })
+      (mkKeymapWithOpts "n" "<leader>Gf" ":G<CR>" { desc = "+Git [Fugitive]"; })
+      (mkKeymapWithOpts "n" "<leader>Gp" ":belowright 10 split | terminal pre-commit<CR>" {
+        desc = "+Pre-Commit";
+      })
       # easier oil keybind
       (mkKeymapWithOpts "n" "<leader>o" ":Oil<CR>" { desc = "+Oil"; })
       # easier window keybind
@@ -90,8 +93,11 @@ in
       # easier buffer delete keybind
       (mkKeymapWithOpts [ "n" "x" ] "<leader>bd" ":bd<CR>" { desc = "+Delete Buffer"; })
       # neorg
+      (mkKeymapWithOpts [ "n" "x" ] "m" "<cmd>:WhichKey ,<CR>" { desc = "+Norg"; })
       #TODO: Get this to work.
-      # (mkKeymapWithOpts "n" "<A-Space>" "<Plug>(neorg.qol.todo-items.task-cycle)" { desc = "Cycle Task [neorg]"; })
+      (mkKeymapWithOpts "n" "<C-M-s>" "<Plug>(neorg.qol.todo-items.task-cycle)" {
+        desc = "Cycle Task [neorg]";
+      })
       (mkKeymap [ "n" "x" ] "<leader>ni" "<cmd>:Neorg index<CR>")
       (mkKeymap [ "n" "x" ] "<leader>nj" "<cmd>:Neorg journal<CR>")
       (mkKeymap [ "n" "x" ] "<leader>nr" "<cmd>:Neorg return<CR>")

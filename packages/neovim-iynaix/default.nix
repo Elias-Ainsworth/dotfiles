@@ -188,6 +188,7 @@
         "<leader>gr" = "+Reset";
         "<leader>gs" = "+Stage";
         "<leader>gt" = "+Toggle";
+        "<leader>G" = "+Git";
         # "<leader>h" = "+Harpoon";
         "<leader>l" = "+LSP";
         "<leader>n" = "+Neorg";
@@ -195,7 +196,6 @@
         "<leader>o" = "+Oil";
         "<leader>t" = "+Todo";
         # Local Leader
-        "m" = "+Norg";
         "mc" = "+Code";
         "mi" = "+Insert";
         "ml" = "+List";
@@ -234,7 +234,7 @@
         };
       };
     };
-    globals.maplocalleader = "m";
+    # globals.maplocalleader = "m";
     lazy.enable = true;
     navigation.harpoon = {
       enable = true;
