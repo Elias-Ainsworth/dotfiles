@@ -1,9 +1,6 @@
-_:
+{ util, ... }:
 let
-  mkKeymap = mode: key: action: { inherit mode key action; };
-  mkKeymapWithOpts =
-    mode: key: action: opts:
-    (mkKeymap mode key action) // opts;
+  inherit (util) mkKeymapWithOpts mkKeymap;
 in
 {
   vim = {
@@ -78,47 +75,78 @@ in
       (mkKeymap "n" "k" "gk")
       (mkKeymap "n" "gj" "j")
       (mkKeymap "n" "gk" "k")
+      # remap go to url under cursor
+      (mkKeymapWithOpts "n" "gX"
+        ''
+          function()
+            local url = vim.fn.expand('<cfile>')
+            vim.fn.jobstart({'xdg-open', url}, {detach = true})
+          end
+        ''
+        {
+          desc = "Goto URL";
+          lua = true;
+          silent = true;
+        }
+      )
       # better quickfix navigation
       (mkKeymap "n" "<C-J>" ":cnext<CR>")
       (mkKeymap "n" "<C-K>" ":cprevious<CR>")
       # vim fugitive
-      (mkKeymapWithOpts "n" "<leader>Gf" ":G<CR>" { desc = "+Git [Fugitive]"; })
+      (mkKeymapWithOpts "n" "<leader>Gf" ":G<CR>" { desc = "[F]ugitive"; })
       (mkKeymapWithOpts "n" "<leader>Gp" ":belowright 10 split | terminal pre-commit<CR>" {
-        desc = "+Pre-Commit";
+        desc = "[P]re-Commit";
       })
-      # easier oil keybind
-      (mkKeymapWithOpts "n" "<leader>o" ":Oil<CR>" { desc = "+Oil"; })
-      # easier window keybind
-      (mkKeymapWithOpts [ "n" "x" ] "<leader>w" "<cmd>:WhichKey<C-W><CR>" { desc = "+Window"; })
-      # easier buffer delete keybind
-      (mkKeymapWithOpts [ "n" "x" ] "<leader>bd" ":bd<CR>" { desc = "+Delete Buffer"; })
-      # neorg
-      (mkKeymapWithOpts [ "n" "x" ] "m" "<cmd>:WhichKey ,<CR>" { desc = "+Norg"; })
-      #TODO: Get this to work.
-      (mkKeymapWithOpts "n" "<C-M-s>" "<Plug>(neorg.qol.todo-items.todo.task-cycle)" {
 
+      # nabla
+      (mkKeymapWithOpts "n" "<leader>ll" ":lua require('nabla').popup()<CR>" { desc = "Nabla"; })
+
+      # neorg
+      (mkKeymapWithOpts "n" "m" "," { desc = "[N]org"; })
+      (mkKeymapWithOpts "n" "<C-M-s>" "<Plug>(neorg.qol.todo-items.todo.task-cycle)" {
         desc = "Cycle Task [neorg]";
       })
-      (mkKeymap [ "n" "x" ] "<leader>ni" "<cmd>:Neorg index<CR>")
-      (mkKeymap [ "n" "x" ] "<leader>nj" "<cmd>:Neorg journal<CR>")
-      (mkKeymap [ "n" "x" ] "<leader>nr" "<cmd>:Neorg return<CR>")
-      (mkKeymap [ "n" "x" ] "<leader>nwb" "<cmd>:Neorg workspace blog<CR>")
-      (mkKeymap [ "n" "x" ] "<leader>nwn" "<cmd>:Neorg workspace notes<CR>")
-      (mkKeymap [ "n" "x" ] "<leader>nwd" "<cmd>:Neorg workspace dotfiles<CR>")
-      # nabla
-      (mkKeymapWithOpts "n" "<leader>p" ":lua require('nabla').popup()<CR>" { desc = "+Nabla"; })
-      # tmux resizing
+      (mkKeymapWithOpts "n" "<leader>ni" "<cmd>:Neorg index<CR>" { desc = "[I]ndex"; })
+      (mkKeymapWithOpts "n" "<leader>nj" "<cmd>:Neorg journal<CR>" { desc = "[J]ournal"; })
+      (mkKeymapWithOpts "n" "<leader>nr" "<cmd>:Neorg return<CR>" { desc = "[R]eturn"; })
+      (mkKeymapWithOpts "n" "<leader>nwb" "<cmd>:Neorg workspace blog<CR>" { desc = "[B]log"; })
+      (mkKeymapWithOpts "n" "<leader>nwd" "<cmd>:Neorg workspace dotfiles<CR>" { desc = "[D]otfiles"; })
+      (mkKeymapWithOpts "n" "<leader>nwn" "<cmd>:Neorg workspace notes<CR>" { desc = "[N]otes"; })
+
+      # sane tmux resize-pane keybinds
       (mkKeymapWithOpts [ "i" "n" "v" "x" ] "<C-M-h>" "silent !tmux resize-pane -L 5<CR>" {
         silent = true;
+        desc = "[L]eft";
       })
       (mkKeymapWithOpts [ "i" "n" "v" "x" ] "<C-M-j>" "silent !tmux resize-pane -D 5<CR>" {
         silent = true;
+        desc = "[D]own";
       })
       (mkKeymapWithOpts [ "i" "n" "v" "x" ] "<C-M-k>" "silent !tmux resize-pane -U 5<CR>" {
         silent = true;
+        desc = "[U]p";
       })
       (mkKeymapWithOpts [ "i" "n" "v" "x" ] "<C-M-l>" "silent !tmux resize-pane -R 5<CR>" {
         silent = true;
+        desc = "[R]ight";
+      })
+
+      # Resize windows with Ctrl+Alt+hjkl
+      (mkKeymapWithOpts [ "i" "n" "v" "x" ] "<C-M-h>" ":vertical resize -5<CR>" {
+        silent = true;
+        desc = "Resize window left";
+      })
+      (mkKeymapWithOpts [ "i" "n" "v" "x" ] "<C-M-j>" ":resize +5<CR>" {
+        silent = true;
+        desc = "Resize window down";
+      })
+      (mkKeymapWithOpts [ "i" "n" "v" "x" ] "<C-M-k>" ":resize -5<CR>" {
+        silent = true;
+        desc = "Resize window up";
+      })
+      (mkKeymapWithOpts [ "i" "n" "v" "x" ] "<C-M-l>" ":vertical resize +5<CR>" {
+        silent = true;
+        desc = "Resize window right";
       })
     ];
   };

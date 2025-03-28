@@ -27,22 +27,3 @@ NIXPKGS_ALLOW_UNFREE=1 home-manager --extra-experimental-features "nix-command f
 ```
 
 Reboot.
-
-### TODO
-
-- gtk theme doesn't seem to be working
-- hyprland stuff
-  - hyprland
-  - swww
-  - waybar
-- kanagawa stuff
-  - rofi
-  - wallust
-- niri stuff
-  - [ags](https://aylur.github.io/ags/)
-  - [astal](https://aylur.github.io/astal/)
-  - [niri](https://github.com/sodiboo/niri-flake)
-  - wallpaper.rs rewrite
-- rofi menu rust rewrites?
-- Stylix integration?
-- Wallust-Stylix integration?

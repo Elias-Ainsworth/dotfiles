@@ -24,7 +24,7 @@ in
     ./fish.nix
     ./git.nix
     ./helix.nix
-    ./iamb
+    ./iamb.nix
     ./jujutsu.nix
     ./koji.nix
     ./music
@@ -83,11 +83,10 @@ in
 
       opacity = mkOption {
         type = str;
-        default = "0.8";
+        default = "0.85";
         description = "Opacity for the terminal.";
       };
     };
-
   };
 
   config = {
@@ -122,6 +121,9 @@ in
     programs = {
       bat = {
         enable = true;
+        config = {
+          style = "grid";
+        };
         extraPackages = [
           (pkgs.symlinkJoin {
             name = "batman";

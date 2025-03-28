@@ -46,12 +46,6 @@ in
         default = "catppuccin";
         description = "System colorscheme";
       };
-      #TODO: Either make wallust work like stylix or add a stylix option.
-      stylix = mkOption {
-        type = bool;
-        default = false;
-        description = "Whether to enable stylix, wallust will not affect colorscheme";
-      };
       transparent = mkOption {
         type = bool;
         default = false;

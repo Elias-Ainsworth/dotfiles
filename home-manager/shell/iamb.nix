@@ -1,6 +1,4 @@
-{
-  imports = [ ./custom.nix ];
-
+_: {
   programs.iamb = {
     enable = true;
     settings = {

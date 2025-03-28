@@ -40,16 +40,19 @@ rec {
   thornevim =
     (inputs.nvf.lib.neovimConfiguration {
       inherit pkgs;
-      modules = [ ./thornevim ];
+      modules = [ ./thornevim/config ];
     }).neovim;
 
   # full neovim with nixd setup (requires path to dotfiles repo)
   thornevim-thorneos =
     (inputs.nvf.lib.neovimConfiguration {
       inherit pkgs;
-      modules = [ ./thornevim ];
+      modules = [ ./thornevim/config ];
       extraSpecialArgs = {
         dots = "/persist/home/elias-ainsworth/projects/dotfiles";
+        maxi = false;
+        transparency = true;
+        colorscheme = "kanagawa";
       };
     }).neovim;
 

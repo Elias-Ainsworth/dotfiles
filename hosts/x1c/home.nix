@@ -34,7 +34,6 @@ in
       theme = "kanagawa";
       variant = "dragon";
       transparent = true;
-      stylix = false;
     };
     beets.enable = true;
     deadbeef.enable = true;

@@ -6,7 +6,7 @@ categories: [
 to-do
 ]
 created: 2025-03-24
-updated: 2025-03-24
+updated: 2025-03-26
 version: 1.1.1
 @end
 
@@ -23,29 +23,47 @@ version: 1.1.1
     -- (x) Add register titles to local-leader
     - (x) _tmux_
     -- (x) Tmux resizing keybinds: ctrl+alt+{h,j,k,l}
-
-** {@ Tuesday 25 March 2025}-> ...
+** {@ Wednesday 26 March 2025}
 *** home-manager
-   - ( ) _gtk theme_
-   - ( ) _hyprland_
-   -- ( ) hyprland
-   -- ( ) swww
-   -- ( ) waybar
-   --- ( ) Implement transparent bar from FreeBSD + Sway rice
-   --- ( ) Add custom modules
-   - ( ) _kanagawa_
-   -- ( ) rofi
-   -- ( ) wallust
-   - ( ) _niri_
-   --  ( ) {https://aylur.github.io/ags/}[ags]
-   --  ( ) {https://aylur.github.io/astal/}[astal]
-   --  ( ) {https://github.com/sodiboo/niri-flake}[niri]
-   --  ( ) wallpaper.rs rewrite
-   - ( ) _nushell_
-   -- ( ) Ghostty integration
+    - (-)  _nvf_
+    -- (x) Implement mini.nvim
+    --- (x) ai
+    --- (x) bracketed
+    --- (x) bufremove
+    --- (x) comment
+    --- (x) clue
+    --- (x) files
+    --- (x) pairs
+    --- (x) pick
+    --- (x) snippets
+    --- (x) surround
+    -- (-) Change keybinds.
+    --- (-) bufremove
+    --- (x) files
+    --- (x) pick
+
+** {@ Thursday 27 March 2025}-> ...
+*** home-manager
+    - ( ) _gtk theme_
+    - ( ) _hyprland_
+    -- ( ) hyprland
+    -- ( ) swww
+    -- ( ) waybar
+    --- ( ) Implement transparent bar from FreeBSD + Sway rice
+    --- ( ) Add custom modules
+    - ( ) _kanagawa_
+    -- ( ) rofi
+    -- ( ) wallust
+    - ( ) _niri_
+    --  ( ) {https://aylur.github.io/ags/}[ags]
+    --  ( ) {https://aylur.github.io/astal/}[astal]
+    --  ( ) {https://github.com/sodiboo/niri-flake}[niri]
+    --  ( ) wallpaper.rs rewrite
+    - ( ) _nushell_
+    -- ( ) Ghostty integration
 *** nixos
-   - ( ) stylix integration
+    - ( ) Add kanagawa_dragon and Oxocarbon system-wide
 *** packages
     - ( ) pass custom options to package
-   - ( ) rofi menu rust rewrite
-   - ( ) wallust-stylix integration?
+    - ( ) rofi menu rust rewrite
+    - ( ) Add kanagawa_dragon and Oxocarbon system-wide
