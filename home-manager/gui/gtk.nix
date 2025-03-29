@@ -56,10 +56,7 @@ in
       home = {
         pointerCursor = {
           package = pkgs.simp1e-cursors;
-          name = concatStringsSep "" (
-            optionals (colorscheme.theme == "catppuccin") [ "Simp1e-Catppuccin-Frappe" ]
-            ++ optionals (colorscheme.theme == "kanagawa") [ "Simp1e-Gruvbox-Dark" ]
-          );
+          name = "Simp1e-Catppuccin-Frappe";
           size = 28;
           gtk.enable = true;
           x11.enable = true;
@@ -84,27 +81,17 @@ in
       gtk = {
         enable = true;
         theme = {
-          name = concatStringsSep "" (
-            optionals (colorscheme.theme == "catppuccin") [
-              "catppuccin-${colorscheme.variant}-${defaultAccent}-compact"
-            ]
-            ++ optionals (colorscheme.theme == "kanagawa") [ "Kanagawa-B" ]
-          );
+          name = "catppuccin-${colorscheme.variant}-${defaultAccent}-compact";
 
-          package = mkMerge [
-            (mkIf (colorscheme.theme == "catppuccin") (
-              pkgs.catppuccin-gtk.override {
-                accents = attrNames accents; # Allow all accents
-                variant = "mocha";
-                tweaks = [
-                  # "black"  # Black tweak for OLED
-                  # "rimless"
-                ];
-                size = "compact";
-              }
-            ))
-            (mkIf (colorscheme.theme == "kanagawa") pkgs.kanagawa-gtk-theme)
-          ];
+          package = pkgs.catppuccin-gtk.override {
+            accents = attrNames accents; # Allow all accents
+            variant = "mocha";
+            tweaks = [
+              # "black"  # Black tweak for OLED
+              # "rimless"
+            ];
+            size = "compact";
+          };
         };
         iconTheme = {
           name = "Tela-${defaultAccent}-dark";

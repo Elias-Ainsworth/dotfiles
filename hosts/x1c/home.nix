@@ -42,7 +42,8 @@ in
     helix.enable = true;
     modelling3d.enable = true;
     mpd.enable = true;
-    rmpc.enable = true;
+    ncmpcpp.enable = true;
+    rmpc.enable = false;
     printing3d.enable = true;
     pathofbuilding.enable = false;
     rclip.enable = true;
