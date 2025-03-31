@@ -31,8 +31,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nvf = {
-      url = "github:notashelf/nvf";
+    thornevim = {
+      url = "path:packages/thornevim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

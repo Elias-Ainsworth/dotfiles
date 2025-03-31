@@ -1,6 +1,6 @@
 { util, ... }:
 let
-  inherit (util) mkKeymapWithOpts mkKeymap;
+  inherit (util) mkKeymap mkKeymapWithOpts;
 in
 {
   vim = {

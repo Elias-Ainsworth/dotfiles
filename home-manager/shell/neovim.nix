@@ -1,4 +1,5 @@
 {
+  inputs,
   config,
   lib,
   pkgs,
@@ -6,8 +7,12 @@
 }:
 let
   inherit (lib) getExe;
-
-  customNeovim = pkgs.custom.thornevim-thorneos;
+  inherit (config.custom.colorscheme) theme transparent variant;
+  customNeovim = inputs.thornevim.packages.${pkgs.system}.default.override {
+    colorscheme = theme;
+    variant = variant;
+    transparent = transparent;
+  };
   nvim-with-direnv = pkgs.writeShellApplication {
     name = "nvim-with-direnv";
     runtimeInputs = [

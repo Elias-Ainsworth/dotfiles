@@ -1,80 +1,96 @@
 {
   lib,
   pkgs,
-  colorscheme ? null,
-  transparency ? false,
+
+  colorscheme,
+  transparent,
+  variant,
   ...
 }:
-
 let
+  isKanagawa = colorscheme == "kanagawa";
   themeConfig = {
-    name = if colorscheme == "oxocarbon" then "oxocarbon" else "catppuccin";
-
-    style = if colorscheme == "oxocarbon" then "dark" else "mocha";
-
-    transparent = if colorscheme == "oxocarbon" then lib.mkForce false else transparency;
+    name = colorscheme;
+    style = variant;
+    transparent = transparent;
   };
-
-  transparentConfig = # lua
+  kanagawaTransparent = # lua
     ''
       require("kanagawa").setup({
           transparent = true,
-          theme = "dragon",
+          theme = "${variant}",
           colors = {
-              theme = {
-                  all = { ui = { bg_gutter = "none" } },
-              },
+              all = { ui = { bg_gutter = "none" } },
           },
           overrides = function(colors)
               local theme = colors.theme
               return {
-                  EndOfBuffer= { bg = "none" },
-                  FloatBorder = { bg = "none" },
-                  FloatFooter= { bg = "none" },
-                  FloatTitle = { bg = "none" },
-                  MiniFilesTitle= { bg = "none" },
-                  MiniFilesTitleFocused= { bg = "none" },
-                  MiniPickPrompt = { bg = "none" },
-                  MiniTablineFill= { bg = "none" },
-                  MiniTablineVisible= { bg = "none" },
-                  MiniStatuslineFilename = { bg = "none" },
-                  NormalFloat = { bg = "none" },
-                  StatusLine= { bg = "none" },
-                  StatusLineNC= { bg = "none" },
-                  Tabline = { bg = "none" },
-                  TablineFill= { bg = "none" },
+                  DiagnosticSignError = { bg = "none" },
+                  DiagnosticSignWarn = { bg = "none" },
+                  DiagnosticSignInfo = { bg = "none" },
+                  DiagnosticSignHint = { bg = "none" },
 
-                  NormalDark = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m3 },
+                  EndOfBuffer = { bg = "none" },
+
+                  FloatBorder = { bg = "none" },
+                  FloatFooter = { bg = "none" },
+                  FloatTitle = { bg = "none" },
+
+                  GitSignsAdd = { bg = "none" },
+                  GitSignsChange = { bg = "none" },
+                  GitSignsDelete = { bg = "none" },
 
                   LazyNormal = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
                   MasonNormal = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
 
+                  LineNr = { bg = "none" },
+                  LineNrAbove = { bg = "none" },
+                  LineNrBelow = { bg = "none" },
+
+                  MiniFilesTitle = { bg = "none" },
+                  MiniFilesTitleFocused = { bg = "none" },
+
+                  MiniPickPrompt = { bg = "none" },
+
+                  MiniStatuslineFilename = { bg = "none" },
+
+                  MiniTablineFill = { bg = "none" },
+                  MiniTablineVisible = { bg = "none" },
+
+                  NormalDark = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m3 },
+                  NormalFloat = { bg = "none" },
+
                   Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1, blend = vim.o.pumblend },
-                  PmenuSel = { fg = "NONE", bg = "NONE" },
                   PmenuSbar = { bg = "NONE" },
+                  PmenuSel = { fg = "NONE", bg = "NONE" },
                   PmenuThumb = { bg = "NONE" },
+
+                  SignColumn = { bg = "none" },
+                  StatusLine = { bg = "none" },
+                  StatusLineNC = { bg = "none" },
+
+                  Tabline = { bg = "none" },
+                  TablineFill = { bg = "none" },
               }
           end,
       })
-      vim.cmd("colorscheme kanagawa-dragon")
+      vim.cmd("colorscheme kanagawa-${variant}")
     '';
-
-  nonTransparentConfig = "vim.cmd(\"colorscheme kanagawa-dragon\")";
-
+  kanagawaNonTransparent = "vim.cmd(\"colorscheme kanagawa-${variant}\")";
 in
 {
   vim = {
-    theme = {
+    theme = lib.mkIf (!isKanagawa) {
       enable = true;
-      inherit (themeConfig) transparent;
-      inherit (themeConfig) name;
-      inherit (themeConfig) style;
+      transparent = themeConfig.transparent;
+      name = themeConfig.name;
+      style = themeConfig.style;
     };
 
     extraPlugins = with pkgs.vimPlugins; {
-      kanagawa = lib.mkIf (colorscheme == "kanagawa") {
+      kanagawa = lib.mkIf isKanagawa {
         package = kanagawa-nvim;
-        setup = if transparency then transparentConfig else nonTransparentConfig;
+        setup = if transparent then kanagawaTransparent else kanagawaNonTransparent;
       };
     };
   };

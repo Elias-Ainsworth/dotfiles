@@ -1,5 +1,7 @@
 {
   config,
+  dots,
+  inputs,
   lib,
   pkgs,
   ...
@@ -140,7 +142,9 @@ in
           yazi
           zoxide
           # use the package configured by nvf
-          custom.thornevim-thorneos
+          (inputs.thornevim.packages.${pkgs.system}.default.override {
+            dots = "${dots}";
+          })
         ]
         ++
           # install gtk theme for root, some apps like gparted only run as root

@@ -1,6 +1,7 @@
 {
   lib,
-  transparency ? false,
+
+  # transparent,
   ...
 }:
 {
@@ -8,14 +9,14 @@
     autocomplete.blink-cmp = {
       enable = true;
       friendly-snippets.enable = true;
-      mappings = {
-        next = "<C-n>";
-        previous = "<C-p>";
-      };
+      # mappings = {
+      #   next = "<C-n>";
+      #   previous = "<C-p>";
+      # };
       setupOpts = {
-        completion.menu.winblend = if transparency then 0 else 100;
+        # completion.menu.winblend = if transparent then 100 else 0;
         keymap = {
-          preset = "super-tab";
+          preset = "none";
           "<M-space>" = [
             "show"
             "show_documentation"
@@ -105,13 +106,27 @@
         ];
       };
     };
-    ui.smartcolumn = {
-      enable = true;
-      setupOpts = {
-        disabled_filetypes = [
-          "ministarter"
-          "startify"
-        ];
+    ui = {
+      colorizer = {
+        enable = true;
+        setupOpts = {
+          user_default_options = {
+            RGB = true;
+            RRGGBB = true;
+            RRGGBBAA = true;
+            css = true;
+            tailwind = true;
+          };
+        };
+      };
+      smartcolumn = {
+        enable = true;
+        setupOpts = {
+          disabled_filetypes = [
+            "ministarter"
+            "startify"
+          ];
+        };
       };
     };
   };

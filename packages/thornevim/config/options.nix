@@ -20,6 +20,7 @@ _: {
     };
 
     # misc meta settings
+    lazy.enable = true;
     lineNumberMode = "relNumber";
     preventJunkFiles = true;
     searchCase = "smart";
@@ -29,7 +30,5 @@ _: {
       enable = true;
       programmingWordlist.enable = true;
     };
-
-    lazy.enable = true;
   };
 }

@@ -36,26 +36,6 @@ rec {
       "sh <(curl -L ${repo_url}/main/recover.sh)";
   };
 
-  # neovim config via nvf
-  thornevim =
-    (inputs.nvf.lib.neovimConfiguration {
-      inherit pkgs;
-      modules = [ ./thornevim/config ];
-    }).neovim;
-
-  # full neovim with nixd setup (requires path to dotfiles repo)
-  thornevim-thorneos =
-    (inputs.nvf.lib.neovimConfiguration {
-      inherit pkgs;
-      modules = [ ./thornevim/config ];
-      extraSpecialArgs = {
-        dots = "/persist/home/elias-ainsworth/projects/dotfiles";
-        maxi = false;
-        transparency = true;
-        colorscheme = "kanagawa";
-      };
-    }).neovim;
-
   # ricing glue
   dotfiles-rs = callPackage ./dotfiles-rs { };
 

@@ -70,7 +70,24 @@
           ],
           "types_or": [],
           "verbose": false
-        }
+        },
+        {
+          "always_run": true,
+          "args": [],
+          "entry": "nvim --headless README.norg -c 'Neorg export to-file README.md' -c 'qa'",
+          "files": "README\\.norg$",
+          "id": "convert-norg-to-md",
+          "language": "system",
+          "name": "convert-norg-to-md",
+          "pass_filenames": false,
+          "stages": [
+            "pre-commit"
+          ],
+          "types": [
+            "file"
+          ],
+          "verbose": false
+        },
       ],
       "repo": "local"
     }

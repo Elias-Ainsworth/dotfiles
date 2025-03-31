@@ -25,7 +25,7 @@ version: 1.1.1
     -- (x) Tmux resizing keybinds: ctrl+alt+{h,j,k,l}
 ** {@ Wednesday 26 March 2025}
 *** home-manager
-    - (-)  _nvf_
+    - (x)  _nvf_
     -- (x) Implement mini.nvim
     --- (x) ai
     --- (x) bracketed
@@ -37,8 +37,8 @@ version: 1.1.1
     --- (x) pick
     --- (x) snippets
     --- (x) surround
-    -- (-) Change keybinds.
-    --- (-) bufremove
+    -- (x) Change keybinds.
+    --- (x) bufremove
     --- (x) files
     --- (x) pick
 
@@ -52,7 +52,6 @@ version: 1.1.1
     --- ( ) Implement transparent bar from FreeBSD + Sway rice
     --- ( ) Add custom modules
     - ( ) _kanagawa_
-    -- ( ) rofi
     -- ( ) wallust
     - ( ) _niri_
     --  ( ) {https://aylur.github.io/ags/}[ags]

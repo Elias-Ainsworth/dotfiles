@@ -23,5 +23,6 @@ _: {
     ./weeb
     ./wm.nix
     ./zathura.nix
+    ./zoom.nix
   ];
 }

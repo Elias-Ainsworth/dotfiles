@@ -1,8 +1,11 @@
 {
   lib,
   pkgs,
-  maxi ? false,
   util,
+
+  #TODO: Get this to work.
+  banner,
+  maxi,
   ...
 }:
 let
@@ -14,19 +17,9 @@ in
       startify = {
         enable = true;
         changeToVCRoot = true;
-        customHeader = [
-          #TODO: Make this say eepyVim
-          "                                                                       "
-          "                                                                     "
-          "       ████ ██████           █████      ██                     "
-          "      ███████████             █████                             "
-          "      █████████ ███████████████████ ███   ███████████   "
-          "     █████████  ███    █████████████ █████ ██████████████   "
-          "    █████████ ██████████ █████████ █████ █████ ████ █████   "
-          "  ███████████ ███    ███ █████████ █████ █████ ████ █████  "
-          " ██████  █████████████████████ ████ █████ █████ ████ ██████ "
-          "                                                                       "
-        ];
+        customHeader = builtins.filter (s: s != [ ]) (
+          builtins.split "\n" (builtins.readFile ../ascii/eepy.txt)
+        );
       };
     };
     extraPlugins = {
@@ -102,7 +95,6 @@ in
         };
       };
     };
-    ui.colorizer.enable = true;
     utility = {
       motion.leap.enable = true;
       # preview.markdownPreview.enable = true;
