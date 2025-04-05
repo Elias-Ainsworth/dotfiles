@@ -1,8 +1,4 @@
-{
-  lib,
-  ...
-}:
-{
+_: {
   vim = {
     autocomplete.blink-cmp = {
       enable = true;

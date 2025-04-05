@@ -44,9 +44,9 @@
       python.enable = true;
       rust = {
         enable = true;
-        crates.enable = true;
-        dap.enable = true;
-        lsp.enable = true;
+        crates.enable = false;
+        dap.enable = false;
+        lsp.enable = false;
         treesitter.enable = true;
       };
       tailwind.enable = true;
