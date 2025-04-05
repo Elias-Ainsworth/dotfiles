@@ -80,14 +80,14 @@ thorneos-recover
 
 ## Credits
 
-- _Grandmaster_ [iynaix](https://github.com/iynaix) (Lin Xianyi), for being the
+- _Grandmaster_ [@iynaix](https://github.com/iynaix) (Lin Xianyi), for being the
   author of the original nix [config](https://github.com/iynaix/dotfiles) I
   ~~stole~~ forked and for bearing with my idiotic questions over on Vimjoyer's
   discord server.
-- Followed by _Master_ [diniamo](https://github.com/diniamo) for inspiring
-  [chomky](https://github.com/justchokingaround), which then inspired my first
+- Followed by _Master_ [@diniamo](https://github.com/diniamo) for inspiring
+  [@chomky](https://github.com/justchokingaround), which then inspired my first
   (non-functional) nix configuration.
-- Also many thanks to [zen](https://github.com/71zenith) for his help over at
+- Also many thanks to [@zen](https://github.com/71zenith) for his help over at
   the ani-cli support discord server and for the fact that I copy-pasted his
   entire [config](https://github.com/71zenith/kiseki) for my first functional
   nix [configuration](https://github.com/elias-ainsworth/thorne).

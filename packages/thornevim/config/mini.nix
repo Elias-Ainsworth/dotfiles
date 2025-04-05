@@ -161,7 +161,7 @@ in
             (mkTrigger "c" "<C-R>")
             (mkTrigger "i" "<C-R>")
           ];
-          window.delay = 100;
+          window.delay = 10;
         };
       };
       comment.enable = true;
@@ -197,7 +197,6 @@ in
           };
         };
       };
-      icons.enable = true;
       indentscope.enable = true;
       jump.enable = true;
       jump2d = {
@@ -231,12 +230,10 @@ in
         };
 
       };
-      statusline.enable = true;
       surround.enable = true;
-      tabline.enable = true;
       trailspace.enable = true;
     };
-    keymaps = [
+    keymaps = lib.mkIf (!maxi) [
 
       # easier buffer keybind
       (mkKeymapWithOpts "n" "<leader>bd" ":lua MiniBufremove.delete()<CR>" { desc = "[D]elete Buffer"; })
@@ -273,6 +270,7 @@ in
         desc = "[F]iles";
       })
 
+      (mkKeymapWithOpts "n" "<leader>w" "<C-w>" { desc = "[W]indow"; })
       (mkKeymapWithOpts "n" "<leader>wh" "<C-w>h" { desc = "Move to window left"; })
       (mkKeymapWithOpts "n" "<leader>wj" "<C-w>j" { desc = "Move to window below"; })
       (mkKeymapWithOpts "n" "<leader>wk" "<C-w>k" { desc = "Move to window above"; })

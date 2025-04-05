@@ -46,6 +46,10 @@
               transparent = true;
               maxi = true;
             };
+            gruvbox = thornevim.override {
+              colorscheme = "gruvbox";
+              variant = "dark";
+            };
             # Kanagawa
             kanagawa = thornevim.override {
               colorscheme = "kanagawa";

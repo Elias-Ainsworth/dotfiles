@@ -1,4 +1,5 @@
 {
+  inputs,
   config,
   lib,
   pkgs,
@@ -9,35 +10,63 @@ let
   inherit (lib) optionals mkEnableOption;
   inherit (lib.types) bool;
   inherit (pkgs) imgcat playerctl ueberzugpp;
-
-  catppuccinPlugin = {
-    plugin = pkgs.tmuxPlugins.catppuccin;
-    extraConfig = ''
-      # Customize tmux catppuccin, needs to be done after plugin is loaded
-      set -g @catppuccin_status_background "none"
-      set -g status-right-length 100
-      set -g status-left-length 100
-      set -g status-left ""
-      set -g status-right "#{E:@catppuccin_status_application}"
-      set -ag status-right "#{E:@catppuccin_status_session}"
-    '';
-  };
+  #
+  # catppuccinPlugin = {
+  #   plugin = pkgs.tmuxPlugins.catppuccin;
+  #   extraConfig = ''
+  #     # Customize tmux catppuccin, needs to be done after plugin is loaded
+  #     set -g @catppuccin_status_background "none"
+  #     set -g status-right-length 100
+  #     set -g status-left-length 100
+  #     set -g status-left ""
+  #     set -g status-right "#{E:@catppuccin_status_application}"
+  #     set -ag status-right "#{E:@catppuccin_status_session}"
+  #   '';
+  # };
 
   kanagawaPlugin = {
-    plugin = pkgs.tmuxPlugins.kanagawa;
+    plugin = inputs.tmux-thorne.packages.${pkgs.system}.default;
     extraConfig = ''
-      set -g @kanagawa-theme "dragon"
-      set -g @kanagawa-cwd-max-dirs "3"
-      set -g @kanagawa-cwd-max-chars "20"
-      set -g @kanagawa-show-battery false
-      set -g @kanagawa-show-powerline true
-      set -g @kanagawa-military-time true
-      set -g @kanagawa-show-location false
-      set -g @kanagawa-refresh-rate 5
-      set -g @kanagawa-plugins "playerctl time battery"
-      set -g @kanagawa-playerctl-format "{{ title }} - {{ artist }}"
-      set -g @kanagawa-show-left-sep 
-      set -g @kanagawa-show-right-sep 
+      set -g @thorne-theme "kanagawa"
+      set -g @thorne-cwd-max-dirs "3"
+      set -g @thorne-cwd-max-chars "20"
+      set -g @thorne-show-battery false
+      set -g @thorne-show-powerline true
+      set -g @thorne-military-time true
+      set -g @thorne-show-location false
+      set -g @thorne-refresh-rate 5
+      set -g @thorne-plugins "playerctl time battery"
+      set -g @thorne-playerctl-format "{{ title }} - {{ artist }}"
+    '';
+  };
+  catppuccinPlugin = {
+    plugin = inputs.tmux-thorne.packages.${pkgs.system}.default;
+    extraConfig = ''
+      set -g @thorne-theme "mocha"
+      set -g @thorne-cwd-max-dirs "3"
+      set -g @thorne-cwd-max-chars "20"
+      set -g @thorne-show-battery false
+      set -g @thorne-show-powerline true
+      set -g @thorne-military-time true
+      set -g @thorne-show-location false
+      set -g @thorne-refresh-rate 5
+      set -g @thorne-plugins "playerctl time battery"
+      set -g @thorne-playerctl-format "{{ title }} - {{ artist }}"
+    '';
+  };
+  oxocarbonPlugin = {
+    plugin = inputs.tmux-thorne.packages.${pkgs.system}.default;
+    extraConfig = ''
+      set -g @thorne-theme "oxocarbon"
+      set -g @thorne-cwd-max-dirs "3"
+      set -g @thorne-cwd-max-chars "20"
+      set -g @thorne-show-battery false
+      set -g @thorne-show-powerline true
+      set -g @thorne-military-time true
+      set -g @thorne-show-location false
+      set -g @thorne-refresh-rate 5
+      set -g @thorne-plugins "playerctl time battery"
+      set -g @thorne-playerctl-format "{{ title }} - {{ artist }}"
     '';
   };
 in
@@ -73,7 +102,8 @@ in
           yank
         ]
         ++ optionals (colorscheme.theme == "catppuccin") [ catppuccinPlugin ]
-        ++ optionals (colorscheme.theme == "kanagawa") [ kanagawaPlugin ];
+        ++ optionals (colorscheme.theme == "kanagawa") [ kanagawaPlugin ]
+        ++ optionals (colorscheme.theme == "oxocarbon") [ oxocarbonPlugin ];
 
       extraConfig = # tmux
         ''
@@ -110,7 +140,7 @@ in
 
           # Transparent tmux background
           set -g window-style "bg=terminal"
-          set -g window-active-style "bg=terminal"
+          set -g window-active-style "bg=terminal
         '';
     };
   };

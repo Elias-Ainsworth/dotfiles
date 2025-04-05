@@ -36,6 +36,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    tmux-thorne = {
+      url = "github:elias-ainsworth/tmux-thorne";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # helix = {
     #   url = "github:helix-editor/helix";
     #   # inputs.nixpkgs.follows = "nixpkgs";
@@ -58,6 +63,11 @@
 
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixcord = {
+      url = "github:kaylorben/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

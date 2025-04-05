@@ -22,7 +22,6 @@
       }
     ];
 
-    deadbeef.enable = true;
     gaming.enable = true;
     ghostty.enable = true;
     hyprland = {

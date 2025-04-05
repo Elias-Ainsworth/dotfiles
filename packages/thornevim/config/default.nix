@@ -9,13 +9,10 @@ _: {
     ./languages.nix
     ./maxi.nix
     ./mini.nix
-    ./notes.nix
+    ./neorg.nix
     ./options.nix
     ./plugins.nix
     ./theme.nix
   ];
   _module.args.util = import ./util.nix;
-  # todo: misc plugins
-  # * supermaven
-  # luasnip
 }

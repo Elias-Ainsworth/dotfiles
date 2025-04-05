@@ -31,12 +31,11 @@ in
     ];
 
     colorscheme = {
-      theme = "kanagawa";
-      variant = "dragon";
-      transparent = true;
+      theme = "oxocarbon";
+      variant = "dark";
+      transparent = false;
     };
     beets.enable = true;
-    deadbeef.enable = true;
     gaming.enable = false;
     ghostty.enable = true;
     helix.enable = true;
@@ -48,8 +47,8 @@ in
     pathofbuilding.enable = false;
     rclip.enable = true;
     study.enable = true;
-    tmux.image = true;
     wallfacer.enable = true;
+    # wallust.colorscheme = "oxocarbon";
     waybar = {
       enable = true;
       hidden = false;
@@ -57,7 +56,7 @@ in
     };
 
     terminal = {
-      package = pkgs.ghostty;
+      opacity = "1.0";
       size = 12;
     };
 

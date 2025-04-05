@@ -2,7 +2,6 @@ _: {
   imports = [
     ./3dprinting.nix
     ./brave.nix
-    ./deadbeef.nix
     ./dunst.nix
     ./gaming.nix
     ./ghostty.nix
@@ -10,6 +9,7 @@ _: {
     ./librewolf.nix
     ./mpv.nix
     ./nemo.nix
+    ./nixcord.nix
     ./obs-studio.nix
     ./pathofbuilding.nix
     ./pqiv.nix

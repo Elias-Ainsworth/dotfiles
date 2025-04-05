@@ -1,10 +1,10 @@
 use crate::{
-    CommandUtf8,
     colors::{NixColors, Rgb},
     full_path, json, kill_wrapped_process,
     nixinfo::NixInfo,
     rearranged_workspaces,
     wallpaper::WallInfo,
+    CommandUtf8,
 };
 use core::panic;
 use execute::Execute;
@@ -14,13 +14,14 @@ use itertools::Itertools;
 use regex::Regex;
 use std::{collections::HashMap, path::Path};
 
-pub const CUSTOM_THEMES: [&str; 6] = [
+pub const CUSTOM_THEMES: [&str; 7] = [
     "catppuccin-frappe",
     "catppuccin-macchiato",
     "catppuccin-mocha",
     "decay-dark",
     "night-owl",
     "tokyo-night",
+    "oxocarbon",
 ];
 
 pub fn apply_theme(theme: &str) {

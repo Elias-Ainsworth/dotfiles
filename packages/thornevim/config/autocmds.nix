@@ -1,6 +1,5 @@
 _: {
   vim = {
-    # autocmds
     luaConfigPost = # lua
       ''
         -- use default colorscheme in tty

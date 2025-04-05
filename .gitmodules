@@ -1,0 +1,3 @@
+[submodule "packages/tmux-thorne"]
+	path = packages/tmux-thorne
+	url = https://github.com/Elias-Ainsworth/tmux-thorne

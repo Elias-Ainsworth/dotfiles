@@ -81,7 +81,7 @@ in
             "$mod_SHIFT, e, ${uexec "$term -e yazi ${config.xdg.userDirs.download}"}"
             "$mod, w, ${uexec "brave"}"
             "$mod_SHIFT, w, ${uexec "brave --incognito"}"
-            "$mod, v, ${uexec "$term nvim"}"
+            "$mod, v, ${uexec "neovide"}"
             "$mod_SHIFT, v, ${uexec (getExe pkgs.custom.shell.rofi-edit-proj)}"
             ''$mod, period, exec, focusorrun "dotfiles - VSCodium" "codium ${config.home.homeDirectory}/projects/dotfiles"''
             ''$mod_SHIFT, period, exec, focusorrun "nixpkgs - VSCodium" "codium ${config.home.homeDirectory}/projects/nixpkgs"''

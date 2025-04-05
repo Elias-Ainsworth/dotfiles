@@ -44,15 +44,15 @@ _: {
               enable = true;
               config.extensions = "all";
             };
-            "core.integrations.image".enable = true;
-            "core.latex.renderer" = {
-              enable = false;
-              config = {
-                conceal = true;
-                render_on_enter = true;
-                renderer = "core.integrations.image";
-              };
-            };
+            # "core.integrations.image".enable = false;
+            # "core.latex.renderer" = {
+            #   enable = false;
+            #   config = {
+            #     conceal = true;
+            #     render_on_enter = true;
+            #     renderer = "core.integrations.image";
+            #   };
+            # };
             "core.presenter" = {
               enable = true;
               config.zen_mode = "zen-mode";
@@ -62,23 +62,23 @@ _: {
         };
       };
     };
-    utility = {
-      images.image-nvim = {
-        enable = true;
-        setupOpts = {
-          backend =
-            # if builtins.getEnv == "tmux-256color" then "ueberzug" else
-            "kitty";
-          integrations = {
-            neorg = {
-              enable = true;
-              clearInInsertMode = true;
-              downloadRemoteImages = true;
-              filetypes = [ "norg" ];
-            };
-          };
-        };
-      };
-    };
+    # utility = {
+    #   images.image-nvim = {
+    #     enable = false;
+    #     setupOpts = {
+    #       backend =
+    #         # if builtins.getEnv == "tmux-256color" then "ueberzug" else
+    #         "kitty";
+    #       integrations = {
+    #         neorg = {
+    #           enable = true;
+    #           clearInInsertMode = true;
+    #           downloadRemoteImages = true;
+    #           filetypes = [ "norg" ];
+    #         };
+    #       };
+    #     };
+    #   };
+    # };
   };
 }

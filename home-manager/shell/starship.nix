@@ -12,7 +12,7 @@ in
       enableTransience = true;
       settings =
         let
-          dir_bg = "blue";
+          dir_bg = "cyan";
           accent_style = "bg:${dir_bg} fg:black";
           # divine orb style :)
           important_style = "bg:white fg:bold #ff0000";
@@ -23,7 +23,9 @@ in
             # begin left format
             "$username"
             "$hostname"
-            "$directory[](${dir_bg}) "
+            "[](${dir_bg})"
+            "$directory(${dir_bg})"
+            "[ ](${dir_bg})"
             "$git_branch"
             "$git_state"
             "$git_status"
@@ -31,9 +33,10 @@ in
             # end left format
             "$fill"
             # begin right format
-            "[](${dir_bg})"
-            "[ ](${accent_style})"
+            "[](${dir_bg})"
+            "[ ](${accent_style})"
             "$time"
+            "[](${dir_bg})"
             # end right format
             "$line_break"
             "$character"
@@ -41,9 +44,9 @@ in
 
           # modules
           character = {
-            error_symbol = "[ ](bold red)";
-            success_symbol = "[](purple)";
-            vimcmd_symbol = "[](green)";
+            success_symbol = "[ λ](purple)";
+            error_symbol = "[ λ](red)";
+            vimcmd_symbol = "[ ƛ](green)";
           };
           username = {
             style_root = important_style;
@@ -54,13 +57,13 @@ in
             style = important_style;
           };
           directory = {
-            format = "[ $path ]($style)";
+            format = "[$path]($style)";
             style = accent_style;
           };
           git_branch = {
             symbol = "";
             format = "on [$symbol $branch]($style)";
-            style = "yellow";
+            style = "purple";
           };
           git_state = {
             format = "([$state( $progress_current/$progress_total)]($style)) ";
@@ -80,7 +83,7 @@ in
           nix_shell = {
             format = "[$symbol]($style)";
             symbol = "";
-            style = "bright-magenta";
+            style = "magenta";
           };
           fill = {
             symbol = " ";
@@ -89,7 +92,7 @@ in
             disabled = false;
           };
           time = {
-            format = "[ $time ]($style)";
+            format = "[$time]($style)";
             disabled = false;
             time_format = "%H:%M";
             style = accent_style;

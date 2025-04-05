@@ -3,8 +3,6 @@
   pkgs,
   util,
 
-  #TODO: Get this to work.
-  banner,
   maxi,
   ...
 }:
@@ -13,15 +11,6 @@ let
 in
 {
   vim = lib.mkIf maxi {
-    dashboard = {
-      startify = {
-        enable = true;
-        changeToVCRoot = true;
-        customHeader = builtins.filter (s: s != [ ]) (
-          builtins.split "\n" (builtins.readFile ../ascii/eepy.txt)
-        );
-      };
-    };
     extraPlugins = {
       oil = with pkgs.vimPlugins; {
         package = oil-nvim;
@@ -65,7 +54,6 @@ in
         preset = "helix";
       };
     };
-    comments.comment-nvim.enable = true;
     snippets.luasnip.enable = true;
     statusline.lualine.enable = true;
     tabline.nvimBufferline = {
@@ -95,13 +83,7 @@ in
         };
       };
     };
-    utility = {
-      motion.leap.enable = true;
-      # preview.markdownPreview.enable = true;
-      surround.enable = true;
-    };
-    visuals.nvim-web-devicons.enable = true;
-    keymaps = [
+    keymaps = lib.mkIf maxi [
       # sane oil keybind
       (mkKeymapWithOpts "n" "<leader>o" ":Oil<CR>" { desc = "[O]il"; })
 
