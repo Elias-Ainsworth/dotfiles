@@ -797,7 +797,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-eTPrUQX31HEwIXfXgs6U0Zm/ZT7HWbmXtugYMvvCuyc=",
+        "narHash": "sha256-2VCb2d7rdd5Et+6840t2iJC5adkibVyqg6pNg1hAsuU=",
         "path": "packages/thornevim",
         "type": "path"
       },
