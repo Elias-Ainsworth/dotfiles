@@ -35,6 +35,9 @@ _: {
     };
     presence.neocord = {
       enable = true;
+      setupOpts = {
+        logo = "https://github.com/Elias-Ainsworth/thornevim/blob/main/pkgs/nvf.svg";
+      };
     };
     projects.project-nvim = {
       enable = true;

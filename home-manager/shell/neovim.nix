@@ -79,7 +79,7 @@ in
     desktopEntries.nvim = {
       name = "Neovim";
       genericName = "Text Editor";
-      icon = "nvim";
+      icon = ./nvf.svg;
       terminal = true;
       # load direnv before opening nvim
       exec = ''${getExe nvim-with-direnv} "%F"'';
