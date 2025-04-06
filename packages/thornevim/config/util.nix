@@ -1,11 +1,10 @@
 rec {
-  mkClue = mode: keys: desc: { inherit mode keys desc; };
+  # mkClue = mode: keys: desc: { inherit mode keys desc; };
   mkKeymap = mode: key: action: { inherit mode key action; };
   mkKeymapWithOpts =
     mode: key: action: opts:
     (mkKeymap mode key action) // opts;
-  mkTrigger = mode: keys: { inherit mode keys; };
-  # mkPattern =
+  # mkTrigger = mode: keys: { inherit mode keys; }; mkPattern =
   #   pattern: # lua
   #   "
   #   function(buf_id)

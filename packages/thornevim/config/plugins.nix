@@ -1,4 +1,10 @@
-_: {
+{
+  lib,
+  maxi,
+  transparent,
+  ...
+}:
+{
   vim = {
     autocomplete.blink-cmp = {
       enable = true;
@@ -13,7 +19,79 @@ _: {
         completion.list.selection.preselect = false;
       };
     };
+    binds.whichKey = {
+      enable = true;
+      register = {
+        # Leader
+        #TODO: Set <leader>a to not show when the option is available.
+        # "<leader>a" = "";
+        "<leader>gc" = "[C]onflict";
+        "<leader>gd" = "[D]iff";
+        "<leader>gr" = "[R]eset";
+        "<leader>gs" = "[S]tage";
+        "<leader>gt" = "[T]oggle";
+        "<leader>G" = "[G]it";
+        "<leader>l" = "[L]SP";
+        "<leader>n" = "[N]eorg";
+        "<leader>nw" = "[W]orkspaces";
+        "<leader>o" = "[O]il";
+        "<leader>t" = "[T]odo";
+        # Local Leader
+        ",c" = "[C]ode";
+        ",i" = "[I]nsert";
+        ",l" = "[L]ist";
+        ",n" = "[N]ote";
+        ",t" = "[T]odo";
+      };
+      setupOpts = {
+        preset = "helix";
+      };
+    };
     formatter.conform-nvim.enable = true;
+    mini = lib.mkIf (!maxi) {
+      ai.enable = true;
+      bracketed.enable = true;
+      bufremove.enable = true;
+      comment.enable = true;
+      #TODO: Currently unavailable in nvf.
+      # cursorword.enable = true;
+      extra.enable = true;
+      files.enable = true;
+      indentscope.enable = true;
+      jump.enable = true;
+      jump2d = {
+        enable = true;
+        setupOpts = {
+          mappings.start_jumping = "m";
+        };
+      };
+      move.enable = true;
+      notify = {
+        enable = true;
+        setupOpts = lib.mkIf transparent {
+          window.winblend = 0;
+        };
+      };
+      operators.enable = true;
+      pairs.enable = true;
+
+      #TODO: Make a picker to search through todo-comments.
+      pick.enable = true;
+      splitjoin.enable = true;
+      starter = {
+        enable = true;
+        setupOpts = {
+          header = builtins.readFile ../ascii/elias.txt;
+          # footer = "#[derive(Dumb)]";
+          footer = ''
+            「僕はエリアス・エインズワースかもしれないが、
+                      チセがいない――つまり、僕は完全に『チセレス』だ。」'';
+        };
+
+      };
+      surround.enable = true;
+      trailspace.enable = true;
+    };
     navigation.harpoon = {
       enable = true;
       mappings = {
@@ -55,6 +133,7 @@ _: {
         ];
       };
     };
+    snippets.luasnip.enable = true;
     statusline.lualine = {
       enable = true;
       setupOpts = {
@@ -84,20 +163,26 @@ _: {
         show_close_icon = false;
       };
     };
-    ui = {
-      colorizer = {
-        enable = true;
-        setupOpts = {
-          user_default_options = {
-            RGB = true;
-            RRGGBB = true;
-            RRGGBBAA = true;
-            css = true;
-            names = false;
-            tailwind = true;
+    telescope = {
+      enable = maxi;
+      mappings = {
+        buffers = "<leader>fb";
+        findFiles = "<leader>ff";
+        gitBranches = "<leader>gb";
+        gitStatus = "<leader>gT";
+        liveGrep = "<leader>/";
+      };
+      setupOpts = {
+        defaults = {
+          mappings = {
+            i."<S-BS>" = lib.generators.mkLuaInline "require('telescope.actions').delete_buffer";
+            n."dd" = lib.generators.mkLuaInline "require('telescope.actions').delete_buffer";
           };
         };
       };
+    };
+    ui = {
+      colorizer.enable = true;
       smartcolumn = {
         enable = true;
         setupOpts = {

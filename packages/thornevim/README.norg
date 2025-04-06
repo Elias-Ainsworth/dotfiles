@@ -29,75 +29,64 @@
     - Visual enhancements:
     - {https://github.com/m4xshen/smartcolumn.nvim}[Smart column] guides
     - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-indentscope.md}[Indent scope] visualization
-    - Icons for file types and Git status
-
+    - Icons for file types and Git status via {https://github.com/nvim-tree/nvim-web-devicons}[Nvim-web-devicons]
     - Color highlighting via {https://github.com/norcalli/nvim-colorizer.lua}[colorizer]
+    - {https://github.com/nvim-lualine/lualine.nvim}[Lualine] for a graceful status line.
+    - Tab/buffer navigation via {https://github.com/akinsho/bufferline.nvim}[Bufferline]
 *** Development Tools
     - {./config/git.nix}[Git] integration:
-    - {https://github.com/tpope/vim-fugitive}[Vim Fugitive]
-    - Custom Pre-Commit function
+    -- {https://github.com/tpope/vim-fugitive}[Vim Fugitive]
+    -- Custom Pre-Commit function
 
     - Intelligent code completion:
-    - {https://github.com/Saghen/blink.cmp}[Blink.cmp] with snippet support
+    -- {https://github.com/Saghen/blink.cmp}[Blink.cmp] with snippet support
+    -- {https://github.com/L3MON4D3/LuaSnip}[LuaSnip] for extensible snippet management
 
     - Project management:
-    - {https://github.com/ahmedkhalf/project.nvim/}[Project-nvim] for project navigation
-    - {https://github.com/airblade/vim-rooter/}[Rooter] for automatic project root detection
-    - {https://github.com/direnv/direnv.vim/}[Direnv] integration
+    -- {https://github.com/ahmedkhalf/project.nvim/}[Project-nvim] for project navigation
+    -- {https://github.com/airblade/vim-rooter/}[Rooter] for automatic project root detection
+    -- {https://github.com/direnv/direnv.vim/}[Direnv] integration
 
 *** Navigation and Editing
-    - Ergonomic file navigation with
-      {https://github.com/ThePrimeagen/harpoon}[Harpoon2]
+    - Ergonomic file navigation with {https://github.com/ThePrimeagen/harpoon}[Harpoon2]
 
     - {https://github.com/echasnovski/mini.nvim}[Mini.nvim] suite providing:
-    - Efficient text manipulation (ai, move, operators)
-    - Smart brackets and pairs handling
-    - Advanced jumping capabilities (jump, jump2d)
-    - Code splitting and joining
-    - Intuitive surround operations
+    -- Efficient text manipulation (ai, move, operators)
+    -- Smart brackets and pairs handling
+    -- Advanced jumping capabilities (jump, jump2d)
+    -- Code splitting and joining
+    -- Intuitive surround operations
 
     - {https://github.com/christoomey/vim-tmux-navigator}[Tmux integration]:
-    - Seamless navigation between panes
-    - Window resizing via custom keymaps
+    -- Seamless navigation between panes
+    -- Window resizing via custom keymaps
+
+    - {https://github.com/folke/which-key.nvim}[Which-key] for keymap discovery and guidance
 *** Productivity
     - Todo-Comments for highlighting TODO, FIXME, NOTE, and BUG annotations
     - LaTeX formula parsing via {https://github.com/jbyuki/nabla.nvim}[nabla]
     - {https://github.com/nvim-neorg/neorg}[Neorg] for structured note-taking
     - {https://github.com/wakatime/vim-wakatime}[Wakatime] integration for tracking coding activity
+
 *** Core Mini.nvim Plugins
     - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-ai.md}[ai] - Text objects for argument manipulation
     - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-bracketed.md}[bracketed] - Enhanced bracket navigation
     - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-bufremove.md}[bufremove] - Buffer removal with window preservation
-    - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-clue.md}[clue] - Contextual command hints
     - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-comment.md}[comment] - Code commenting utilities
     - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-extra.md}[extra] - Extra pickers
     - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-files.md}[files] - File management
-    - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-icons.md}[icons] - Minimal icons
     - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-indentscope.md}[indentscope] - Visual indent guides
     - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-notify.md}[notify] - Notification system
     - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-operators.md}[operators] - Text edit operators
     - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-pairs.md}[pairs] - Auto-pair completion
     - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-pick.md}[pick] - Fuzzy finder
-    - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-snippets.md}[snippets] - Code snippet engine
     - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-splitjoin.md}[splitjoin] - Split and join code blocks
     - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-starter.md}[starter] - Start screen
-    - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-statusline.md}[statusline] - Minimal status line display
-    - {https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-tabline.md}[tabline] - Minimal buffer line display
 *** Optional Alternatives
     The mini plugins can replace these traditional options by setting `maxi` to true
     via an override:
-    - {https://github.com/mhinz/vim-startify}[Startify] → mini.starter
     - {https://github.com/stevearc/oil.nvim}[Oil] → mini.files
-    - {https://github.com/windwp/nvim-autopairs}[Autopairs] → mini.pairs
-    - {https://github.com/folke/which-key.nvim}[Which Key] → mini.clue
-    - {https://github.com/numToStr/Comment.nvim}[Comment] → mini.comment
-    - {https://github.com/L3MON4D3/LuaSnip}[LuaSnip] → mini.snippets
-    - {https://github.com/nvim-lualine/lualine.nvim}[Lualine] → mini.statusline
-    - {https://github.com/akinsho/bufferline.nvim}[Bufferline] → mini.tabline
     - {https://github.com/nvim-telescope/telescope.nvim}[Telescope] → mini.pick
-    - {https://github.com/ggandor/leap.nvim}[Leap] → mini.jump2d
-    - {https://github.com/kylechui/nvim-surround}[Surround] → mini.surround
-    - {https://github.com/nvim-tree/nvim-web-devicons}[Nvim-web-devicons] → mini.icons
 *** Custom Wrappers
     - Simplified declaration for:
     - Keymaps (with and without options)
@@ -109,7 +98,7 @@
 
     @code nix
     {
-    inputs.thornevim.url = "github:Elias-Ainsworth/thornevim";
+        inputs.thornevim.url = "github:Elias-Ainsworth/thornevim";
     }
     @end
 
@@ -153,24 +142,24 @@
    - ( ) Find a way to pass banner value via string interpolation.
 ** Credits
    - {https://github.com/iynaix}[@iynaix]:
-   - This nvf config started with {https://github.com/iynaix/dotfiles/tree/main/packages/neovim-iynaix}[neovim-iynaix]...unsurprisingly.
-   - I also -stole- took inspiration from {https://github.com/iynaix/focal}[iynaix/focal] for the flake as well as this README.
+   -- This nvf config started with {https://github.com/iynaix/dotfiles/tree/main/packages/neovim-iynaix}[neovim-iynaix]...unsurprisingly.
+   -- I also -stole- took inspiration from {https://github.com/iynaix/focal}[iynaix/focal] for the flake as well as this README.
 
    - {https://github.com/NotAShelf}[@NotAShelf]
-   - For providing amazing help, even though my questions would have been answered easily by reading the manual.
+   -- For providing amazing help, even though my questions would have been answered easily by reading the manual.
 
    > [!NOTE] To future me, from past you. RTFM!!!
 
    - {https://github.com/LilleAila}[@LilleAila]:
-   - The overall structure of this flake was -stolen- inspired by {https://github.com/LilleAila/nvf-config}[LilleAila/nvf-config]...what do you expect from me at this point?
-   - Further thanks for the extra help regarding configuring nvf's mini.nvim modules.
+   -- The overall structure of this flake was -stolen- inspired by {https://github.com/LilleAila/nvf-config}[LilleAila/nvf-config]...what do you expect from me at this point?
+   -- Further thanks for the extra help regarding configuring nvf's mini.nvim modules.
 
    - {https://github.com/justchokingaround}[@justchokingaround]:
-   - For convincing me to use mini.nvim and for providing me his mini configuration for me to -steal- take inspiration from.
+   -- For convincing me to use mini.nvim and for providing me his mini configuration for me to -steal- take inspiration from.
 
    - {https://github.com/LuminarLeaf}[@LuminarLeaf]:
-   - For helping me with a stupid mistake with my flake {I did not include `inherit inputs;` in my {./flake.nix:39}[package call]}. It was literally two words and a semi-colon but I would have spent a millennia trying to fix it to no avail.
+   -- For helping me with a stupid mistake with my flake {I did not include `inherit inputs;` in my {./flake.nix:39}[package call]}. It was literally two words and a semi-colon but I would have spent a millennia trying to fix it to no avail.
 
    - {https://github.com/TeamWolfyta}[@TeamWolfyta]:
-   - For taking an interest in this shitty project...and for bugging me to make this README.
+   -- For taking an interest in this shitty project...and for bugging me to make this README.
 

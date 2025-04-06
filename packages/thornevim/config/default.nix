@@ -7,8 +7,6 @@ _: {
     ./git.nix
     ./keymaps.nix
     ./languages.nix
-    ./maxi.nix
-    ./mini.nix
     ./neorg.nix
     ./options.nix
     ./plugins.nix
