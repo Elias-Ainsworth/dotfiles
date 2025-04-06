@@ -30,6 +30,7 @@ in
     ./mpd.nix
     ./ncmpcpp.nix
     ./rmpc.nix
+    ./sptlrx.nix
   ];
 
   options.custom = {

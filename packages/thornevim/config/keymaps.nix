@@ -102,7 +102,6 @@ in
       (mkKeymapWithOpts "n" "<leader>ll" ":lua require('nabla').popup()<CR>" { desc = "Nabla"; })
 
       # neorg
-      (mkKeymapWithOpts "n" "m" "," { desc = "[N]org"; })
       (mkKeymapWithOpts "n" "<C-M-s>" "<Plug>(neorg.qol.todo-items.todo.task-cycle)" {
         desc = "Cycle Task [neorg]";
       })

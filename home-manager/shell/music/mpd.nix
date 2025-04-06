@@ -23,6 +23,7 @@ in
           audio_output {
             type "pulse"
             name "Pulseaudio"
+          	format              "44100:16:2"
           }
           audio_output {
           	type                "fifo"
