@@ -19,7 +19,6 @@
       ".config/Discord"
       ".config/Vesktop"
       ".config/discord"
-      ".config/discord-rpc"
       ".config/vencord"
     ];
   };
