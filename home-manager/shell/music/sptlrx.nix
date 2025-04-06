@@ -9,7 +9,7 @@ in
   home = {
     packages = [ sptlrx ];
     file = {
-      ".config/sptlrx/config.ron" = {
+      ".config/sptlrx/config.yaml" = {
         force = true;
         text = # yaml
           ''
