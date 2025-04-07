@@ -64,6 +64,8 @@ in
         # cd aliases
         ".." = "cd ..";
         "..." = "cd ../..";
+        # nu alias
+        "n" = "nu -c";
       };
     };
 
