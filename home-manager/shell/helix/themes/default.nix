@@ -1,3 +1,0 @@
-{
-  imports = [ ./catppuccin-mocha.nix ];
-}
