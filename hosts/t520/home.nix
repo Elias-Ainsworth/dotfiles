@@ -22,6 +22,7 @@
       }
     ];
 
+    colorscheme.transparent = true;
     gaming.enable = true;
     ghostty.enable = true;
     hyprland = {
