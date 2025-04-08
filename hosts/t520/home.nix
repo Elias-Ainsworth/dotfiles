@@ -13,12 +13,14 @@ _: {
           4
           5
         ];
+        defaultWorkspace = 1;
       }
       {
         name = "VGA-1";
-        width = 1920;
-        height = 1080;
+        width = 1080;
+        height = 1920;
         refreshRate = 60;
+        position = "1600x0";
         transform = 1;
         workspaces = [
           6
@@ -27,6 +29,7 @@ _: {
           9
           10
         ];
+        defaultWorkspace = 6;
       }
     ];
 
