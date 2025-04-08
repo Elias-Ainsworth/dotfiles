@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+_: {
   custom = {
     monitors = [
       {
@@ -13,6 +12,15 @@
           3
           4
           5
+        ];
+      }
+      {
+        name = "VGA-1";
+        width = 1920;
+        height = 1080;
+        refreshRate = 60;
+        transform = 1;
+        workspaces = [
           6
           7
           8
@@ -33,7 +41,6 @@
     modelling3d.enable = true;
     mpd.enable = true;
     ncmpcpp.enable = true;
-    rmpc.enable = true;
     printing3d.enable = true;
     obs-studio.enable = false;
     pathofbuilding.enable = false;
@@ -44,10 +51,7 @@
     waybar = {
       enable = true;
       hidden = false;
-      # waybar.persistentWorkspaces = true;
     };
-
-    terminal.package = pkgs.ghostty;
 
     persist = {
       home.directories = [
@@ -55,10 +59,4 @@
       ];
     };
   };
-
-  # home = {
-  #   packages = with pkgs; [
-  #     # hyprlock # build package for testing, but it isn't used
-  #   ];
-  # };
 }
