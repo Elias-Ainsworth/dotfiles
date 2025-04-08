@@ -17,7 +17,7 @@
     };
     custom.persist.home.directories = [
       ".config/Discord"
-      ".config/Vesktop"
+      ".config/vesktop"
       ".config/discord"
       ".config/vencord"
     ];
