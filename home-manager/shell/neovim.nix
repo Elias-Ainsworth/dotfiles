@@ -19,8 +19,8 @@ let
     variant = variant;
     transparent = transparent;
   };
-  nvim-with-direnv = pkgs.writeShellApplication {
-    name = "nvim-with-direnv";
+  nvim-direnv = pkgs.writeShellApplication {
+    name = "nvim-direnv";
     runtimeInputs = [
       config.programs.direnv.package
       customNeovim
@@ -35,7 +35,10 @@ let
 in
 {
   home = {
-    packages = [ customNeovim ];
+    packages = [
+      customNeovim
+      nvim-direnv
+    ];
 
     shellAliases = {
       nano = "nvim";
@@ -82,7 +85,7 @@ in
       icon = ./nvf.svg;
       terminal = true;
       # load direnv before opening nvim
-      exec = ''${getExe nvim-with-direnv} "%F"'';
+      exec = ''${getExe nvim-direnv} "%F"'';
     };
 
     mimeApps = {

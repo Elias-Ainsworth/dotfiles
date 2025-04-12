@@ -32,7 +32,7 @@
     };
 
     thornevim = {
-      url = "path:packages/thornevim";
+      url = "github:elias-ainsworth/thornevim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

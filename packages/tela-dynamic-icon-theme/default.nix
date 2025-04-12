@@ -6,6 +6,7 @@
   },
 }:
 tela-icon-theme.overrideAttrs (oldAttrs: {
+  dontCheckForBrokenSymlinks = true;
   postPatch =
     let
       themeColors = lib.pipe colors [

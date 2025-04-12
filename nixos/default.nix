@@ -137,6 +137,7 @@ in
         [
           curl
           eza
+          killall
           (hiPrio procps) # for uptime
           ripgrep
           yazi

@@ -31,9 +31,9 @@ in
     ];
 
     colorscheme = {
-      theme = "oxocarbon";
-      variant = "dark";
-      transparent = false;
+      # theme = "oxocarbon";
+      # variant = "dark";
+      transparent = true;
     };
     beets.enable = true;
     gaming.enable = false;
@@ -56,7 +56,7 @@ in
     };
 
     terminal = {
-      opacity = "1.0";
+      # opacity = "1.0";
       size = 12;
     };
 
