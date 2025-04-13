@@ -5,9 +5,9 @@ _: {
         name = "VGA-1";
         width = 1920;
         height = 1080;
-        refreshRate = 60;
-        position = "1600x0";
         # scale = 0.83;
+        position = "-1080x0";
+        refreshRate = 60;
         transform = 1;
         workspaces = [
           1
@@ -22,6 +22,7 @@ _: {
         name = "LVDS-1";
         width = 1600;
         height = 900;
+        position = "0x0";
         refreshRate = 60;
         workspaces = [
           6
