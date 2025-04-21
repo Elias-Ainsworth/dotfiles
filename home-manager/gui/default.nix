@@ -3,6 +3,7 @@ _: {
     ./3dprinting.nix
     ./brave.nix
     ./dunst.nix
+    ./emacs.nix
     ./gaming.nix
     ./ghostty.nix
     ./gtk.nix

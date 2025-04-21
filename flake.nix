@@ -36,15 +36,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    thornemacs = {
+      url = "github:elias-ainsworth/thornemacs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     tmux-thorne = {
       url = "github:elias-ainsworth/tmux-thorne";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # helix = {
-    #   url = "github:helix-editor/helix";
-    #   # inputs.nixpkgs.follows = "nixpkgs";
-    # };
 
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
@@ -85,7 +85,11 @@
   # flake-utils is unnecessary
   # https://ayats.org/blog/no-flake-utils/
   outputs =
-    inputs@{ nixpkgs, self, ... }:
+    inputs@{
+      nixpkgs,
+      self,
+      ...
+    }:
     let
       system = "x86_64-linux";
       pkgs = import inputs.nixpkgs {

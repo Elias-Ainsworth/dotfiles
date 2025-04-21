@@ -98,7 +98,7 @@ in
           package = pkgs.custom.tela-dynamic-icon-theme.override { colors = accents; };
         };
         font = {
-          name = config.custom.fonts.regular;
+          name = "${config.custom.fonts.regular}, ${config.custom.fonts.weeb}";
           package = pkgs.geist-font;
           size = 10;
         };
