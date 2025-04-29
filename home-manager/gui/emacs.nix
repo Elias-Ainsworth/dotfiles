@@ -25,12 +25,8 @@ in
     };
   };
 
-  # custom.persist.home.directories = [
-  #   ".emacs.d"
-  #   ".emacs.d/eln-cache"
-  #   ".emacs.d/eshell"
-  #   ".config/emacs"
-  #   ".local/share/emacs"
-  #   ".local/state/emacs"
-  # ];
+  custom.persist.home.directories = [
+    "org"
+    ".emacs.d"
+  ];
 }

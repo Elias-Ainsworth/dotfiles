@@ -31,11 +31,11 @@ in
     ];
 
     colorscheme = {
-      # theme = "oxocarbon";
-      # variant = "dark";
+      theme = "gruvbox";
+      variant = "dark";
       transparent = true;
     };
-    beets.enable = true;
+    beets.enable = false;
     gaming.enable = false;
     ghostty.enable = true;
     helix.enable = true;

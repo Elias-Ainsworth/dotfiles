@@ -7,7 +7,7 @@ let
   mkYtDlpWrapper = _args: {
     runtimeInputs = with pkgs; [
       gawk
-      yt-dlp
+      config.programs.yt-dlp.package
     ];
     text = # sh
       ''
@@ -38,7 +38,7 @@ let
   # Function to create yt-dlp music wrapper for individual tracks
   mkMusicWrapper = _args: {
     runtimeInputs = with pkgs; [
-      yt-dlp
+      config.programs.yt-dlp.package
       gawk
     ];
     text = # sh
@@ -78,7 +78,7 @@ let
   # Function to create yt-dlp music wrapper for playlists
   mkMusicPlaylistWrapper = _args: {
     runtimeInputs = with pkgs; [
-      yt-dlp
+      config.programs.yt-dlp.package
       gawk
     ];
     text = # sh

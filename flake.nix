@@ -31,6 +31,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nur.url = "github:nix-community/NUR";
+
     thornevim = {
       url = "github:elias-ainsworth/thornevim";
       inputs.nixpkgs.follows = "nixpkgs";
