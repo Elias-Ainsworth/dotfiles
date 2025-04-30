@@ -927,11 +927,11 @@
         "systems": "systems_5"
       },
       "locked": {
-        "lastModified": 1745906506,
-        "narHash": "sha256-enXVIqfh1xqtaxtCLuivAGi22sEB5YSunQeQgW9fL/Y=",
+        "lastModified": 1745982765,
+        "narHash": "sha256-FbOYM9ycAIz39mjmVpeTNDSsiP64xxk/J8EzA6DU5wM=",
         "owner": "elias-ainsworth",
         "repo": "thornemacs",
-        "rev": "e65531d96494f6a6cc63f443f86517ec31c02f5b",
+        "rev": "783dc53d79f6a7d511a2ffe1aac7d3919f6c3ebe",
         "type": "github"
       },
       "original": {
