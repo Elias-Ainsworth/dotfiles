@@ -31,8 +31,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nur.url = "github:nix-community/NUR";
-
     thornevim = {
       url = "github:elias-ainsworth/thornevim";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -84,8 +82,6 @@
     };
   };
 
-  # flake-utils is unnecessary
-  # https://ayats.org/blog/no-flake-utils/
   outputs =
     inputs@{
       nixpkgs,
