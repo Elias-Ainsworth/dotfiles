@@ -10,7 +10,7 @@ in
 {
   home.shellAliases = {
     em = "emacs"; # Open Emacs normally
-    et = "emacs -nw ''"; # Open Emacs in terminal
+    et = "emacs -nw"; # Open Emacs in terminal
     ec = "emacsclient -c -a ''"; # Open client in a new frame
     ect = "emacsclient -t -a ''"; # Open client in terminal
     ek = "emacsclient -e '(kill-emacs)'"; # Kill the Emacs daemon
