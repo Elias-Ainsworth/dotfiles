@@ -73,7 +73,7 @@ in
         # https://github.com/ghostty-org/ghostty/issues/4800#issuecomment-2685774252
         app-notifications = "no-clipboard-copy";
         cursor-style = "bar";
-        theme = "Oxocarbon";
+        theme = "GruvboxDarkHard";
         font-family = terminal.font;
         font-feature = "zero";
         font-size = terminal.size;

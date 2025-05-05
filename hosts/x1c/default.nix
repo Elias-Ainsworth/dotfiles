@@ -1,4 +1,5 @@
-_: {
+{ user, ... }:
+{
   custom = {
     distrobox.enable = true;
     virtualization.enable = true;
@@ -12,4 +13,6 @@ _: {
 
   # disable thumbprint reader
   services.fprintd.enable = false;
+
+  services.avahi.enable = true;
 }

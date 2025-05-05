@@ -47,6 +47,7 @@ in
     pathofbuilding.enable = false;
     rclip.enable = true;
     study.enable = true;
+    vlc.enable = true;
     wallfacer.enable = true;
     # wallust.colorscheme = "oxocarbon";
     waybar = {
