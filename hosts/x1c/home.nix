@@ -36,6 +36,7 @@ in
       transparent = true;
     };
     beets.enable = false;
+    fonts.monospace = "Geist Mono NerdFont";
     gaming.enable = false;
     ghostty.enable = true;
     helix.enable = true;

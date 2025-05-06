@@ -1,5 +1,4 @@
-{ user, ... }:
-{
+_: {
   custom = {
     distrobox.enable = true;
     virtualization.enable = true;

@@ -46,8 +46,8 @@ in
       "Xft.hintstyle" = "hintslight";
       "Xft.lcdfilter" = "lcddefault";
 
-      "*.font" = "JetBrainsMono Nerd Font Mono:Medium:size=12";
-      "*.bold_font" = "JetBrainsMono Nerd Font Mono:Bold:size=12";
+      "*.font" = "${config.custom.fonts.monospace} Mono:Medium:size=12";
+      "*.bold_font" = "${config.custom.fonts.monospace} Mono:Bold:size=12";
     };
   };
 }
