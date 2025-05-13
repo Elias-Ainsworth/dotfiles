@@ -47,6 +47,9 @@ in
             success_symbol = "[ λ](purple)";
             error_symbol = "[ λ](red)";
             vimcmd_symbol = "[ ƛ](green)";
+            # success_symbol = "[ ト](purple)";
+            # error_symbol = "[ ト](red)";
+            # vimcmd_symbol = "[ ヴ](green)";
           };
           username = {
             style_root = important_style;

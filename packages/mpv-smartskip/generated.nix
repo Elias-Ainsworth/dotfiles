@@ -3,14 +3,14 @@
 {
   mpv-smartskip = {
     pname = "mpv-smartskip";
-    version = "48d68283cea47ff8e904decc9003b3abc3e2123e";
+    version = "082797789eabc68fbe71de2cd0eee46a6b073503";
     src = fetchFromGitHub {
       owner = "Eisa01";
       repo = "mpv-scripts";
-      rev = "48d68283cea47ff8e904decc9003b3abc3e2123e";
+      rev = "082797789eabc68fbe71de2cd0eee46a6b073503";
       fetchSubmodules = false;
-      sha256 = "sha256-95CAKjBRELX2f7oWSHFWJnI0mikAoxhfUphe9k51Qf4=";
+      sha256 = "sha256-krHyufDHVwuPdcotkbYnunKeEYHHb+08GqaruIzHclM=";
     };
-    date = "2023-11-25";
+    date = "2025-05-11";
   };
 }

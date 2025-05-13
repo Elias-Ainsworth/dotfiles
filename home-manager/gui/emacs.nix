@@ -9,12 +9,15 @@
     programs.thornemacs = {
       enable = true;
       service.enable = true;
-      installAssets = true;
+      installAssets.enable = true;
     };
-    custom.persist.home.directories = [
-      "org"
-      ".config/emacs"
-      ".emacs.d"
-    ];
+    custom.persist.home = {
+      directories = [
+        "org"
+        ".config/emacs"
+        ".emacs.d"
+      ];
+      files = [ ".emacs" ];
+    };
   };
 }

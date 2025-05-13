@@ -48,35 +48,35 @@ in
     };
   };
 
-  programs.neovide = {
-    enable = true;
-    settings = {
-      fork = true;
-      frame = "full";
-      idle = true;
-      show-border = true;
-      maximized = false;
-      neovim-bin = "${customNeovim}/bin/nvim";
-      no-multigrid = true;
-      transparency = 0.8;
-      srgb = false;
-      tabs = true;
-      theme = "dark";
-      title-hidden = true;
-      vsync = true;
-      wsl = false;
-      font = {
-        normal = [
-          monospace
-          weeb
-        ];
-        size = 12.0;
-      };
-      box-drawing = {
-        mode = "font-glyph";
-      };
-    };
-  };
+  # programs.neovide = {
+  #   enable = true;
+  #   settings = {
+  #     fork = true;
+  #     frame = "full";
+  #     idle = true;
+  #     show-border = true;
+  #     maximized = false;
+  #     neovim-bin = "${customNeovim}/bin/nvim";
+  #     no-multigrid = true;
+  #     transparency = 0.8;
+  #     srgb = false;
+  #     tabs = true;
+  #     theme = "dark";
+  #     title-hidden = true;
+  #     vsync = true;
+  #     wsl = false;
+  #     font = {
+  #       normal = [
+  #         monospace
+  #         weeb
+  #       ];
+  #       size = 12.0;
+  #     };
+  #     box-drawing = {
+  #       mode = "font-glyph";
+  #     };
+  #   };
+  # };
 
   xdg = {
     desktopEntries.nvim = {

@@ -22,7 +22,7 @@
     },
     "wallust": {
         "cargoLocks": null,
-        "date": "2025-05-05",
+        "date": "2025-05-11",
         "extract": null,
         "name": "wallust",
         "passthru": null,
@@ -32,17 +32,17 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "7af3011c695e59deefc427ecc2a0bd8930e8f941",
-            "sha256": "sha256-vtJBawSzpNGIO7DrxrqA5DoPyaaavnbK+VFqUJWDHdg=",
+            "rev": "afcbdec7fedfd5ac61faf6610682e2cc6c1cef4d",
+            "sha256": "sha256-9QWsWT6TVpkem2vwoAOTsyXGvIzmtremAlmLr9ELjwE=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://codeberg.org/explosion-mental/wallust"
         },
-        "version": "7af3011c695e59deefc427ecc2a0bd8930e8f941"
+        "version": "afcbdec7fedfd5ac61faf6610682e2cc6c1cef4d"
     },
     "yazi-plugins": {
         "cargoLocks": null,
-        "date": "2025-04-27",
+        "date": "2025-05-11",
         "extract": null,
         "name": "yazi-plugins",
         "passthru": null,
@@ -54,12 +54,12 @@
             "name": null,
             "owner": "yazi-rs",
             "repo": "plugins",
-            "rev": "864a0210d9ba1e8eb925160c2e2a25342031d8d3",
-            "sha256": "sha256-m3709h7/AHJAtoJ3ebDA40c77D+5dCycpecprjVqj/k=",
+            "rev": "55bf6996ada3df4cbad331ce3be0c1090769fc7c",
+            "sha256": "sha256-v/C+ZBrF1ghDt1SXpZcDELmHMVAqfr44iWxzUWynyRk=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "864a0210d9ba1e8eb925160c2e2a25342031d8d3"
+        "version": "55bf6996ada3df4cbad331ce3be0c1090769fc7c"
     },
     "yazi-time-travel": {
         "cargoLocks": null,
