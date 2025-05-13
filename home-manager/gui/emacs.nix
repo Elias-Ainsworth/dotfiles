@@ -17,7 +17,7 @@
         ".config/emacs"
         ".emacs.d"
       ];
-      files = [ ".emacs" ];
+      # files = [ ".emacs" ];
     };
   };
 }
