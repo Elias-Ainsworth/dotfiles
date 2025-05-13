@@ -869,11 +869,11 @@
         "systems": "systems_5"
       },
       "locked": {
-        "lastModified": 1747155642,
-        "narHash": "sha256-GadiUvmMCsUN4L7QQfPLFULcn2CaWvpTAz9Hb7gMIP8=",
+        "lastModified": 1747159268,
+        "narHash": "sha256-0hoZm+ksBE9c4KdKhi0UnXbgdfe7HA2FR6PZWR13yIs=",
         "owner": "elias-ainsworth",
         "repo": "thornemacs",
-        "rev": "f649e5547dbc4762b9116bc04ebd54be8af8f5bd",
+        "rev": "dc13a0ae07f54f356055d7f4ed30a11b6018167d",
         "type": "github"
       },
       "original": {
