@@ -44,6 +44,7 @@ _: {
       qtile = false;
     };
     modelling3d.enable = true;
+    nvidia.enable = true;
     mpd.enable = true;
     ncmpcpp.enable = true;
     obs-studio.enable = false;

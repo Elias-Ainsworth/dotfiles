@@ -1,7 +1,7 @@
 {
     "mpv-smartskip": {
         "cargoLocks": null,
-        "date": "2025-05-11",
+        "date": "2025-05-14",
         "extract": null,
         "name": "mpv-smartskip",
         "passthru": null,
@@ -13,11 +13,11 @@
             "name": null,
             "owner": "Eisa01",
             "repo": "mpv-scripts",
-            "rev": "082797789eabc68fbe71de2cd0eee46a6b073503",
-            "sha256": "sha256-krHyufDHVwuPdcotkbYnunKeEYHHb+08GqaruIzHclM=",
+            "rev": "100fea81ae8560c6fb113b1f6bb20857a41a5705",
+            "sha256": "sha256-rb8bd7KjON2+aZ2pE9yyjNT2jaZPIbzVPDYW7dvJMLU=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "082797789eabc68fbe71de2cd0eee46a6b073503"
+        "version": "100fea81ae8560c6fb113b1f6bb20857a41a5705"
     }
 }

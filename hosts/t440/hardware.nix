@@ -8,7 +8,7 @@
   ...
 }:
 {
-  imports = [ inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-6th-gen ];
+  imports = [ inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t520 ];
 
   boot = {
     initrd.availableKernelModules = [
@@ -17,13 +17,15 @@
       "thunderbolt"
       "usb_storage"
       "sd_mod"
+      "xhci_pci" # USB 3.0 controller
+      "ehci_pci" # USB 2.0 controller fallback
+      "ahci" # SATA controller
+      "usb_storage" # USB storage
+      "sd_mod" # SD card / SCSI disk support
+      "rtsx_pci_sdmmc" # Realtek SD card reader
     ];
     initrd.kernelModules = [ ];
-    kernelModules = [
-      "iwlwifi"
-      "i915"
-      "thinkpad_acpi"
-    ];
+    kernelModules = [ "iwlwifi" ];
     extraModulePackages = [ ];
   };
 

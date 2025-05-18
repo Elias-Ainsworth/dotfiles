@@ -12,24 +12,31 @@
 
   boot = {
     initrd.availableKernelModules = [
-      "xhci_pci"
-      "ahci"
-      "nvme"
-      "usbhid"
-      "usb_storage"
-      "sd_mod"
-      "rtsx_pci_sdmmc"
-      # modules for optical drive (temporary)
-      "sr_mod"
+      "xhci_pci" # USB 3.0
+      "ehci_pci" # USB 2.0 fallback
+      "ahci" # SATA controller
+      "nvme" # in case of SSD upgrade
+      "usbhid" # USB keyboard/mouse
+      "usb_storage" # USB drives
+      "sd_mod" # SCSI disk support
+      "rtsx_pci_sdmmc" # Realtek SD reader
+      "sr_mod" # Optical drive (CD/DVD)
       "ata_generic"
       "pata_acpi"
     ];
-    initrd.kernelModules = [ ];
-    kernelModules = [ "iwlwifi" ];
+
+    kernelModules = [
+      "iwlwifi" # Intel wireless
+      "thinkpad_acpi" # Fn keys, fan, LEDs
+      "coretemp" # CPU temps for monitoring
+      "kvm-intel" # virtualization
+    ];
+
     extraModulePackages = [ ];
   };
 
-  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+  # Enables DHCP on each ethernet and wireless interface. In case of scripted
+  # networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.

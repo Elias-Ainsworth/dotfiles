@@ -6,15 +6,15 @@
   fetchFromGitHub,
   pkg-config,
 }:
-gcc14Stdenv.mkDerivation rec {
+gcc14Stdenv.mkDerivation (finalAttrs: {
   pname = "hypr-darkwindow";
-  version = "0.48.1";
+  version = "0.49.0";
 
   src = fetchFromGitHub {
     owner = "micha4w";
     repo = "Hypr-DarkWindow";
-    rev = "v${version}";
-    hash = "sha256-34itqDO1NPPs5c8tNHOf4SRbUIFucFgkWNv6x5ZheSs=";
+    rev = "v${finalAttrs.version}";
+    hash = "sha256-kgprhnsuN3D9KUXQH+zBAFP1ldxo4GKS7dWDnhRnXS0=";
   };
 
   nativeBuildInputs = [ pkg-config ];
@@ -29,8 +29,8 @@ gcc14Stdenv.mkDerivation rec {
     description = "Hyprland Plugin to invert Colors of specific Windows";
     homepage = "https://github.com/micha4w/Hypr-DarkWindow";
     license = lib.licenses.mit;
-    maintainers = [ lib.maintainers.iynaix ];
+    maintainers = with lib.maintainers; [ iynaix ];
     mainProgram = "hypr-darkwindow";
     platforms = lib.platforms.all;
   };
-}
+})

@@ -265,7 +265,7 @@ in
       nr = # sh
         ''
           if [ "$#" -eq 0 ]; then
-              echo "no package specified."
+              echo "No package specified."
               exit 1
           fi
 
@@ -321,7 +321,7 @@ in
       nattr = # sh
         ''
           if [ "$#" -eq 0 ]; then
-              echo "no package specified."
+              echo "No package specified."
               exit 1
           fi
 
@@ -329,13 +329,13 @@ in
         '';
       ynattr = {
         runtimeInputs = with pkgs; [
-          yazi
+          config.programs.yazi.package
           custom.shell.nattr
         ];
         text = # sh
           ''
             if [ "$#" -eq 0 ]; then
-                echo "no package specified."
+                echo "No package specified."
                 exit 1
             fi
 
@@ -410,18 +410,26 @@ in
       };
     }
     # nh home doesnt have boot or test
+    // {
+      # home-manager build
+      nsb = {
+        runtimeInputs = [ pkgs.custom.shell.hsw ];
+        text = # sh
+          ''hsw build "$@"'';
+      };
+    }
     // optionalAttrs isNixOS {
       # nixos-rebuild boot
-      nsb = {
+      nsbt = {
         runtimeInputs = [ pkgs.custom.shell.nsw ];
         text = # sh
           ''nsw boot "$@"'';
       };
-      # nixos-rebuild test
-      nst = {
+      # nixos-rebuild build
+      nsb = {
         runtimeInputs = [ pkgs.custom.shell.nsw ];
         text = # sh
-          ''nsw test "$@"'';
+          ''nsw build "$@"'';
       };
     };
 

@@ -23,6 +23,9 @@ in
     radeon.enable = mkEnableOption "AMD GPU" // {
       default = host == "framework";
     };
+    intel.enable = mkEnableOption "Intel GPU" // {
+      default = host == "x1c" || host == "t440";
+    };
     wifi.enable = mkEnableOption "Wifi" // {
       default = isLaptop;
     };

@@ -13,8 +13,5 @@ _: {
   # disable thumbprint reader
   services.fprintd.enable = false;
 
-  # vlc
   services.avahi.enable = true;
-
-  services.hardware.bolt.enable = true;
 }
