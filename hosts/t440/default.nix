@@ -5,7 +5,9 @@ _: {
     qmk.enable = true;
   };
 
-  networking.hostId = "ec7351ab"; # required for zfs
+  boot.loader.grub.gfxmodeEfi = "1600x900";
+
+  networking.hostId = "fc7351ca"; # required for zfs
 
   # touchpad support
   services.libinput.enable = true;
