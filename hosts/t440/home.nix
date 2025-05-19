@@ -12,8 +12,8 @@ in
     monitors = [
       {
         name = "eDP-1";
-        width = 1920;
-        height = 1080;
+        width = 1600;
+        height = 900;
         refreshRate = if config.specialisation == "otg" then 120 else 60;
         workspaces = [
           1
