@@ -6,7 +6,7 @@
   ...
 }:
 let
-  repo_url = "https://raw.githubusercontent.com/elias-ainsworth/dotfiles";
+  repo_url = "https://raw.githubusercontent.com/Elias-Ainsworth/dotfiles";
   user = "nixos";
   mkIso =
     nixpkgs: home-manager: isoPath:
@@ -48,9 +48,9 @@ let
                   tree
                   yazi
                   # custom neovim
-                  self.packages.${system}.thornevim
+                  inputs.thornevim.packages.${pkgs.system}.default
                 ]
-                ++ lib.optionals (lib.hasInfix "plasma" isoPath) [ kitty ];
+                ++ lib.optionals (lib.hasInfix "plasma" isoPath) [ ghostty ];
 
               variables = {
                 EDITOR = "nvim";
@@ -107,7 +107,7 @@ let
                 KbdInteractiveAuthentication = false;
               };
             };
-            systemd.services.sshd.wantedBy = pkgs.mkForce [ "multi-user.target" ];
+            systemd.services.sshd.wantedBy = lib.mkForce [ "multi-user.target" ];
             users.users.root.openssh.authorizedKeys.keyFiles = [
               ../../home-manager/id_rsa.pub
               ../../home-manager/id_ed25519.pub

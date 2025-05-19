@@ -20,7 +20,7 @@ let
       specialArgs = specialArgs // {
         inherit host user isVm;
         isNixOS = true;
-        isLaptop = host == "framework" || host == "x1c" || host == "t520" || host == "t450";
+        isLaptop = host == "framework" || host == "x1c" || host == "t520" || host == "t440";
         dots = "/persist/home/${user}/projects/dotfiles";
       };
 
@@ -38,7 +38,7 @@ let
             extraSpecialArgs = specialArgs // {
               inherit host user isVm;
               isNixOS = true;
-              isLaptop = host == "framework" || host == "x1c" || host == "t520" || host == "t450";
+              isLaptop = host == "framework" || host == "x1c" || host == "t520" || host == "t440";
               dots = "/persist/home/${user}/projects/dotfiles";
             };
 
@@ -67,6 +67,7 @@ in
   framework = mkNixosConfiguration "framework" { };
   x1c = mkNixosConfiguration "x1c" { };
   t520 = mkNixosConfiguration "t520" { };
+  t440 = mkNixosConfiguration "t440" { };
   vm = mkVm "vm" { };
   # hyprland can be used within a VM on AMD
   vm-hyprland = mkVm "vm" {

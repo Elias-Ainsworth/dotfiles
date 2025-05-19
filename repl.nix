@@ -42,10 +42,10 @@ rec {
   t520Hm = t520.hm;
   t520Hmo = t520Hm.custom;
 
-  t450 = flake.nixosConfigurations.t450.config;
-  t450o = t450.custom;
-  t450Hm = t450.hm;
-  t450Hmo = t450Hm.custom;
+  t440 = flake.nixosConfigurations.t440.config;
+  t440o = t440.custom;
+  t440Hm = t440.hm;
+  t440Hmo = t440Hm.custom;
 
   vm = flake.nixosConfigurations.vm.config;
   vmo = vm.custom;
