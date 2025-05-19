@@ -57,11 +57,6 @@ in
       # waybar.persistentWorkspaces = true;
     };
 
-    terminal = {
-      # opacity = "1.0";
-      size = 12;
-    };
-
     persist = {
       home.directories = [
         "Downloads"
