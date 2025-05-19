@@ -56,7 +56,6 @@ _: {
       # }
     ];
 
-    deadbeef.enable = true;
     ghostty.enable = true;
     hyprland = {
       hyprnstack = true;
