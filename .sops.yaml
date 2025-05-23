@@ -9,3 +9,7 @@ creation_rules:
     key_groups:
     - age:
       - *elias-ainsworth
+  - path_regex: nixos/cloudflare-tunnel.json$
+    key_groups:
+    - age:
+      - *elias-ainsworth

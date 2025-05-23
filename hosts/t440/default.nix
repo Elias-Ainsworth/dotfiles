@@ -1,4 +1,11 @@
-_: {
+{ inputs, ... }:
+{
+  imports = [ inputs.pilum-murialis.nixosModules.default ];
+  services.pilum-murialis-xyz = {
+    enable = true;
+    domain = "pilum-murialis.xyz";
+  };
+
   custom = {
     distrobox.enable = true;
     virtualization.enable = true;

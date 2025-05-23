@@ -41,6 +41,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    pilum-murialis = {
+      url = "github:elias-ainsworth/pilum-murialis.xyz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     tmux-thorne = {
       url = "github:elias-ainsworth/tmux-thorne";
       inputs.nixpkgs.follows = "nixpkgs";
