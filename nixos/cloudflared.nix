@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   host,
   ...
 }:
@@ -22,8 +21,8 @@ in
         credentialsFile = config.sops.secrets.cloudflarePilum.path;
         ingress = {
           "pilum-murialis.xyz" = "http://localhost:80";
-          "default" = "404";
         };
+        default = "http_status:404";
       };
     };
 

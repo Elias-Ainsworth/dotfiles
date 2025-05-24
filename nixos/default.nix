@@ -31,6 +31,7 @@ in
     ./auth.nix
     ./bluetooth.nix
     ./boot.nix
+    ./cloudflared.nix
     ./configuration.nix
     ./docker.nix
     ./gaming.nix
