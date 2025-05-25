@@ -4,6 +4,8 @@
   services.pilum-murialis-xyz = {
     enable = true;
     domain = "pilum-murialis.xyz";
+    contentRepo = "https://github.com/Elias-Ainsworth/blog.pilum-murialis.xyz";
+    # email = "pilum-murialis.toge@gmail.com";
   };
 
   custom = {

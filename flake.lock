@@ -687,11 +687,11 @@
         "systems": "systems_5"
       },
       "locked": {
-        "lastModified": 1747899542,
-        "narHash": "sha256-nkjaVrfmhJAMuxjh2uJ5kIcuzr6mdf8jxT9bDSQrS7U=",
+        "lastModified": 1748149349,
+        "narHash": "sha256-ZMardRMSwZGQBKY+8MI9obxtSvo+utqP71MAvTQZvH0=",
         "owner": "elias-ainsworth",
         "repo": "pilum-murialis.xyz",
-        "rev": "725a35ff9472c85faea34473cac81b2de278e13e",
+        "rev": "2d380201d67d71e5f704dd374d1fdd32c0b831ff",
         "type": "github"
       },
       "original": {
