@@ -57,17 +57,18 @@ in
       # use nixfmt-rfc-style as the default
       nixfmt = prev.nixfmt-rfc-style;
 
-      swww = prev.swww.overrideAttrs (
-        sources.swww
-        // {
-          # creating an overlay for buildRustPackage overlay
-          # https://discourse.nixos.org/t/is-it-possible-to-override-cargosha256-in-buildrustpackage/4393/3
-          cargoDeps = prev.rustPlatform.importCargoLock {
-            lockFile = "${sources.swww.src}/Cargo.lock";
-            allowBuiltinFetchGit = true;
-          };
-        }
-      );
+      # swww = prev.swww.overrideAttrs (
+      #   o:
+      #   sources.swww
+      #   // {
+      #     # creating an overlay for buildRustPackage overlay
+      #     # https://discourse.nixos.org/t/is-it-possible-to-override-cargosha256-in-buildrustpackage/4393/3
+      #     cargoDeps = prev.rustPlatform.importCargoLock {
+      #       lockFile = "${sources.swww.src}/Cargo.lock";
+      #       allowBuiltinFetchGit = true;
+      #     };
+      #   }
+      # );
 
       # wallust = prev.wallust.overrideAttrs (
       #   sources.wallust
@@ -83,6 +84,14 @@ in
 
       # nsig keeps breaking, so use updated version from github
       yt-dlp = prev.yt-dlp.overrideAttrs sources.yt-dlp;
+
+      # fix mpv purple screen
+      # https://github.com/NixOS/nixpkgs/issues/412382
+      mpv-unwrapped = prev.mpv-unwrapped.override {
+        libplacebo = prev.libplacebo.overrideAttrs (o: {
+          patches = (o.patches or [ ]) ++ [ ./mpv-fix-libplacebo.patch ];
+        });
+      };
     })
   ];
 }

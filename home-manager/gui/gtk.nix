@@ -5,15 +5,7 @@
   ...
 }:
 let
-  inherit (config.custom) colorscheme;
-  inherit (lib)
-    attrNames
-    mkIf
-    mkMerge
-    mkOption
-    optionals
-    concatStringsSep
-    ;
+  inherit (lib) attrNames mkIf mkOption;
   inherit (lib.types) attrsOf enum str;
 in
 {
@@ -60,10 +52,8 @@ in
           size = 28;
           gtk.enable = true;
           x11.enable = true;
+          hyprcursor.enable = config.custom.hyprland.enable;
         };
-
-        # plasma seems to override this file?
-        file.${config.gtk.gtk2.configLocation}.force = true;
       };
 
       dconf.settings = {
@@ -81,13 +71,13 @@ in
       gtk = {
         enable = true;
         theme = {
-          name = "catppuccin-${colorscheme.variant}-${defaultAccent}-compact";
-
+          name = "catppuccin-mocha-${defaultAccent}-compact";
           package = pkgs.catppuccin-gtk.override {
-            accents = attrNames accents; # Allow all accents
+            # allow all accents so the closest matching color can be selected by dotfiles-rs
+            accents = attrNames accents;
             variant = "mocha";
             tweaks = [
-              # "black"  # Black tweak for OLED
+              # "black" # black tweak for oled
               # "rimless"
             ];
             size = "compact";
@@ -98,11 +88,14 @@ in
           package = pkgs.custom.tela-dynamic-icon-theme.override { colors = accents; };
         };
         font = {
-          name = "${config.custom.fonts.regular}, ${config.custom.fonts.weeb}";
+          name = config.custom.fonts.regular;
           package = pkgs.geist-font;
           size = 10;
         };
-        gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
+        gtk2 = {
+          configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
+          force = true; # plasma seems to override this file?
+        };
         gtk3.extraConfig = {
           gtk-application-prefer-dark-theme = 1;
           gtk-error-bell = 0;

@@ -1,5 +1,6 @@
 _: {
   custom = {
+    qmk.enable = true;
     virtualization.enable = true;
   };
 

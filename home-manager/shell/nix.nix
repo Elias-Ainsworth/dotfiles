@@ -354,6 +354,8 @@ in
           config.programs.fzf.package
           nix-search-tv
         ];
+        # ignore checks since i didn't write this
+        checkPhase = "";
         text = builtins.readFile "${pkgs.nix-search-tv.src}/nixpkgs.sh";
       };
       # what depends on the given package in the current nixos install?
@@ -430,6 +432,12 @@ in
         runtimeInputs = [ pkgs.custom.shell.nsw ];
         text = # sh
           ''nsw build "$@"'';
+      };
+      # nixos-rebuild test
+      nst = {
+        runtimeInputs = [ pkgs.custom.shell.nsw ];
+        text = # sh
+          ''nsw test "$@"'';
       };
     };
 

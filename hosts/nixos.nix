@@ -20,7 +20,7 @@ let
       specialArgs = specialArgs // {
         inherit host user isVm;
         isNixOS = true;
-        isLaptop = host == "framework" || host == "x1c" || host == "t520" || host == "t440";
+        isLaptop = host == "framework" || host == "x1c" || host == "t520"; # || host == "t440";
         dots = "/persist/home/${user}/projects/dotfiles";
       };
 
@@ -38,7 +38,7 @@ let
             extraSpecialArgs = specialArgs // {
               inherit host user isVm;
               isNixOS = true;
-              isLaptop = host == "framework" || host == "x1c" || host == "t520" || host == "t440";
+              isLaptop = host == "framework" || host == "x1c" || host == "t520"; # || host == "t440";
               dots = "/persist/home/${user}/projects/dotfiles";
             };
 

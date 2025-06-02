@@ -34,7 +34,6 @@ in
           # blame with ignore whitespace and track movement across all commits
           blame = "blame -w -C -C -C";
           diff = "diff --word-diff";
-          cdiff = "diff --no-ext-diff";
         };
         branch = {
           master = {
@@ -83,6 +82,7 @@ in
       gcaam = "git add --all && git commit --amend";
       gcam = "git commit --amend";
       gco = "git checkout";
+      gdiff = "git diff --no-ext-diff";
       gl = "git pull";
       glg = "git log";
       gm = "git merge";

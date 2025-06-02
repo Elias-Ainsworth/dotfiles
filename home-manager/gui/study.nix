@@ -14,7 +14,6 @@ in
 
   config = mkIf config.custom.study.enable {
     home.packages = with pkgs; [
-      anki
       bibletime
       kjv
       lowfi
@@ -25,7 +24,6 @@ in
       home.directories = [
         ".bibletime/"
         ".sword/"
-        ".local/share/Anki2"
       ];
     };
   };
