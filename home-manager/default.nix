@@ -154,11 +154,13 @@ in
     custom = {
       fonts.packages = with pkgs; [
         inputs.mamelon.packages.${system}.default
+        nerd-fonts.iosevka
         nerd-fonts.geist-mono
         nerd-fonts.jetbrains-mono
         noto-fonts
         noto-fonts-cjk-sans
         noto-fonts-emoji
+        (iosevka-bin.override { variant = "Etoile"; })
       ];
 
       persist = {

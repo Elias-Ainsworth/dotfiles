@@ -4,6 +4,7 @@ _: {
     ./brave.nix
     ./dunst.nix
     ./emacs.nix
+    ./game-dev.nix
     ./gaming.nix
     ./ghostty.nix
     ./gtk.nix

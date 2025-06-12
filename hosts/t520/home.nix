@@ -36,6 +36,7 @@ _: {
     ];
 
     colorscheme.transparent = true;
+    game-dev.enable = true;
     gaming.enable = true;
     ghostty.enable = true;
     hyprland = {

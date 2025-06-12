@@ -39,7 +39,7 @@ mkMerge [
         log = {
           enabled = true;
         };
-        manager = {
+        mgr = {
           ratio = [
             0
             1

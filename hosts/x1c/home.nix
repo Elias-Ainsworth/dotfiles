@@ -14,6 +14,7 @@ in
         name = "eDP-1";
         width = 1920;
         height = 1080;
+        scale = 1.2;
         refreshRate = if config.specialisation == "otg" then 120 else 60;
         workspaces = [
           1
@@ -36,7 +37,10 @@ in
       transparent = true;
     };
     beets.enable = false;
-    fonts.monospace = "Geist Mono NerdFont";
+    fonts = {
+      regular = "Iosevka Etoile";
+      monospace = "Iosevka Nerd Font";
+    };
     gaming.enable = false;
     ghostty.enable = true;
     helix.enable = true;

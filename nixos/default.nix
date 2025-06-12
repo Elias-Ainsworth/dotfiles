@@ -136,6 +136,7 @@ in
       systemPackages =
         with pkgs;
         [
+          bonk
           curl
           eza
           killall
