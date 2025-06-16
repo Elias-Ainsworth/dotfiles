@@ -8,7 +8,7 @@ let
   inherit (lib) getExe mkIf;
 in
 mkIf (!config.custom.headless) {
-  programs.chromium = {
+  programs.brave = {
     enable = true;
     package = pkgs.brave;
 
@@ -25,9 +25,6 @@ mkIf (!config.custom.headless) {
       { id = "jlmpjdjjbgclbocgajdjefcidcncaied"; }
       # Dark Reader
       { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; }
-      # F*ck Honey!
-      # Honey
-      # { id = "bmnlcjabgnpnenekpadlanbbkooimhnj"; }
       # JSON Viewer
       { id = "gbmdgpbipfallnflgajpaliibnhdgobh"; }
       # Looty
