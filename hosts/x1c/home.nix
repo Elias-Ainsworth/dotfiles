@@ -42,7 +42,7 @@ in
       monospace = "Iosevka Nerd Font";
     };
     gaming.enable = false;
-    ghostty.enable = true;
+    gamma.enable = true;
     helix.enable = true;
     modelling3d.enable = true;
     mpd.enable = true;

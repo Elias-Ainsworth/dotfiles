@@ -6,6 +6,7 @@ _: {
     ./emacs.nix
     ./game-dev.nix
     ./gaming.nix
+    ./gamma.nix
     ./ghostty.nix
     ./gtk.nix
     ./librewolf.nix
