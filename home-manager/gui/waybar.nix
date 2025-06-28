@@ -126,8 +126,7 @@ in
 
         "custom/nix" = {
           format = "󱄅";
-          on-click = "rofi -show drun";
-          on-click-right = "wallpaper rofi";
+          on-click = "exec, uwsm app -- rofi-power-menu";
           tooltip = false;
         };
 
@@ -147,29 +146,7 @@ in
           #   default = "·";
           #   urgent = "󰊠";
           # };
-          format = "{icon}";
-          format-icons = {
-            "1" = "α";
-            "2" = "β";
-            "3" = "γ";
-            "4" = "δ";
-            "5" = "ε";
-            "6" = "ζ";
-            "7" = "η";
-            "8" = "θ";
-            "9" = "ι";
-            "10" = "κ";
-            # "1" = "一";
-            # "2" = "二";
-            # "3" = "三";
-            # "4" = "四";
-            # "5" = "五";
-            # "6" = "六";
-            # "7" = "七";
-            # "8" = "八";
-            # "9" = "九";
-            # "10" = "十";
-          };
+          format = "{name}";
         };
 
         # "hyprland/window" = {
