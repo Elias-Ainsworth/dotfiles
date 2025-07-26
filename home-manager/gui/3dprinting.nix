@@ -42,7 +42,7 @@ in
     modelling3d.enable = mkEnableOption "3d modelling";
   };
 
-  config = mkIf (!config.custom.headless) (mkMerge [
+  config = mkIf (config.custom.wm != "tty") (mkMerge [
     # slicers
     (mkIf config.custom.printing3d.enable {
       home.packages = [
@@ -99,7 +99,14 @@ in
     # CAD
     (mkIf config.custom.modelling3d.enable {
       home.packages = [
-        pkgs.freecad-wayland
+        # freecad segfaults on starup on nvidia
+        # https://github.com/NixOS/nixpkgs/issues/366299
+        (
+          if (config.custom.wm == "hyprland") then
+            (nvidiaSoftwareRenderingWorkaround "FreeCAD" pkgs.freecad-wayland)
+          else
+            pkgs.freecad-wayland
+        )
       ];
 
       custom.persist = {

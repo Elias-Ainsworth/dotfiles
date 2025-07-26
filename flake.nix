@@ -19,6 +19,11 @@
 
     # hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1&rev=918d8340afd652b011b937d29d5eea0be08467f5";
 
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     impermanence.url = "github:nix-community/impermanence";
 
     sops-nix = {
@@ -104,7 +109,7 @@
         inherit pkgs;
         inherit (inputs) home-manager;
       };
-      createCommonArgs = system: {
+      commonArgsForSystem = system: {
         inherit
           self
           inputs
@@ -117,7 +122,7 @@
           inherit self inputs;
         };
       };
-      commonArgs = createCommonArgs system;
+      commonArgs = commonArgsForSystem system;
       # call with forAllSystems (commonArgs: function body)
       forAllSystems =
         fn:
@@ -126,7 +131,7 @@
           "aarch64-linux"
           "x86_64-darwin"
           "aarch64-darwin"
-        ] (system: fn (createCommonArgs system));
+        ] (system: fn (commonArgsForSystem system));
     in
     {
       nixosConfigurations = (import ./hosts/nixos.nix commonArgs) // (import ./hosts/iso commonArgs);
@@ -140,8 +145,7 @@
 
       inherit lib self;
 
-      packages = forAllSystems (commonArgs': (import ./packages commonArgs'));
-
+      packages = forAllSystems (import ./packages);
       # templates for devenvs
       templates = import ./templates;
     };

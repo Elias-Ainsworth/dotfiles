@@ -6,8 +6,17 @@
   ...
 }:
 let
-  inherit (lib) mkIf mkOption optionals;
-  inherit (lib.types) enum int nullOr;
+  inherit (lib)
+    mkIf
+    mkOption
+    optionals
+    ;
+  inherit (lib.types)
+    enum
+    int
+    nullOr
+    package
+    ;
   cfg = config.custom.rofi;
   rofiThemes = pkgs.custom.rofi-themes;
   patchRasi =
@@ -94,40 +103,32 @@ in
         description = "Rofi launcher width";
       };
     };
+
+    # allow setting a custom rofi-power-menu package to add the reboot to windows option
+    rofi-power-menu = {
+      package = mkOption {
+        type = package;
+        default = pkgs.custom.rofi-power-menu.override {
+          reboot-to-windows =
+            if (config.custom.mswindows && isNixOS) then pkgs.custom.shell.reboot-to-windows else null;
+        };
+        description = "Package to use for rofi-wifi-menu";
+      };
+    };
   };
 
-  config = mkIf (!config.custom.headless) {
+  config = mkIf (config.custom.wm != "tty") {
     programs.rofi = {
       enable = true;
       package = pkgs.rofi-wayland.override {
         plugins = [ rofiThemes ];
-      };
-      extraConfig = {
-        show-icons = true;
-        kb-remove-char-back = "BackSpace";
-        kb-remove-word-back = "Control+BackSpace";
-        kb-accept-entry = "Control+m,Return,KP_Enter";
-        kb-mode-next = "Control+Alt+l";
-        kb-mode-previous = "Control+Alt+h";
-        kb-row-up = "Control+k,Control+p,Up";
-        kb-row-down = "Control+j,Control+n,Down";
-        kb-row-left = "Control+h";
-        kb-row-right = "Control+l";
-        kb-mode-complete = "Control+Shift+L";
-        kb-delete-entry = "Control+semicolon";
-        kb-remove-char-forward = "";
-        kb-remove-to-sol = "";
-        kb-remove-to-eol = "";
       };
       theme = "${config.xdg.cacheHome}/wallust/rofi.rasi";
     };
 
     home.packages = [
       # NOTE: rofi-power-menu only works for powermenuType = 4!
-      (pkgs.custom.rofi-power-menu.override {
-        reboot-to-windows =
-          if (config.custom.mswindows && isNixOS) then pkgs.custom.shell.reboot-to-windows else null;
-      })
+      config.custom.rofi-power-menu.package
     ] ++ (optionals config.custom.wifi.enable [ pkgs.custom.rofi-wifi-menu ]);
 
     # add blur for rofi shutdown
@@ -144,6 +145,22 @@ in
         "center,class:(Rofi)"
         "rounding 12,class:(Rofi)"
         "dimaround,class:(Rofi)"
+      ];
+    };
+
+    programs.niri.settings = {
+      # fake dimaround, see:
+      # https://github.com/YaLTeR/niri/discussions/1806
+      layer-rules = [
+        {
+          matches = [ { namespace = "^rofi$"; } ];
+          shadow = {
+            enable = true;
+            spread = 1024;
+            draw-behind-window = true;
+            color = "0000009A";
+          };
+        }
       ];
     };
 

@@ -13,13 +13,12 @@ in
   custom = {
     # hardware
     hdds.enable = true;
-    qmk.enable = false;
+    qmk.enable = true;
     zfs.encryption = false;
 
     # software
     bittorrent.enable = true;
     distrobox.enable = true;
-    # plasma.enable = true;
     syncoid.enable = true;
     vercel.enable = true;
     virtualization.enable = true;

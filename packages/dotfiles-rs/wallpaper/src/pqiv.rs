@@ -1,37 +1,66 @@
 use common::wallpaper;
-use hyprland::dispatch;
-use hyprland::{
-    data::Monitor,
-    dispatch::{Dispatch, DispatchType},
-    shared::HyprDataActive,
-};
 use itertools::Itertools;
 
-fn pqiv_float_rule() -> String {
+#[cfg_attr(not(feature = "hyprland"), allow(dead_code))]
+fn pqiv_hyprland_float_rule() -> String {
     const TARGET_PERCENT: f64 = 0.3;
 
-    let mon = Monitor::get_active().expect("could not get active monitor");
-
-    let mut width = f64::from(mon.width) * TARGET_PERCENT;
-    let mut height = f64::from(mon.height) * TARGET_PERCENT;
+    use hyprland::shared::HyprDataActive;
+    let mon = hyprland::data::Monitor::get_active().expect("could not get active monitor");
 
     // handle vertical monitor
-    if height > width {
-        std::mem::swap(&mut width, &mut height);
-    }
+    let width = f64::from(mon.width.max(mon.height)) * TARGET_PERCENT;
+    // target 16: 9 aspect ratio
+    let height = width / 16.0 * 9.0;
 
     format!("[float;size {} {};center]", width.floor(), height.floor())
 }
 
+#[cfg_attr(not(feature = "niri"), allow(dead_code))]
+fn niri_window_title() -> String {
+    use niri_ipc::{Request, Response, socket::Socket};
+
+    // append monitor name to title so relevant window-rule can match it
+    let Ok(Response::FocusedOutput(Some(curr_mon))) = Socket::connect()
+        .expect("failed to connect to niri socket")
+        .send(Request::FocusedOutput)
+        .expect("failed to send FocusedOutput request to niri")
+    else {
+        panic!("Failed to get focused output from niri");
+    };
+
+    format!("wallpaper-rofi-{}", curr_mon.name)
+}
+
 #[allow(clippy::module_name_repetitions)]
 pub fn show_pqiv() {
-    let pqiv = format!(
-        "{} pqiv --shuffle '{}'",
-        pqiv_float_rule(),
-        &wallpaper::dir().to_str().expect("invalid wallpaper dir")
-    );
+    let wall_dir = wallpaper::dir();
+    let wall_dir = wall_dir.to_str().expect("invalid wallpaper dir");
 
-    dispatch!(Exec, &pqiv).expect("failed to execute pqiv");
+    #[cfg(feature = "hyprland")]
+    {
+        // hyprland allows setting rules while spawning
+        let pqiv = format!(
+            "{} pqiv --shuffle '{}'",
+            pqiv_hyprland_float_rule(),
+            &wall_dir
+        );
+
+        {
+            use hyprland::dispatch::{Dispatch, DispatchType};
+            hyprland::dispatch!(Exec, &pqiv).expect("failed to execute pqiv");
+        }
+    }
+
+    #[cfg(feature = "niri")]
+    {
+        use execute::Execute;
+
+        execute::command_args!("pqiv", "--shuffle", "--window-title", niri_window_title())
+            .arg(wall_dir)
+            .execute()
+            .expect("failed to execute pqiv");
+    }
 }
 
 pub fn show_history() {
@@ -42,15 +71,33 @@ pub fn show_history() {
         .map(|(path, _)| path)
         .collect_vec();
 
-    let pqiv = format!(
-        "{} pqiv {}",
-        pqiv_float_rule(),
-        history
+    #[cfg(feature = "hyprland")]
+    {
+        let history = history
             .iter()
             .map(|p| format!("'{}'", p.display()))
             .collect_vec()
-            .join(" ")
-    );
+            .join(" ");
+        let pqiv = format!("{} pqiv {}", pqiv_hyprland_float_rule(), history);
 
-    dispatch!(Exec, &pqiv).expect("failed to execute pqiv");
+        {
+            use hyprland::dispatch::{Dispatch, DispatchType};
+            hyprland::dispatch!(Exec, &pqiv).expect("failed to execute pqiv");
+        }
+    }
+
+    #[cfg(feature = "niri")]
+    {
+        use execute::Execute;
+
+        let history = history
+            .iter()
+            .map(|p| p.display().to_string())
+            .collect_vec();
+
+        execute::command_args!("pqiv", "--window-title", niri_window_title())
+            .args(history)
+            .execute()
+            .expect("failed to execute pqiv");
+    }
 }

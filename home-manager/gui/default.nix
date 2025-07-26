@@ -1,8 +1,10 @@
 _: {
   imports = [
+    ./hyprland
+    ./niri
+    ./wm
     ./3dprinting.nix
     ./brave.nix
-    ./dunst.nix
     ./emacs.nix
     ./game-dev.nix
     ./gaming.nix
@@ -15,16 +17,14 @@ _: {
     ./nixcord.nix
     ./obs-studio.nix
     ./pathofbuilding.nix
+    ./plasma.nix
     ./pqiv.nix
     ./qt.nix
     ./rofi.nix
     ./study.nix
     ./vlc.nix
-    ./vscode.nix
-    ./wallust.nix
-    ./waybar.nix
     ./weeb
-    ./wm.nix
+    ./vscode.nix
     ./zathura.nix
     ./zoom.nix
   ];

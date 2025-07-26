@@ -60,23 +60,28 @@ in
       hidden = false;
       # waybar.persistentWorkspaces = true;
     };
+    wm = "niri";
 
     terminal = {
       # opacity = "1.0";
       size = 12;
     };
 
+    # don't blind me on startup
+    startup = [
+      {
+        spawn = [
+          (getExe pkgs.brightnessctl)
+          "s"
+          "20%"
+        ];
+      }
+    ];
+
     persist = {
       home.directories = [
         "Downloads"
       ];
     };
-  };
-
-  wayland.windowManager.hyprland.settings = {
-    exec-once = [
-      # don't blind me on startup
-      "${getExe pkgs.brightnessctl} s 75%"
-    ];
   };
 }

@@ -5,9 +5,11 @@ _: {
         name = "DP-2";
         width = 3440;
         height = 1440;
-        refreshRate = 144;
-        # vrr = true;
-        position = "1440x1080";
+        # niri wants this to be exact down to the decimals
+        # refreshRate = if config.custom.wm == "hyprland" then 144 else "143.975";
+        vrr = false;
+        position-x = 1440;
+        position-y = 1080;
         workspaces = [
           1
           2
@@ -20,7 +22,8 @@ _: {
         name = "DP-1";
         width = 2560;
         height = 1440;
-        position = "0x728";
+        position-x = 0;
+        position-y = 728;
         transform = 1;
         workspaces = [
           6
@@ -32,7 +35,8 @@ _: {
         name = "HDMI-A-1";
         width = 3840;
         height = 2160;
-        position = "1754x0";
+        position-x = 1754;
+        position-y = 0;
         scale = 2.0;
         workspaces = [
           8
@@ -45,7 +49,8 @@ _: {
       #   name = "DP-3";
       #   width = 2256;
       #   height = 1504;
-      #   position = "4880x1080";
+      #   position-x = 4880;
+      #   position-y = 1080;
       #   scale = 1.5666666666666666; # 47/30
       #   transform = 3;
       #   workspaces = [
@@ -56,13 +61,15 @@ _: {
       # }
     ];
 
+    deadbeef.enable = true;
     ghostty.enable = true;
     hyprland = {
       hyprnstack = true;
-      lock = false;
       qtile = false;
     };
+    lock.enable = false;
     modelling3d.enable = true;
+    niri.blur.enable = false;
     nvidia.enable = true;
     printing3d.enable = true;
     obs-studio.enable = false;
@@ -70,7 +77,7 @@ _: {
     rclip.enable = true;
     vlc.enable = true;
     wallfacer.enable = true;
-    wallpaper-extras.enable = true;
+    wallpaper-tools.enable = true;
     # wallust.colorscheme = "tokyo-night";
     waybar = {
       enable = true;

@@ -5,12 +5,10 @@
 }:
 let
   inherit (lib)
-    getExe
     mkEnableOption
     mkIf
     ;
   cfg = config.custom.ghostty;
-  isGhosttyDefault = config.custom.terminal.package == config.programs.ghostty.package;
   inherit (config.custom) terminal;
 in
 {
@@ -24,8 +22,8 @@ in
 
   config = mkIf cfg.enable {
     custom.terminal = {
+      app-id = "com.mitchellh.ghostty";
       desktop = "com.mitchellh.ghostty.desktop";
-      exec = mkIf isGhosttyDefault "${getExe config.programs.ghostty.package} -e";
     };
 
     programs.ghostty = {
@@ -34,14 +32,16 @@ in
       enableFishIntegration = true;
       settings = {
         alpha-blending = "linear-corrected";
-        background-opacity = terminal.opacity;
+        background-opacity =
+          terminal.opacity
+          # more opaque on niri as there is no blur
+          + (if (config.custom.wm == "niri" && !config.custom.niri.blur.enable) then 0.1 else 0);
         confirm-close-surface = false;
         copy-on-select = "clipboard";
         # disable clipboard copy notifications temporarily until fixed upstream
         # https://github.com/ghostty-org/ghostty/issues/4800#issuecomment-2685774252
         app-notifications = "no-clipboard-copy";
         cursor-style = "bar";
-        theme = "GruvboxDarkHard";
         font-family = terminal.font;
         font-feature = "zero";
         font-size = terminal.size;

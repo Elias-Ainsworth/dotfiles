@@ -11,7 +11,7 @@ let
   inherit (lib) concatStringsSep mkIf optionals;
   configPath = ".config/.librewolf";
 in
-mkIf (!config.custom.headless) {
+mkIf (config.custom.wm != "tty") {
   programs.librewolf = {
     enable = true;
     package = pkgs.librewolf.overrideAttrs (o: {
@@ -24,7 +24,6 @@ mkIf (!config.custom.headless) {
             --append-flags "${
               concatStringsSep " " (
                 [
-                  "--name librewolf"
                   # load librewolf profile with same name as user
                   "--profile ${config.home.homeDirectory}/${configPath}/${user}"
                 ]

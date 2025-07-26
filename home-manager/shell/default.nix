@@ -8,15 +8,20 @@
 let
   inherit (lib)
     attrValues
-    getExe
     mkIf
     mkOption
     ;
-  inherit (lib.types) int package str;
+  inherit (lib.types)
+    float
+    int
+    package
+    str
+    ;
 in
 {
   imports = [
     ./bash.nix
+    ./bat.nix
     ./btop.nix
     ./cava.nix
     ./direnv.nix
@@ -48,19 +53,18 @@ in
       package = mkOption {
         type = package;
         default = config.programs.ghostty.package;
-        description = "Terminal package to use.";
+        description = "Package to use for the terminal.";
+      };
+
+      app-id = mkOption {
+        type = str;
+        description = "app-id (wm class) for the terminal";
       };
 
       desktop = mkOption {
         type = str;
         default = "${config.custom.terminal.package.pname}.desktop";
         description = "Name of desktop file for the terminal";
-      };
-
-      exec = mkOption {
-        type = str;
-        default = getExe config.custom.terminal.package;
-        description = "Terminal command to execute other programs.";
       };
 
       font = mkOption {
@@ -82,8 +86,8 @@ in
       };
 
       opacity = mkOption {
-        type = str;
-        default = "0.85";
+        type = float;
+        default = 0.85;
         description = "Opacity for the terminal.";
       };
     };
@@ -119,34 +123,6 @@ in
     ];
 
     programs = {
-      bat = {
-        enable = true;
-        config = {
-          style = "grid";
-        };
-        extraPackages = [
-          (pkgs.symlinkJoin {
-            name = "batman";
-            paths = [ pkgs.bat-extras.batman ];
-            postBuild = # sh
-              ''
-                mkdir -p $out/share/bash-completion/completions
-                echo 'complete -F _comp_cmd_man batman' > $out/share/bash-completion/completions/batman
-
-                mkdir -p $out/share/fish/vendor_completions.d
-                echo 'complete batman --wraps man' > $out/share/fish/vendor_completions.d/batman.fish
-
-                mkdir -p $out/share/zsh/site-functions
-                cat << EOF > $out/share/zsh/site-functions/_batman
-                #compdef batman
-                _man "$@"
-                EOF
-              '';
-            meta.mainProgram = "batman";
-          })
-        ];
-      };
-
       fzf = {
         enable = true;
         enableBashIntegration = true;

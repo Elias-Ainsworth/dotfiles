@@ -26,8 +26,8 @@ let
       };
 
       modules = [
-        inputs.nix-index-database.hmModules.nix-index
-        inputs.nvf.homeManagerModules.nvf
+        inputs.nix-index-database.homeModules.nix-index
+        inputs.niri.homeModules.niri
         ./${host}/home.nix # host specific home-manager configuration
         ../home-manager
         ../overlays

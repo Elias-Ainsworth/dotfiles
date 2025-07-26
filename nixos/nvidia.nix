@@ -11,8 +11,8 @@ let
     optionalAttrs
     versionOlder
     ;
+  # NOTE: nvidia.enable is a home-manager option so it can be referenced within home-manager as well
 in
-# NOTE: nvidia.enable is a home-manager option so it can be referenced within home-manager as well
 mkIf config.hm.custom.nvidia.enable {
   # enable nvidia support
   services.xserver.videoDrivers = [ "nvidia" ];
@@ -35,7 +35,7 @@ mkIf config.hm.custom.nvidia.enable {
         let
           betaPkg = config.boot.kernelPackages.nvidiaPackages.beta;
         in
-        assert (assertMsg (versionOlder betaPkg.version "575.58") "nvidia updated, check orca-slicer");
+        assert (assertMsg (versionOlder betaPkg.version "575.65") "nvidia updated, check orca-slicer");
         betaPkg;
     };
     graphics.extraPackages = with pkgs; [
@@ -45,7 +45,7 @@ mkIf config.hm.custom.nvidia.enable {
     ];
   };
 
-  environment.variables = optionalAttrs config.programs.hyprland.enable {
+  environment.variables = optionalAttrs config.hm.custom.isWm {
     LIBVA_DRIVER_NAME = "nvidia";
     GBM_BACKEND = "nvidia-drm";
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";

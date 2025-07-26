@@ -27,7 +27,7 @@ in
     };
   };
 
-  config = mkIf (!config.custom.headless) (mkMerge [
+  config = mkIf (config.custom.wm != "tty") (mkMerge [
     {
       programs.mpv = {
         enable = isNixOS;
@@ -122,6 +122,16 @@ in
         # fix mpv-dynamic-crop unmaximizing the window
         "suppressevent maximize,class:(mpv)"
       ];
+
+      # open full height in niri
+      # programs.niri.settings.window-rules = [
+      #   {
+      #     matches = [ { app-id = "^mpv$"; } ];
+      #     default-window-height = {
+      #       proportion = 1.0;
+      #     };
+      #   }
+      # ];
 
       home.packages = with pkgs; [ ffmpeg ];
 

@@ -1,32 +1,12 @@
 let
-  c = {
-    path = ./c;
-    description = "C dev environment";
-  };
-
-  cplusplus = {
-    path = ./cplusplus;
-    description = "C++ dev environment";
-  };
-
-  haskell = {
-    path = ./haskell;
-    description = "Haskell dev environment";
-  };
-
   javascript = {
     path = ./javascript;
     description = "Javascript / Typescript dev environment";
   };
 
-  latex = {
-    path = ./latex;
-    description = "LaTex / Tex dev environment";
-  };
-
-  ocaml = {
-    path = ./ocaml;
-    description = "OCaml dev environment";
+  javascript-devenv = {
+    path = ./javascript-devenv;
+    description = "Javascript / Typescript dev environment using devenv";
   };
 
   python = {
@@ -38,27 +18,18 @@ let
     path = ./rust;
     description = "Rust dev environment";
   };
-
 in
 {
   inherit
-    c
-    cplusplus
-    haskell
     javascript
-    latex
-    ocaml
+    javascript-devenv
     python
     rust
     ;
-
-  # c = c would be fucking stupid
-  cpp = cplusplus;
   js = javascript;
   ts = javascript;
-  hs = haskell;
-  tx = latex;
-  ml = ocaml;
+  js-devenv = javascript-devenv;
+  ts-devenv = javascript-devenv;
   py = python;
   rs = rust;
 }

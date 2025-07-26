@@ -7,7 +7,6 @@
 
   outputs =
     {
-      self,
       nixpkgs,
       devenv,
       systems,
@@ -15,8 +14,7 @@
     }@inputs:
     let
       forEachSystem =
-        function:
-        nixpkgs.lib.genAttrs [ "x86_64-linux" ] (system: function nixpkgs.legacyPackages.${system});
+        function: nixpkgs.lib.genAttrs (import systems) (system: function nixpkgs.legacyPackages.${system});
     in
     {
       devShells = forEachSystem (pkgs: {
@@ -36,7 +34,6 @@
         };
       });
 
-      packages = forEachSystem (pkgs: rec {
-      });
+      packages = forEachSystem (pkgs: { });
     };
 }

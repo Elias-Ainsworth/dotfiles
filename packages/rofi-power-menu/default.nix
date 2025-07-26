@@ -5,7 +5,7 @@
   libnotify,
   networkmanager,
   procps,
-  rofi,
+  rofi-wayland,
   reboot-to-windows ? null,
 }:
 stdenvNoCC.mkDerivation {
@@ -34,7 +34,7 @@ stdenvNoCC.mkDerivation {
             procps # for uptime
             libnotify
             networkmanager
-            rofi
+            rofi-wayland
             reboot-to-windows
           ]
         }
@@ -45,7 +45,7 @@ stdenvNoCC.mkDerivation {
     homepage = "https://github.com/adi1090x/rofi";
     license = lib.licenses.gpl3Only;
     maintainers = [ lib.maintainers.iynaix ];
-    mainProgram = "rofi-wifi-menu";
+    mainProgram = "rofi-power-menu";
     platforms = lib.platforms.all;
   };
 }

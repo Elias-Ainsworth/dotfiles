@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ lib, pkgs, ... }:
 let
   inherit (lib) getExe;
 in
@@ -14,7 +9,7 @@ in
         name = "eDP-1";
         width = 2880;
         height = 1920;
-        refreshRate = if config.specialisation == "otg" then 120 else 60;
+        refreshRate = 120;
         scale = 1.5;
         vrr = true;
         workspaces = [
@@ -39,6 +34,17 @@ in
     wallfacer.enable = true;
     waybar.hidden = true;
 
+    # don't blind me on startup
+    startup = [
+      {
+        spawn = [
+          (getExe pkgs.brightnessctl)
+          "s"
+          "20%"
+        ];
+      }
+    ];
+
     persist = {
       home.directories = [ "Downloads" ];
     };
@@ -46,12 +52,5 @@ in
 
   programs.btop.settings = {
     custom_gpu_name0 = "AMD Radeon 780M";
-  };
-
-  wayland.windowManager.hyprland.settings = {
-    exec-once = [
-      # don't blind me on startup
-      "${getExe pkgs.brightnessctl} s 20%"
-    ];
   };
 }

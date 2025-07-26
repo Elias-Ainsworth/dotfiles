@@ -11,9 +11,7 @@ let
   inherit (lib)
     hasPrefix
     mapAttrsToList
-    mkEnableOption
     mkOption
-    optional
     optionals
     ;
   inherit (lib.types)
@@ -28,7 +26,6 @@ in
 {
   imports = [
     ./hardware.nix
-    ./hyprland
     ./gui
     ./impermanence.nix # only contains options
     ./shell
@@ -39,6 +36,11 @@ in
       type = nullOr str;
       default = null;
       description = "Command to run after autologin";
+    };
+    currentSpecialisation = mkOption {
+      type = str;
+      default = "";
+      description = "The current specialisation being used";
     };
     colorscheme = {
       theme = mkOption {
@@ -77,10 +79,6 @@ in
         type = listOf package;
         description = "The packages to install for the fonts";
       };
-    };
-    headless = mkEnableOption "headless mode" // {
-      default = false;
-      description = "Whether to enable headless mode, no GUI programs will be available";
     };
     symlinks = mkOption {
       type = attrsOf str;
@@ -128,9 +126,9 @@ in
           trash-cli
           xdg-utils
         ]
-        ++ (optional config.custom.helix.enable helix)
+        ++ (optionals config.custom.helix.enable [ helix ])
         # home-manager executable only on nixos
-        ++ (optional isNixOS home-manager)
+        ++ (optionals isNixOS [ home-manager ])
         # handle fonts
         ++ (optionals (!isNixOS) config.custom.fonts.packages);
     };

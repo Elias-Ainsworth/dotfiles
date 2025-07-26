@@ -6,51 +6,43 @@
   ...
 }:
 let
-  user = "elias-ainsworth";
+  user = "iynaix";
   flake = builtins.getFlake (toString ./.);
+  inherit (flake) lib;
 in
-rec {
-  inherit (flake) inputs lib self;
-  inherit (flake.inputs) nixpkgs;
+lib.pipe (lib.attrNames flake.nixosConfigurations) [
+  (lib.filter (n: !(lib.hasInfix "-" n)))
+  (map (
+    name:
+    let
+      cfg = flake.nixosConfigurations.${name}.config;
+    in
+    {
+      # utility variables for each host
+      "${name}" = cfg;
+      "${name}o" = cfg.custom;
+      "${name}Hm" = cfg.hm;
+      "${name}Hmo" = cfg.hm.custom;
+    }
+  ))
+  lib.mergeAttrsList
+]
+// rec {
+  inherit lib;
+  inherit (flake) inputs self;
   inherit flake host user;
 
   # default host
+  inherit (flake.nixosConfigurations.${host}) pkgs;
   c = flake.nixosConfigurations.${host}.config;
-  inherit (flake.nixosConfigurations.${host}) config;
+  config = c;
   o = c.custom;
   inherit (c) hm;
   hmo = hm.custom;
-  inherit (flake.nixosConfigurations.${host}) pkgs;
 
-  desktop = flake.nixosConfigurations.desktop.config;
-  desktopo = desktop.custom;
-  desktopHm = desktop.hm;
-  desktopHmo = desktopHm.custom;
-
-  framework = flake.nixosConfigurations.framework.config;
-  frameworko = framework.custom;
-  frameworkHm = framework.hm;
-  frameworkHmo = frameworkHm.custom;
-
-  x1c = flake.nixosConfigurations.x1c.config;
-  x1co = x1c.custom;
-  x1cHm = x1c.hm;
-  x1cHmo = x1cHm.custom;
-
-  t520 = flake.nixosConfigurations.t520.config;
-  t520o = t520.custom;
-  t520Hm = t520.hm;
-  t520Hmo = t520Hm.custom;
-
-  t440 = flake.nixosConfigurations.t440.config;
-  t440o = t440.custom;
-  t440Hm = t440.hm;
-  t440Hmo = t440Hm.custom;
-
-  vm = flake.nixosConfigurations.vm.config;
-  vmo = vm.custom;
-  vmHm = vm.hm;
-  vmHmo = vmHm.custom;
+  # testing specialisations
+  spec = c: spec_name: c.specialisation.${spec_name}.configuration;
+  specHm = c: spec_name: (spec c spec_name).hm;
 
   # your code here
 }

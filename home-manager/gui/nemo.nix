@@ -6,9 +6,14 @@
   ...
 }:
 let
-  inherit (lib) getExe mkIf optionalAttrs;
+  inherit (lib)
+    getExe
+    mkIf
+    optionalAttrs
+    optionals
+    ;
 in
-mkIf (!config.custom.headless) {
+mkIf (config.custom.wm != "tty") {
   home.packages = with pkgs; [
     p7zip-rar # support for encrypted archives
     nemo-fileroller
@@ -49,6 +54,11 @@ mkIf (!config.custom.headless) {
       "file://${homeDir}/projects/coinfc Work"
       "file://${homeDir}/Documents"
       "file://${homeDir}/Pictures/Wallpapers"
+    ]
+    ++ optionals config.custom.wallpaper-tools.enable [
+      "file://${homeDir}/Pictures/wallpapers_in Walls In"
+    ]
+    ++ [
       "file:///persist Persist"
     ];
 
@@ -83,6 +93,14 @@ mkIf (!config.custom.headless) {
     # disable transparency for file delete dialog
     windowrule = [ "forcergbx,floating:1,class:(nemo)" ];
   };
+
+  # full column width for niri
+  programs.niri.settings.window-rules = [
+    {
+      matches = [ { app-id = "^nemo$"; } ];
+      open-maximized = true;
+    }
+  ];
 
   custom.persist = {
     home = {

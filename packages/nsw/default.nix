@@ -8,9 +8,10 @@
   dots ? "$HOME/projects/dotfiles",
   name ? "nsw",
   host ? "desktop",
+  specialisation ? "",
 }:
 stdenvNoCC.mkDerivation {
-  inherit name;
+  name = "${name}-${specialisation}";
   version = "1.0";
 
   src = ./.;
@@ -21,7 +22,8 @@ stdenvNoCC.mkDerivation {
     ''
       substituteInPlace nsw.sh \
         --replace-fail "@dots@" "${dots}" \
-        --replace-fail "@host@" "${host}"
+        --replace-fail "@host@" "${host}" \
+        --replace-fail "@specialisation@" "${specialisation}"
     '';
 
   postInstall = # sh

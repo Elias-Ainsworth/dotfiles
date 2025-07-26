@@ -18,7 +18,7 @@ in
       nixd
       nix-output-monitor
       nix-tree
-      nixfmt-rfc-style
+      nixfmt
       nixpkgs-review
       nvfetcher
     ];
@@ -92,12 +92,12 @@ in
         if isNixOS then
           pkgs.custom.nsw.override {
             inherit dots host;
-            name = "nsw";
+            specialisation = config.custom.currentSpecialisation;
           }
         else
           pkgs.custom.hsw.override {
             inherit dots host;
-            name = "nsw";
+            specialisation = config.custom.currentSpecialisation;
           };
       # update all nvfetcher overlays and packages
       nv-update = {
@@ -400,7 +400,7 @@ in
       json2nix = {
         runtimeInputs = with pkgs; [
           hjson
-          nixfmt-rfc-style
+          nixfmt
         ];
         text = # sh
           ''
@@ -411,7 +411,7 @@ in
       yaml2nix = {
         runtimeInputs = with pkgs; [
           yq
-          nixfmt-rfc-style
+          nixfmt
         ];
         text = # sh
           ''
@@ -444,7 +444,11 @@ in
       };
       # nixos-rebuild test
       nst = {
-        runtimeInputs = [ pkgs.custom.shell.nsw ];
+        runtimeInputs = [
+          (pkgs.custom.shell.nsw.override {
+            specialisation = config.custom.currentSpecialisation;
+          })
+        ];
         text = # sh
           ''nsw test "$@"'';
       };
