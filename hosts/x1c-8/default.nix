@@ -9,6 +9,7 @@ _: {
   # touchpad support
   services.libinput.enable = true;
 
+  services.avahi.enable = true;
   # disable thumbprint reader
   services.fprintd.enable = false;
 }
