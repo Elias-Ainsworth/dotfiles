@@ -18,7 +18,7 @@ let
       extraSpecialArgs = specialArgs // {
         inherit host user;
         isNixOS = false;
-        isLaptop = host == "framework" || host == "x1c" || host == "t520"; # || host == "t440";
+        isLaptop = host == "framework" || host == "x1c" || host == "x1c-8" || host == "t520"; # || host == "t440";
         isVm = host == "vm" || host == "vm-hyprland";
         # NOTE: don't reference /persist on legacy distros
         dots = "/home/${user}/projects/dotfiles";
@@ -38,6 +38,7 @@ in
   desktop = mkHomeConfiguration "desktop" { };
   framework = mkHomeConfiguration "framework" { };
   x1c = mkHomeConfiguration "x1c" { };
+  x1c-8 = mkHomeConfiguration "x1c" { };
   t520 = mkHomeConfiguration "t520" { };
   t440 = mkHomeConfiguration "t440" { };
   # NOTE: standalone home-manager doesn't make sense for VM config!

@@ -24,7 +24,7 @@ in
       default = host == "framework";
     };
     intel.enable = mkEnableOption "Intel GPU" // {
-      default = host == "x1c" || host == "t440";
+      default = host == "x1c" || host == "x1c-8" || host == "t440";
     };
     wifi.enable = mkEnableOption "Wifi" // {
       default = isLaptop;

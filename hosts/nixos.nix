@@ -20,7 +20,7 @@ let
       specialArgs = specialArgs // {
         inherit host user isVm;
         isNixOS = true;
-        isLaptop = host == "framework" || host == "x1c" || host == "t520"; # || host == "t440";
+        isLaptop = host == "framework" || host == "x1c" || host == "x1c-8" || host == "t520"; # || host == "t440";
         dots = "/persist/home/${user}/projects/dotfiles";
       };
 
@@ -38,7 +38,7 @@ let
             extraSpecialArgs = specialArgs // {
               inherit host user isVm;
               isNixOS = true;
-              isLaptop = host == "framework" || host == "x1c" || host == "t520"; # || host == "t440";
+              isLaptop = host == "framework" || host == "x1c" || host == "x1c-8" || host == "t520"; # || host == "t440";
               dots = "/persist/home/${user}/projects/dotfiles";
             };
 
@@ -67,6 +67,7 @@ in
   desktop = mkNixosConfiguration "desktop" { };
   framework = mkNixosConfiguration "framework" { };
   x1c = mkNixosConfiguration "x1c" { };
+  x1c-8 = mkNixosConfiguration "x1c-8" { };
   t520 = mkNixosConfiguration "t520" { };
   t440 = mkNixosConfiguration "t440" { };
   vm = mkVm "vm" { };
@@ -81,5 +82,6 @@ in
   desktop-vm = mkVm "desktop" { isVm = true; };
   framework-vm = mkVm "framework" { isVm = true; };
   x1c-vm = mkVm "x1c" { isVm = true; };
+  x1c-8-vm = mkVm "x1c-8" { isVm = true; };
   t520-vm = mkVm "t520" { isVm = true; };
 }

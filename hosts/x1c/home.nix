@@ -12,8 +12,8 @@ in
     monitors = [
       {
         name = "eDP-1";
-        width = 1600;
-        height = 900;
+        width = 1920;
+        height = 1080;
         # scale = 1.2;
         refreshRate = if config.specialisation == "otg" then 120 else 60;
         workspaces = [
@@ -43,16 +43,14 @@ in
     };
     gaming.enable = false;
     gamma.enable = true;
-    helix.enable = true;
-    modelling3d.enable = true;
+    modelling3d.enable = false;
     mpd.enable = true;
     ncmpcpp.enable = true;
     rmpc.enable = false;
-    printing3d.enable = true;
+    printing3d.enable = false;
     pathofbuilding.enable = false;
     rclip.enable = true;
     study.enable = true;
-    vlc.enable = true;
     wallfacer.enable = true;
     # wallust.colorscheme = "oxocarbon";
     waybar = {
@@ -60,7 +58,6 @@ in
       hidden = false;
       # waybar.persistentWorkspaces = true;
     };
-    wm = "niri";
 
     terminal = {
       # opacity = "1.0";
@@ -73,7 +70,7 @@ in
         spawn = [
           (getExe pkgs.brightnessctl)
           "s"
-          "20%"
+          "75%"
         ];
       }
     ];
