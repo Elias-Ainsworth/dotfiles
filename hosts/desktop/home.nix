@@ -1,22 +1,6 @@
 _: {
   custom = {
     monitors = [
-      {
-        name = "DP-2";
-        width = 3440;
-        height = 1440;
-        # niri wants this to be exact down to the decimals
-        # refreshRate = if config.custom.wm == "hyprland" then 144 else "143.975";
-        vrr = false;
-        position-x = 1440;
-        position-y = 1080;
-        workspaces = [
-          1
-          2
-          3
-          4
-          5
-        ];
       }
       {
         name = "DP-1";

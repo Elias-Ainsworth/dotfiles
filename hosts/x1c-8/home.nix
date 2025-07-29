@@ -6,19 +6,45 @@ in
   custom = {
     monitors = [
       {
-        name = "eDP-1";
+        name = "DP-5";
         width = 1920;
         height = 1080;
-        refreshRate = 120;
-        scale = 1.5;
+        refreshRate = 75;
+        # scale = 1.5;
         vrr = true;
+        position-x = 0;
+        position-y = 0;
         workspaces = [
           1
           2
           3
           4
+        ];
+      }
+      {
+        name = "eDP-1";
+        width = 1920;
+        height = 1080;
+        refreshRate = 60;
+        scale = 1.5;
+        vrr = true;
+        position-x = 1920;
+        position-y = 0;
+        workspaces = [
           5
           6
+        ];
+      }
+      {
+        name = "DP-6";
+        width = 1920;
+        height = 1080;
+        refreshRate = 75;
+        # scale = 1.5;
+        vrr = true;
+        position-x = 3840;
+        position-y = 0;
+        workspaces = [
           7
           8
           9
@@ -45,7 +71,7 @@ in
         spawn = [
           (getExe pkgs.brightnessctl)
           "s"
-          "20%"
+          "50%"
         ];
       }
     ];
