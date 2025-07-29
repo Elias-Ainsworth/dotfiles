@@ -15,7 +15,7 @@ in
         width = 1920;
         height = 1080;
         scale = 1.5;
-        refreshRate = if config.specialisation == "otg" then 120 else 60;
+        refreshRate = 60;
         workspaces = [
           1
           2

@@ -257,7 +257,7 @@ mkIf (config.custom.wm == "niri") {
         action.spawn = [
           (getExe pkgs.brightnessctl)
           "set"
-          "+5%"
+          "5%-"
         ];
         allow-when-locked = true;
       };
@@ -265,7 +265,7 @@ mkIf (config.custom.wm == "niri") {
         action.spawn = [
           (getExe pkgs.brightnessctl)
           "set"
-          "5%-"
+          "+5%"
         ];
         allow-when-locked = true;
       };

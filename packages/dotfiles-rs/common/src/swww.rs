@@ -1,6 +1,6 @@
 use crate::wallpaper::WallInfo;
 use execute::Execute;
-use fast_image_resize::{PixelType, ResizeOptions, Resizer, images::Image};
+use fast_image_resize::{images::Image, PixelType, ResizeOptions, Resizer};
 use image::codecs::webp::WebPEncoder;
 use image::{ImageEncoder, ImageReader};
 use rayon::prelude::*;
@@ -67,6 +67,28 @@ impl Swww {
 
     // no crop info, just let swww crop the center
     fn mon_without_crop(&self, mon_name: &str, transition_args: &[String]) {
+        eprintln!("Warning: No geometry data found for {mon_name}, falling back to center crop");
+
+        let img = ImageReader::open(&self.wall)
+            .expect("could not open image")
+            .decode()
+            .expect("could not decode image")
+            .to_rgb8();
+
+        let fname = format!("/tmp/swww__{mon_name}.webp");
+        let mut result_buf =
+            std::io::BufWriter::new(std::fs::File::create(&fname).expect("could not create file"));
+
+        #[allow(clippy::cast_sign_loss)]
+        WebPEncoder::new_lossless(&mut result_buf)
+            .write_image(
+                &img,
+                img.width(),
+                img.height(),
+                image::ColorType::Rgb8.into(),
+            )
+            .expect("failed to savea webp image for swww");
+
         execute::command_args!("swww", "img", "--outputs")
             .arg(mon_name)
             .args(transition_args)
@@ -92,7 +114,10 @@ impl Swww {
             .to_rgb8();
 
         let Some((w, h, x, y)) = wall_info.get_geometry(mon_width, mon_height) else {
-            panic!("unable to get geometry for {mon_name}: {mon_width}x{mon_height}",);
+            // panic!("unable to get geometry for {mon_name}: {mon_width}x{mon_height}",);
+            eprintln!("Warning: No geometry data found for {mon_name} ({mon_width}x{mon_height}), falling back to center crop");
+            self.mon_without_crop(mon_name, transition_args);
+            return;
         };
 
         // convert to rgb8 pixel type
@@ -203,7 +228,7 @@ impl Swww {
 
         #[cfg(feature = "niri")]
         {
-            use niri_ipc::{Request, Response, socket::Socket};
+            use niri_ipc::{socket::Socket, Request, Response};
 
             let Ok(Response::Outputs(monitors)) = Socket::connect()
                 .expect("failed to connect to niri socket")
