@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  libCustom,
   pkgs,
   ...
 }:
@@ -34,17 +35,17 @@ in
 
           # add rules for vertical displays and number of stacks
           workspace = mkAfter (
-            lib.custom.mapWorkspaces (
+            libCustom.mapWorkspaces (
               { monitor, workspace, ... }:
               let
                 isUltrawide = builtins.div (monitor.width * 1.0) monitor.height > builtins.div 16.0 9;
-                stacks = if ((monitor.transform != 0) || isUltrawide) then 3 else 2;
+                stacks = if (monitor.isVertical || isUltrawide) then 3 else 2;
               in
               concatStringsSep "," (
                 [
                   workspace
                   "layoutopt:nstack-stacks:${toString stacks}"
-                  "layoutopt:nstack-orientation:${if (monitor.transform != 0) then "top" else "left"}"
+                  "layoutopt:nstack-orientation:${if monitor.isVertical then "top" else "left"}"
                 ]
                 ++ optionals (!isUltrawide) [ "layoutopt:nstack-mfact:0.0" ]
               )
@@ -57,9 +58,9 @@ in
     else
       {
         settings.workspace = mkAfter (
-          lib.custom.mapWorkspaces (
+          libCustom.mapWorkspaces (
             { monitor, workspace, ... }:
-            "${workspace},layoutopt:orientation:${if (monitor.transform != 0) then "top" else "left"}"
+            "${workspace},layoutopt:orientation:${if (monitor.isVertical != 0) then "top" else "left"}"
           ) config.custom.monitors
         );
       };

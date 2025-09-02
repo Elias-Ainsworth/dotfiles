@@ -86,6 +86,7 @@ in
       gbrd = "git push origin -d";
       gcaam = "git add --all && git commit --amend";
       gcam = "git commit --amend";
+      gcp = "git cherry-pick";
       gco = "git checkout";
       gdiff = "git diff --no-ext-diff";
       gl = "git pull";

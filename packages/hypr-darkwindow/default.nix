@@ -8,13 +8,13 @@
 }:
 gcc14Stdenv.mkDerivation (finalAttrs: {
   pname = "hypr-darkwindow";
-  version = "0.50.0";
+  version = "0.50.1";
 
   src = fetchFromGitHub {
     owner = "micha4w";
     repo = "Hypr-DarkWindow";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-v7fRp9uT7qBOoVTnQaG/tu1UmnkW9C/vaj1Nzybs19I=";
+    hash = "sha256-PvAiJr8gRmIHzCh2e4Vcki97MGAZVi0zSCZ2Os0FPBw=";
   };
 
   nativeBuildInputs = [ pkg-config ];

@@ -1,7 +1,7 @@
 use itertools::Itertools;
 use rexiv2::Metadata;
 
-use crate::{full_path, nixinfo::NixInfo, swww::Swww, wallust};
+use crate::{full_path, nixjson::NixJson, swww::Swww, wallust};
 use std::{
     collections::{HashMap, HashSet},
     path::{Path, PathBuf},
@@ -27,16 +27,14 @@ where
         .flatten()
         .filter_map(|entry| {
             let path = entry.path();
-            if path.is_file() {
-                if let Some(ext) = path.extension() {
-                    return matches!(ext.to_str(), Some("jpg" | "jpeg" | "png" | "webp")).then(
-                        || {
-                            path.to_str()
-                                .expect("could not convert path to str")
-                                .to_string()
-                        },
-                    );
-                }
+            if path.is_file()
+                && let Some(ext) = path.extension()
+            {
+                return matches!(ext.to_str(), Some("jpg" | "jpeg" | "png" | "webp")).then(|| {
+                    path.to_str()
+                        .expect("could not convert path to str")
+                        .to_string()
+                });
             }
 
             None
@@ -63,7 +61,7 @@ where
     let wallpaper_info = WallInfo::new_from_file(&wallpaper);
 
     // use colorscheme set from nix if available
-    if let Some(cs) = NixInfo::new().colorscheme {
+    if let Some(cs) = NixJson::new().colorscheme {
         wallust::apply_theme(&cs);
     } else {
         wallust::from_wallpaper(&wallpaper_info, &wallpaper);
@@ -86,12 +84,12 @@ where
     P: AsRef<Path> + std::fmt::Debug,
 {
     if !dir.as_ref().exists() {
-        return NixInfo::new().fallback;
+        return NixJson::new().fallback;
     }
 
     let wallpapers = filter_images(dir).collect_vec();
     if wallpapers.is_empty() {
-        NixInfo::new().fallback
+        NixJson::new().fallback
     } else {
         wallpapers[fastrand::usize(..wallpapers.len())].to_string()
     }

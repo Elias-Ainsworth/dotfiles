@@ -4,19 +4,7 @@
   ...
 }:
 let
-  inherit (pkgs) lib callPackage;
-  # injects a source parameter from nvfetcher
-  # adapted from viperML's config
-  # https://github.com/viperML/dotfiles/blob/master/packages/default.nix
-  w =
-    _callPackage: path: extraOverrides:
-    let
-      sources = pkgs.callPackages (path + "/generated.nix") { };
-      firstSource = lib.head (lib.attrValues sources);
-    in
-    _callPackage (path + "/default.nix") (
-      extraOverrides // { source = lib.filterAttrs (k: _: !(lib.hasPrefix "override" k)) firstSource; }
-    );
+  inherit (pkgs) callPackage;
   repo_url = "https://raw.githubusercontent.com/elias-ainsworth/dotfiles";
 in
 rec {
@@ -38,8 +26,8 @@ rec {
 
   # ricing glue
   dotfiles-rs = callPackage ./dotfiles-rs { };
-  dotfiles-rs-hyprland = callPackage ./dotfiles-rs { wm = "hyprland"; };
-  dotfiles-rs-niri = callPackage ./dotfiles-rs { wm = "niri"; };
+  dotfiles-hyprland = callPackage ./dotfiles-rs { wm = "hyprland"; };
+  dotfiles-niri = callPackage ./dotfiles-rs { wm = "niri"; };
 
   # custom tela built with catppucin variant colors
   tela-dynamic-icon-theme = callPackage ./tela-dynamic-icon-theme {
@@ -66,20 +54,20 @@ rec {
   hyprnstack = callPackage ./hyprnstack { };
   hypr-darkwindow = callPackage ./hypr-darkwindow { };
 
-  path-of-building = w callPackage ./path-of-building { };
+  path-of-building = callPackage ./path-of-building { };
 
   # mpv plugins
-  mpv-cut = w pkgs.mpvScripts.callPackage ./mpv-cut { };
-  mpv-deletefile = w pkgs.mpvScripts.callPackage ./mpv-deletefile { };
-  mpv-nextfile = w pkgs.mpvScripts.callPackage ./mpv-nextfile { };
-  mpv-sub-select = w pkgs.mpvScripts.callPackage ./mpv-sub-select { };
-  mpv-subsearch = w pkgs.mpvScripts.callPackage ./mpv-subsearch { };
+  mpv-cut = callPackage ./mpv-cut { };
+  mpv-deletefile = callPackage ./mpv-deletefile { };
+  mpv-nextfile = callPackage ./mpv-nextfile { };
+  mpv-sub-select = callPackage ./mpv-sub-select { };
+  mpv-subsearch = callPackage ./mpv-subsearch { };
 
   # for nixos-rebuild
   hsw = callPackage ./hsw { };
   nsw = callPackage ./nsw { };
 
-  rofi-themes = w callPackage ./rofi-themes { };
+  rofi-themes = callPackage ./rofi-themes { };
   rofi-power-menu = callPackage ./rofi-power-menu { };
   rofi-wifi-menu = callPackage ./rofi-wifi-menu { };
 }

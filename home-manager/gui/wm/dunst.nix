@@ -67,15 +67,22 @@ mkIf (config.custom.wm != "tty") (mkMerge [
     };
 
     # show dunst history
-    wayland.windowManager.hyprland.settings.bind = [
-      "$mod, n, exec, dunstctl history-pop"
-    ];
+    wayland.windowManager = {
+      hyprland.settings.bind = [
+        "$mod, n, exec, dunstctl history-pop"
+      ];
+
+    };
 
     programs.niri.settings.binds = {
       "Mod+n".action.spawn = [
         "dunstctl"
         "history-pop"
       ];
+    };
+
+    custom.mango.settings = {
+      bind = [ "$mod+SHIFT, n, spawn, dunstctl history-pop" ];
     };
 
     # wait for colorscheme to be ready on boot

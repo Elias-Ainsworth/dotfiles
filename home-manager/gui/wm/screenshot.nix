@@ -65,25 +65,22 @@ mkIf config.custom.isWm {
       '';
   };
 
-  wayland.windowManager.hyprland.settings = {
-    bind = [
-      "$mod, backslash, exec, focal image --area selection --no-notify --no-save --no-rounded-windows"
-      "$mod_SHIFT, backslash, exec, focal image --edit swappy --rofi --no-rounded-windows"
-      "$mod_CTRL, backslash, exec, focal image --area selection --ocr"
-      "ALT, backslash, exec, focal video --rofi --no-rounded-windows"
-    ];
+  wayland.windowManager = {
+    hyprland.settings = {
+      bind = [
+        "$mod, backslash, exec, focal image --area selection --no-notify --no-save --no-rounded-windows"
+        "$mod_SHIFT, backslash, exec, focal image --edit swappy --rofi --no-rounded-windows"
+        "$mod_CTRL, backslash, exec, focal image --area selection --ocr"
+        "ALT, backslash, exec, focal video --rofi --no-rounded-windows"
+      ];
+    };
   };
 
   programs.niri.settings = {
     binds = {
-      "Mod+backslash".action.spawn = [
-        "niri"
-        "msg"
-        "action"
-        "screenshot"
-        "-p"
-        "false"
-      ];
+      "Mod+backslash".action.screenshot = {
+        show-pointer = false;
+      };
       "Mod+Shift+backslash".action.spawn = [
         "focal"
         "image"
@@ -104,5 +101,14 @@ mkIf config.custom.isWm {
         "--rofi"
       ];
     };
+  };
+
+  custom.mango.settings = {
+    bind = [
+      "$mod, backslash, spawn, focal image --area selection --no-notify --no-save --no-rounded-windows"
+      "$mod+SHIFT, backslash, spawn, focal image --edit swappy --rofi --no-rounded-windows"
+      "$mod+CTRL, backslash, spawn, focal image --area selection --ocr"
+      "ALT, backslash, spawn, focal video --rofi --no-rounded-windows"
+    ];
   };
 }

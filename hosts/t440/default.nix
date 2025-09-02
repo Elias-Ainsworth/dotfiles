@@ -1,12 +1,6 @@
 { inputs, ... }:
 {
   imports = [ inputs.pilum-murialis.nixosModules.default ];
-  services.pilum-murialis-xyz = {
-    enable = true;
-    domain = "pilum-murialis.xyz";
-    contentRepo = "https://github.com/Elias-Ainsworth/blog.pilum-murialis.xyz";
-    # email = "pilum-murialis.toge@gmail.com";
-  };
 
   custom = {
     distrobox.enable = true;
@@ -18,11 +12,21 @@
 
   networking.hostId = "fc7351ca"; # required for zfs
 
-  # touchpad support
-  services.libinput.enable = true;
+  services = {
+    # touchpad support
+    libinput.enable = true;
 
-  # disable thumbprint reader
-  services.fprintd.enable = false;
+    # disable thumbprint reader
+    fprintd.enable = false;
 
-  services.avahi.enable = true;
+    avahi.enable = true;
+
+    # website
+    pilum-murialis-xyz = {
+      enable = true;
+      domain = "pilum-murialis.xyz";
+      contentRepo = "https://github.com/Elias-Ainsworth/blog.pilum-murialis.xyz";
+      # email = "pilum-murialis.toge@gmail.com";
+    };
+  };
 }

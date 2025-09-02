@@ -41,7 +41,6 @@ in
         default = "";
         description = "Additional css to add to the waybar style.css";
       };
-      persistentWorkspaces = mkEnableOption "Persistent workspaces";
       hidden = mkEnableOption "Hidden waybar by default";
     };
   };
@@ -52,17 +51,30 @@ in
       systemd.enable = true;
     };
 
-    # toggle / launch waybar
-    wayland.windowManager.hyprland.settings = {
-      layerrule = [
-        "blur,waybar"
-        "ignorealpha 0,waybar"
-      ];
+    systemd.user.services.waybar = {
+      # wait for colorscheme to be ready on boot
+      Unit = {
+        AssertPathExists = [
+          "${config.xdg.configHome}/waybar/config.jsonc"
+          "${config.xdg.configHome}/waybar/style.css"
+        ];
+        Wants = [ "wallpaper.service" ];
+      };
+    };
 
-      bind = [
-        "$mod, a, exec, ${getExe' pkgs.procps "pkill"} -SIGUSR1 waybar"
-        "$mod_SHIFT, a, exec, systemctl --user restart waybar.service"
-      ];
+    wayland.windowManager = {
+      hyprland.settings = {
+        layerrule = [
+          "blur,waybar"
+          "ignorealpha 0,waybar"
+        ];
+
+        bind = [
+          "$mod, a, exec, ${getExe' pkgs.procps "pkill"} -SIGUSR1 .waybar-wrapped"
+          "$mod_SHIFT, a, exec, ${getExe' pkgs.procps "pkill"} -SIGUSR2 .waybar-wrapped"
+        ];
+      };
+
     };
 
     programs.niri.settings = {
@@ -70,20 +82,23 @@ in
         "Mod+A".action.spawn = [
           (getExe' pkgs.procps "pkill")
           "-SIGUSR1"
-          "waybar"
+          ".waybar-wrapped"
         ];
         "Mod+Shift+A".action.spawn = [
-          "systemctl"
-          "--user"
-          "restart"
-          "waybar.service"
+          (getExe' pkgs.procps "pkill")
+          "-SIGUSR2"
+          ".waybar-wrapped"
         ];
       };
     };
 
-    # wait for colorscheme to be ready on boot
-    systemd.user.services.waybar = {
-      Unit.AssertPathExists = [ "${config.xdg.configHome}/waybar/config.jsonc" ];
+    custom = {
+      mango.settings = {
+        bind = [
+          "$mod, a, spawn, ${getExe' pkgs.procps "pkill"} -SIGUSR1 .waybar-wrapped"
+          "$mod+SHIFT, a, spawn, ${getExe' pkgs.procps "pkill"} -SIGUSR2 .waybar-wrapped"
+        ];
+      };
     };
 
     custom = {
@@ -155,40 +170,40 @@ in
         };
 
         layer = "top";
+
         margin = "0";
 
         modules-left = [ "custom/nix" ] ++ (optionals cfg.idleInhibitor [ "idle_inhibitor" ]);
 
-        modules-center = [ "${config.custom.wm}/workspaces" ];
+        modules-center =
+          if (config.custom.wm == "mango") then [ "dwl/tags" ] else [ "${config.custom.wm}/workspaces" ];
 
-        modules-right =
-          [
-            "network"
-            "pulseaudio"
-          ]
-          ++ (optionals config.custom.backlight.enable [ "backlight" ])
-          ++ (optionals config.custom.battery.enable [ "battery" ])
-          ++ [ "clock" ];
+        modules-right = [
+          "network"
+          "pulseaudio"
+        ]
+        ++ (optionals config.custom.backlight.enable [ "backlight" ])
+        ++ (optionals config.custom.battery.enable [ "battery" ])
+        ++ [ "clock" ];
 
-        network =
-          {
-            format-disconnected = "󰖪    Offline";
-            tooltip = false;
-          }
-          // (
-            if config.custom.wifi.enable then
-              {
-                format = "    {essid}";
-                format-ethernet = " ";
-                # rofi wifi script
-                on-click = getExe pkgs.custom.rofi-wifi-menu;
-                on-click-right = "${getExe config.custom.terminal.package} -e nmtui";
-              }
-            else
-              {
-                format-ethernet = "";
-              }
-          );
+        network = {
+          format-disconnected = "󰖪    Offline";
+          tooltip = false;
+        }
+        // (
+          if config.custom.wifi.enable then
+            {
+              format = "    {essid}";
+              format-ethernet = " ";
+              # rofi wifi script
+              on-click = getExe pkgs.custom.rofi-wifi-menu;
+              on-click-right = "${getExe config.custom.terminal.package} -e nmtui";
+            }
+          else
+            {
+              format-ethernet = "";
+            }
+        );
 
         position = "top";
 
@@ -214,10 +229,6 @@ in
       };
 
       wallust = {
-        nixJson = {
-          waybarPersistentWorkspaces = cfg.persistentWorkspaces;
-        };
-
         templates = {
           "waybar.jsonc" = {
             text = toJSON cfg.config;
@@ -231,15 +242,22 @@ in
                 "background"
                 "foreground"
                 "cursor"
-              ] ++ map (i: "color${toString i}") (range 0 15);
+              ]
+              ++ map (i: "color${toString i}") (range 0 15);
               colorDefinitions = # css
-                ''
-                  @define-color accent {{foreground}};
-                  @define-color complementary {{color4}};
-                ''
-                + (concatMapStringsSep "\n" (name: "@define-color ${name} {{${name}}};") colorNames);
+              ''
+                @define-color accent {{foreground}};
+                @define-color complementary {{color4}};
+              ''
+              + (concatMapStringsSep "\n" (name: "@define-color ${name} {{${name}}};") colorNames);
               baseModuleCss = # css
                 ''
+                  font-family: "${config.custom.fonts.regular}";
+                  font-weight: bold;
+                  color: @accent;
+                  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+                  border: none;
+                  border-radius: 0;
                   transition: none;
                   border-bottom:  2px solid transparent;
                   padding-left: ${margin};
@@ -252,90 +270,91 @@ in
                   ${mkModuleClassName mod} {
                     ${baseModuleCss}
                   }'') arr;
+              workspaceModuleName = if (config.custom.wm == "mango") then "tags" else "workspaces";
+              workspaceActiveClass = if (config.custom.wm == "mango") then "focused" else "active";
             in
             {
               text = # css
+              ''
+                ${colorDefinitions}
+
+                #waybar {
+                  background: rgba(0,0,0,0.5);
+                }
+
+                ${mkModulesCss cfg.config.modules-left}
+                ${mkModulesCss cfg.config.modules-center}
+                ${mkModulesCss cfg.config.modules-right}
+
+                ${mkModuleClassName "custom/nix"} {
+                  font-size: 20px;
+                }
+
+                #${workspaceModuleName} button {
+                  ${baseModuleCss}
+                  padding-left: 8px;
+                  padding-right: 8px;
+
+                  ${lib.optionalString (config.custom.wm == "niri" || config.custom.wm == "mango") ''
+                    /* niri workspaces seem to have excess padding */
+                    padding-left: 0px;
+                    padding-right: 0px;
+                  ''}
+                }
+
+                #${workspaceModuleName} button.${workspaceActiveClass} {
+                  border-bottom:  2px solid @accent;
+                  background-color: rgba(255,255,255, 0.25);
+                }
+              ''
+              # dwl (for mango) tags style on occupied instead of empty
+              +
+                optionalString (config.custom.wm != "mango") # css
+                  ''
+                    #${workspaceModuleName} button.empty {
+                      opacity: 0.6;
+                    }
+                  ''
+              +
+                # remove padding for the outermost modules
+                # css
                 ''
-                  ${colorDefinitions}
-
-                  * {
-                    font-family: "${config.custom.fonts.regular}";
-                    font-weight: bold;
-                    color: @accent;
-                    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-                    border: none;
-                    border-radius: 0;
+                  ${mkModuleClassName (head cfg.config.modules-left)} {
+                    padding-left: 0;
+                    margin-left: ${margin};
                   }
-
-                  #waybar {
-                    background: rgba(0,0,0,0.5);
-                  }
-
-                  ${mkModulesCss cfg.config.modules-left}
-                  ${mkModulesCss cfg.config.modules-center}
-                  ${mkModulesCss cfg.config.modules-right}
-
-                  ${mkModuleClassName "custom/nix"} {
-                    font-size: 20px;
-                  }
-
-                  #workspaces button {
-                    ${baseModuleCss}
-                    padding-left: 8px;
-                    padding-right: 8px;
-
-                    ${lib.optionalString (config.custom.wm == "niri") ''
-                      /* niri workspaces seem to have excess padding */
-                      padding-left: 0px;
-                      padding-right: 0px;
-                    ''}
-                  }
-
-                  #workspaces button.active {
-                    border-bottom:  2px solid @accent;
-                    background-color: rgba(255,255,255, 0.25);
+                  ${mkModuleClassName (last cfg.config.modules-right)} {
+                    padding-right: 0;
+                    margin-right: ${margin};
                   }
                 ''
-                +
-                  # remove padding for the outermost modules
+              # idle inhibitor icon is wonky, add extra padding
+              +
+                optionalString cfg.idleInhibitor
                   # css
                   ''
-                    ${mkModuleClassName (head cfg.config.modules-left)} {
-                      padding-left: 0;
-                      margin-left: ${margin};
+                    ${mkModuleClassName "idle_inhibitor"} {
+                      font-size: 17px;
+                      padding-right: 16px;
                     }
-                    ${mkModuleClassName (last cfg.config.modules-right)} {
-                      padding-right: 0;
-                      margin-right: ${margin};
+                    ${mkModuleClassName "idle_inhibitor.activated"} {
+                      color: @complementary;
                     }
                   ''
-                # idle inhibitor icon is wonky, add extra padding
-                +
-                  optionalString cfg.idleInhibitor
-                    # css
-                    ''
-                      ${mkModuleClassName "idle_inhibitor"} {
-                        font-size: 17px;
-                        padding-right: 16px;
-                      }
-                      ${mkModuleClassName "idle_inhibitor.activated"} {
-                        color: @complementary;
-                      }
-                    ''
-                # add complementary classes
-                # css
-                + ''
-                  ${
-                    concatMapStringsSep ", " mkModuleClassName [
-                      "network.disconnected"
-                      "pulseaudio.muted"
-                      "custom/focal"
-                    ]
-                  } {
-                    color: @complementary;
-                  }
-                ''
-                + cfg.extraCss;
+              # add complementary classes
+              # css
+              + ''
+                ${
+                  concatMapStringsSep ", " mkModuleClassName [
+                    "network.disconnected"
+                    "pulseaudio.muted"
+                    "custom/focal"
+                  ]
+                } {
+                  color: @complementary;
+                }
+              ''
+              + cfg.extraCss;
 
               target = "${config.xdg.configHome}/waybar/style.css";
             };

@@ -7,8 +7,6 @@
 }:
 let
   inherit (lib) getExe;
-  inherit (config.custom.fonts) monospace weeb;
-  inherit (config.custom.terminal) opacity;
   inherit (config.custom.colorscheme)
     theme
     transparent
@@ -16,8 +14,8 @@ let
     ;
   customNeovim = inputs.thornevim.packages.${pkgs.system}.default.override {
     colorscheme = theme;
-    variant = variant;
-    transparent = transparent;
+    inherit variant;
+    inherit transparent;
   };
   nvim-direnv = pkgs.writeShellApplication {
     name = "nvim-direnv";
@@ -47,36 +45,6 @@ in
       vv = "neovide";
     };
   };
-
-  # programs.neovide = {
-  #   enable = true;
-  #   settings = {
-  #     fork = true;
-  #     frame = "full";
-  #     idle = true;
-  #     show-border = true;
-  #     maximized = false;
-  #     neovim-bin = "${customNeovim}/bin/nvim";
-  #     no-multigrid = true;
-  #     transparency = 0.8;
-  #     srgb = false;
-  #     tabs = true;
-  #     theme = "dark";
-  #     title-hidden = true;
-  #     vsync = true;
-  #     wsl = false;
-  #     font = {
-  #       normal = [
-  #         monospace
-  #         weeb
-  #       ];
-  #       size = 12.0;
-  #     };
-  #     box-drawing = {
-  #       mode = "font-glyph";
-  #     };
-  #   };
-  # };
 
   xdg = {
     desktopEntries.nvim = {

@@ -7,9 +7,10 @@
 
   config = {
     programs.thornemacs = {
-      enable = true;
-      service.enable = true;
-      installAssets.enable = true;
+      # TODO: Simplify emacs config.
+      enable = false;
+      service.enable = false;
+      installAssets.enable = false;
     };
     custom.persist.home = {
       directories = [

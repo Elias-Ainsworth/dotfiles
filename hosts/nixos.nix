@@ -1,24 +1,26 @@
 {
   inputs,
-  lib,
-  specialArgs,
+  self,
   user ? "elias-ainsworth",
-  ...
-}@args:
-let
-  # provide an optional { pkgs } 2nd argument to override the pkgs
-  mkNixosConfiguration =
+}:
+rec {
+  inherit (inputs.nixpkgs) lib;
+  mkNixos =
     host:
     {
-      pkgs ? args.pkgs,
       isVm ? false,
       extraConfig ? { },
     }:
     lib.nixosSystem {
-      inherit pkgs;
-
-      specialArgs = specialArgs // {
-        inherit host user isVm;
+      specialArgs = {
+        inherit
+          inputs
+          self
+          host
+          isVm
+          user
+          ;
+        inherit (self) libCustom;
         isNixOS = true;
         isLaptop = host == "framework" || host == "x1c" || host == "x1c-8" || host == "t520"; # || host == "t440";
         dots = "/persist/home/${user}/projects/dotfiles";
@@ -27,7 +29,7 @@ let
       modules = [
         ./${host} # host specific configuration
         ./${host}/hardware.nix # host specific hardware configuration
-        ../nixos
+        (inputs.import-tree ../nixos)
         ../overlays
         inputs.home-manager.nixosModules.home-manager
         {
@@ -35,8 +37,15 @@ let
             useGlobalPkgs = true;
             useUserPackages = true;
 
-            extraSpecialArgs = specialArgs // {
-              inherit host user isVm;
+            extraSpecialArgs = {
+              inherit
+                inputs
+                host
+                self
+                user
+                isVm
+                ;
+              inherit (self) libCustom;
               isNixOS = true;
               isLaptop = host == "framework" || host == "x1c" || host == "x1c-8" || host == "t520"; # || host == "t440";
               dots = "/persist/home/${user}/projects/dotfiles";
@@ -46,42 +55,20 @@ let
               imports = [
                 inputs.nix-index-database.homeModules.nix-index
                 inputs.niri.homeModules.niri
+                inputs.mango.hmModules.mango
                 ./${host}/home.nix # host specific home-manager configuration
-                ../home-manager
+                (inputs.import-tree ../home-manager)
               ];
             };
           };
         }
         # alias for home-manager
         (lib.mkAliasOptionModule [ "hm" ] [ "home-manager" "users" user ])
+        inputs.mango.nixosModules.mango
         inputs.impermanence.nixosModules.impermanence
         inputs.sops-nix.nixosModules.sops
         extraConfig
       ];
     };
-  mkVm =
-    host: mkNixosConfigurationArgs:
-    mkNixosConfiguration host (mkNixosConfigurationArgs // { isVm = true; });
-in
-{
-  desktop = mkNixosConfiguration "desktop" { };
-  framework = mkNixosConfiguration "framework" { };
-  x1c = mkNixosConfiguration "x1c" { };
-  x1c-8 = mkNixosConfiguration "x1c-8" { };
-  t520 = mkNixosConfiguration "t520" { };
-  t440 = mkNixosConfiguration "t440" { };
-  vm = mkVm "vm" { };
-  # hyprland can be used within a VM on AMD
-  vm-hyprland = mkVm "vm" {
-    extraConfig = {
-      home-manager.users.${user}.custom.wm = lib.mkForce "hyprland";
-    };
-  };
-  # create VMs for each host configuration, build using
-  # nixos-rebuild build-vm --flake .#desktop-vm
-  desktop-vm = mkVm "desktop" { isVm = true; };
-  framework-vm = mkVm "framework" { isVm = true; };
-  x1c-vm = mkVm "x1c" { isVm = true; };
-  x1c-8-vm = mkVm "x1c-8" { isVm = true; };
-  t520-vm = mkVm "t520" { isVm = true; };
+  mkVm = host: mkNixosArgs: mkNixos host (mkNixosArgs // { isVm = true; });
 }

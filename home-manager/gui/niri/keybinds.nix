@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  libCustom,
   pkgs,
   ...
 }:
@@ -8,6 +9,7 @@ let
   inherit (lib)
     flatten
     getExe
+    getExe'
     mergeAttrsList
     mkIf
     optionalAttrs
@@ -163,7 +165,7 @@ mkIf (config.custom.wm == "niri") {
 
       "Mod+R".action.switch-preset-column-width = { };
       "Mod+Shift+R".action.switch-preset-window-height = { };
-      "Mod+Ctrl+R".action.reset-window-height = { };
+      "Mod+Ctrl+R".action.spawn = getExe' config.custom.dotfiles.package "niri-resize-workspace";
       # full maximize
       "Mod+Z".action.maximize-column = { };
       "Mod+F".action.fullscreen-window = { };
@@ -238,7 +240,7 @@ mkIf (config.custom.wm == "niri") {
     # named workspace setup, dynamic workspaces are urgh
     // mergeAttrsList (
       flatten (
-        (lib.custom.mapWorkspaces (
+        (libCustom.mapWorkspaces (
           { workspace, key, ... }:
           [
             {
@@ -257,7 +259,7 @@ mkIf (config.custom.wm == "niri") {
         action.spawn = [
           (getExe pkgs.brightnessctl)
           "set"
-          "5%-"
+          "+5%"
         ];
         allow-when-locked = true;
       };
@@ -265,7 +267,7 @@ mkIf (config.custom.wm == "niri") {
         action.spawn = [
           (getExe pkgs.brightnessctl)
           "set"
-          "+5%"
+          "5%-"
         ];
         allow-when-locked = true;
       };

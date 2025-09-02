@@ -27,12 +27,9 @@ fn hyprland_pip() -> Result<(), Box<dyn std::error::Error>> {
     // if activewindow.floating {
     //     dispatch!(ToggleFullscreen(FullscreenType::Real))?;
     // } else {
-    #[allow(clippy::cast_sign_loss)]
-    #[allow(clippy::cast_possible_truncation)]
     if !active.floating {
         const PADDING: u32 = 30; // target distance from corner of screen
 
-        #[allow(clippy::cast_possible_truncation)]
         dispatch!(
             ResizeActive,
             Position::Exact(target_w as i16, target_h as i16,)
@@ -47,7 +44,6 @@ fn hyprland_pip() -> Result<(), Box<dyn std::error::Error>> {
         let delta_x = mon_right - PADDING - target_w as u32 - activewindow.at.0 as u32;
         let delta_y = mon_bottom - PADDING - target_h as u32 - activewindow.at.1 as u32;
 
-        #[allow(clippy::cast_possible_truncation)]
         dispatch!(MoveActive, Position::Delta(delta_x as i16, delta_y as i16))
             .expect("failed to move active window");
     }
@@ -57,6 +53,7 @@ fn hyprland_pip() -> Result<(), Box<dyn std::error::Error>> {
 
 #[cfg(feature = "niri")]
 fn niri_pip() -> Result<(), Box<dyn std::error::Error>> {
+    use common::is_waybar_hidden;
     use niri_ipc::{
         Action, LogicalOutput, Output, PositionChange, Request, Response, SizeChange,
         socket::Socket,
@@ -69,11 +66,11 @@ fn niri_pip() -> Result<(), Box<dyn std::error::Error>> {
         .expect("failed to send FocusedOutput request to niri")
     {
         Ok(Response::FocusedOutput(Some(curr_mon))) => curr_mon,
-        Ok(Response::FocusedOutput(None)) => {
+        Ok(Response::FocusedOutput(_)) => {
             eprintln!("No focused output found.");
             std::process::exit(0);
         }
-        _ => panic!("unexpected response from niri, should be FocusedOutput"),
+        _ => panic!("invalid reply for FocusedOutput"),
     };
 
     let Output {
@@ -109,14 +106,11 @@ fn niri_pip() -> Result<(), Box<dyn std::error::Error>> {
             eprintln!("No active window found.");
             std::process::exit(0);
         }
-        _ => panic!("unexpected response from niri, should be FocusedWindow"),
+        _ => panic!("invalid reply for FocusedWindow"),
     };
 
-    #[allow(clippy::cast_sign_loss)]
-    #[allow(clippy::cast_possible_truncation)]
     if active.is_floating {
         const PADDING: f64 = 30.0; // target distance from corner of screen
-        const WAYBAR_HEIGHT: f64 = 36.0;
 
         socket
             .send(Request::Action(Action::SetWindowWidth {
@@ -131,20 +125,16 @@ fn niri_pip() -> Result<(), Box<dyn std::error::Error>> {
             }))
             .expect("failed to send SetWindowHeight")?;
 
-        // TODO: check if waybar is hidden, niri doesn't take into account the exclusion zone
-        let is_waybar_hidden = false;
+        let waybar_offset = if is_waybar_hidden() { 0.0 } else { 36.0 };
 
         let final_x = f64::from(curr_width) - PADDING - target_w;
-        let final_y = f64::from(curr_height)
-            - PADDING
-            - target_h
-            - if is_waybar_hidden { 0.0 } else { WAYBAR_HEIGHT };
+        let final_y = f64::from(curr_height) - PADDING - target_h - waybar_offset;
 
         socket
             .send(Request::Action(Action::MoveFloatingWindow {
                 id: None,
                 x: PositionChange::SetFixed(final_x),
-                y: PositionChange::SetFixed(final_y - 36.0),
+                y: PositionChange::SetFixed(final_y),
             }))
             .expect("failed to send MoveFloatingWindow")?;
     }

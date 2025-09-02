@@ -7,14 +7,17 @@ _: {
 
   networking.hostId = "ec7351ab"; # required for zfs
 
-  # touchpad support
-  services.libinput.enable = true;
+  services = {
+    # touchpad support
+    libinput.enable = true;
 
-  # disable thumbprint reader
-  services.fprintd.enable = false;
+    # disable thumbprint reader
+    fprintd.enable = false;
 
-  # vlc
-  services.avahi.enable = true;
+    # vlc cast support
+    avahi.enable = true;
 
-  services.hardware.bolt.enable = true;
+    # thunderbolt support
+    hardware.bolt.enable = true;
+  };
 }

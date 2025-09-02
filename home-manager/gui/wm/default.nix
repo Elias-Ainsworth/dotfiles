@@ -6,7 +6,6 @@
   isNixOS,
   lib,
   pkgs,
-  user,
   ...
 }:
 let
@@ -16,6 +15,8 @@ let
     getExe'
     mkEnableOption
     mkOption
+    mod
+    optionalString
     ;
   inherit (lib.types)
     attrs
@@ -32,22 +33,13 @@ let
     ;
 in
 {
-  imports = [
-    ./dunst.nix
-    ./hypridle.nix
-    ./hyprlock.nix
-    ./screenshot.nix
-    ./wallpaper.nix
-    ./wallust.nix
-    ./waybar.nix
-  ];
-
   options.custom = {
     wm = mkOption {
-      description = "The WM to use, either hyprland, plasma or tty";
+      description = "The WM to use, either hyprland / niri / mango / plasma / tty";
       type = enum [
         "hyprland"
         "niri"
+        "mango"
         "plasma"
         "tty"
       ];
@@ -55,9 +47,10 @@ in
     };
 
     isWm = mkOption {
-      description = "Readonly option to check if the WM is hyprland or niri";
+      description = "Readonly option to check if the WM is hyprland / niri / mango";
       type = bool;
-      default = config.custom.wm == "hyprland" || config.custom.wm == "niri";
+      default =
+        config.custom.wm == "hyprland" || config.custom.wm == "niri" || config.custom.wm == "mango";
       readOnly = true;
     };
 
@@ -92,12 +85,12 @@ in
                 default = 60;
                 description = "Refresh rate of the display";
               };
-              position-x = mkOption {
+              positionX = mkOption {
                 type = int;
                 default = 0;
                 description = "Position x coordinate of the display";
               };
-              position-y = mkOption {
+              positionY = mkOption {
                 type = int;
                 default = 0;
                 description = "Position y coordinate of the display";
@@ -121,10 +114,16 @@ in
                 default = elemAt config.workspaces 0;
                 description = "Default workspace for this monitor";
               };
-              supports_hdr = mkOption {
+              extraHyprlandConfig = mkOption {
+                type = attrs;
+                default = { };
+                description = "Extra monitor config for hyprland";
+              };
+              isVertical = mkOption {
                 type = bool;
-                default = false;
-                description = "Whether the monitor supports HDR";
+                default = mod config.transform 2 == 1;
+                description = "Whether the monitor is vertical";
+                readOnly = true;
               };
             };
           }
@@ -183,16 +182,20 @@ in
           {
             app-id = "brave-browser";
             spawn = [
-              (getExe config.programs.chromium.package)
-              "--incognito"
-            ];
-            workspace = 1;
-          }
-          {
-            app-id = "brave-browser";
-            spawn = [
-              (getExe config.programs.chromium.package)
-              "--profile-directory=Default"
+              (getExe (
+                pkgs.writeShellApplication {
+                  name = "init-brave";
+                  runtimeInputs = [
+                    config.programs.chromium.package
+                    config.custom.dotfiles.package
+                  ];
+                  text = ''
+                    brave --profile-directory=Default &
+                    sleep 1; brave --incognito &
+                    ${optionalString (config.custom.wm == "niri") "sleep 5; niri-resize-workspace 1"}
+                  '';
+                }
+              ))
             ];
             workspace = 1;
           }
@@ -252,22 +255,23 @@ in
             ];
             workspace = 10;
           }
+          /*
+            # fix gparted "cannot open display: :0" error
+            {
+              spawn = [
+                (getExe pkgs.xorg.xhost)
+                "+local:${user}"
+              ];
+            }
 
-          # fix gparted "cannot open display: :0" error
-          {
-            spawn = [
-              (getExe pkgs.xorg.xhost)
-              "+local:${user}"
-            ];
-          }
-
-          # fix Authorization required, but no authorization protocol specified error
-          {
-            spawn = [
-              (getExe pkgs.xorg.xhost)
-              "si:localuser:root"
-            ];
-          }
+            # fix Authorization required, but no authorization protocol specified error
+            {
+              spawn = [
+                (getExe pkgs.xorg.xhost)
+                "si:localuser:root"
+              ];
+            }
+          */
         ];
 
       shell.packages = {

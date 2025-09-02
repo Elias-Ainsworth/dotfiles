@@ -48,7 +48,6 @@ in
     pathofbuilding.enable = false;
     rclip.enable = true;
     study.enable = true;
-    terminal.size = 10;
     vlc.enable = true;
     wallfacer.enable = true;
     # wallust.colorscheme = "oxocarbon";

@@ -6,10 +6,15 @@
   glib,
   gexiv2,
   rustPlatform,
+  dconf,
+  procps,
   czkawka,
   pqiv,
   rsync,
   rclip,
+  swww,
+  wallust,
+  wlr-randr,
   wm ? "hyprland",
   useDedupe ? false,
   useRclip ? false,
@@ -18,6 +23,7 @@
 assert lib.assertOneOf "dotfiles-rs wm" wm [
   "hyprland"
   "niri"
+  "mango"
 ];
 rustPlatform.buildRustPackage {
   pname = "dotfiles-${wm}";
@@ -25,12 +31,17 @@ rustPlatform.buildRustPackage {
 
   src = ./.;
 
-  cargoLock.lockFile = ./Cargo.lock;
+  cargoLock = {
+    lockFile = ./Cargo.lock;
+    # TODO: remove when new version of niri-ipc is released and git version is no longer used in Cargo.toml
+    allowBuiltinFetchGit = true;
+  };
 
   buildNoDefaultFeatures = true;
   buildFeatures =
     lib.optionals (wm == "hyprland") [ "hyprland" ]
     ++ lib.optionals (wm == "niri") [ "niri" ]
+    ++ lib.optionals (wm == "mango") [ "mango" ]
     ++ lib.optionals useRclip [ "rclip" ]
     ++ lib.optionals useWallfacer [ "wallfacer" ]
     ++ lib.optionals useDedupe [ "dedupe" ];
@@ -49,13 +60,12 @@ rustPlatform.buildRustPackage {
 
   postInstall =
     let
-      progs =
-        [
-          "wm-same-class"
-          "rofi-mpv"
-        ]
-        ++ lib.optionals (wm == "hyprland") [ "hypr-monitors" ]
-        ++ lib.optionals (wm == "niri") [ ];
+      progs = [
+        "wm-same-class"
+        "rofi-mpv"
+      ]
+      ++ lib.optionals (wm == "hyprland") [ "hypr-monitors" ]
+      ++ lib.optionals (wm == "niri") [ "niri-resize-workspace" ];
     in
     ''
       for prog in ${toString progs}; do
@@ -76,17 +86,30 @@ rustPlatform.buildRustPackage {
     '';
 
   postFixup = # sh
+    let
+      progs = [
+        "wallpaper"
+      ]
+      ++ lib.optionals (wm == "niri") [ "niri-ipc" ];
+    in
     ''
-      wrapProgram $out/bin/wallpaper --prefix PATH : ${
-        lib.makeBinPath (
-          [
-            pqiv
-            rsync
-          ]
-          ++ lib.optionals useDedupe [ czkawka ]
-          ++ lib.optionals useRclip [ rclip ]
-        )
-      }
+      for prog in ${toString progs}; do
+        wrapProgram $out/bin/$prog --prefix PATH : ${
+          lib.makeBinPath (
+            [
+              dconf
+              procps
+              pqiv
+              rsync
+              wallust
+              swww
+              wlr-randr
+            ]
+            ++ lib.optionals useDedupe [ czkawka ]
+            ++ lib.optionals useRclip [ rclip ]
+          )
+        }
+      done
     '';
 
   meta = {

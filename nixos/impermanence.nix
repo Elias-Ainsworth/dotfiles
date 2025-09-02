@@ -78,7 +78,7 @@ in
 
   config = {
     # clear /tmp on boot, since it's a zfs dataset
-    boot.tmp.cleanOnBoot = config.nix.package.pname == "lix";
+    boot.tmp.cleanOnBoot = true;
 
     # root and home on tmpfs
     # neededForBoot is required, so there won't be permission errors creating directories or symlinks
@@ -93,6 +93,18 @@ in
         "mode=755"
       ];
     };
+
+    # uncomment to use separate home dataset
+    # fileSystems."/home" = mkForce {
+    #   device = "tmpfs";
+    #   fsType = "tmpfs";
+    #   neededForBoot = true;
+    #   options = [
+    #     "defaults"
+    #     "size=1G"
+    #     "mode=755"
+    #   ];
+    # };
 
     # shut sudo up
     security.sudo.extraConfig = "Defaults lecture=never";

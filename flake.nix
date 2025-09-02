@@ -17,7 +17,16 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
+    import-tree.url = "github:vic/import-tree";
+
     # hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1&rev=918d8340afd652b011b937d29d5eea0be08467f5";
+
+    mango = {
+      url = "github:DreamMaoMao/mango";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     niri = {
       url = "github:sodiboo/niri-flake";
@@ -93,60 +102,72 @@
   };
 
   outputs =
-    inputs@{
-      nixpkgs,
-      self,
-      ...
-    }:
-    let
-      system = "x86_64-linux";
-      pkgs = import inputs.nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
-      lib = import ./lib.nix {
-        inherit (nixpkgs) lib;
-        inherit pkgs;
-        inherit (inputs) home-manager;
-      };
-      commonArgsForSystem = system: {
-        inherit
-          self
-          inputs
-          nixpkgs
-          lib
-          pkgs
-          system
-          ;
-        specialArgs = {
-          inherit self inputs;
+    inputs@{ flake-parts, self, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } (_: {
+      flake =
+        let
+          inherit (inputs.nixpkgs) lib;
+          pkgs = import inputs.nixpkgs {
+            system = "x86_64-linux";
+            config.allowUnfree = true;
+          };
+          user = "elias-ainsworth";
+          hostNixosModule = import ./hosts/nixos.nix { inherit inputs self user; };
+          inherit (hostNixosModule) mkNixos mkVm;
+          mkHomeManager = import ./hosts/home-manager.nix { inherit inputs self; };
+        in
+        {
+          nixosConfigurations = {
+            desktop = mkNixos "desktop" { };
+            framework = mkNixos "framework" { };
+            x1c = mkNixos "x1c" { };
+            x1c-8 = mkNixos "x1c-8" { };
+            t440 = mkNixos "t440" { };
+            t520 = mkNixos "t520" { };
+            # VMs from config
+            vm = mkVm "vm" { };
+            # hyprland can be used within a VM on AMD
+            vm-hyprland = mkVm "vm" {
+              extraConfig = {
+                home-manager.users.${user}.custom.wm = lib.mkForce "hyprland";
+              };
+            };
+            # create VMs for each host configuration, build using
+            # nixos-rebuild build-vm --flake .#desktop-vm
+            desktop-vm = mkVm "desktop" { isVm = true; };
+            framework-vm = mkVm "framework" { isVm = true; };
+            x1c-vm = mkVm "x1c" { isVm = true; };
+            x1c-8-vm = mkVm "x1c-8" { isVm = true; };
+            t440-vm = mkVm "t440" { isVm = true; };
+            t520-vm = mkVm "t520" { isVm = true; };
+          }
+          // (import ./hosts/iso { inherit inputs self; });
+
+          homeConfigurations = {
+            desktop = mkHomeManager "x86_64-linux" user "desktop" { };
+            framework = mkHomeManager "x86_64-linux" user "framework" { };
+          };
+
+          inherit lib;
+
+          libCustom = import ./lib.nix { inherit lib pkgs; };
+
+          inherit self; # for repl debugging
+
+          templates = import ./templates;
         };
-      };
-      commonArgs = commonArgsForSystem system;
-      # call with forAllSystems (commonArgs: function body)
-      forAllSystems =
-        fn:
-        lib.genAttrs [
-          "x86_64-linux"
-          "aarch64-linux"
-          "x86_64-darwin"
-          "aarch64-darwin"
-        ] (system: fn (commonArgsForSystem system));
-    in
-    {
-      nixosConfigurations = (import ./hosts/nixos.nix commonArgs) // (import ./hosts/iso commonArgs);
-
-      homeConfigurations = import ./hosts/home-manager.nix commonArgs;
-
-      # devenv for working on dotfiles, provides rust environment
-      devShells = forAllSystems (_: {
-        default = import ./shell.nix { inherit pkgs; };
-      });
-
-      inherit lib self;
-
-      packages = forAllSystems (import ./packages);
-      # templates for devenvs
-      templates = import ./templates;
-    };
+      systems = [
+        # systems for which you want to build the `perSystem` attributes
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
+      perSystem =
+        { pkgs, ... }:
+        {
+          devShells.default = import ./shell.nix { inherit pkgs; };
+          packages = (import ./packages) { inherit inputs pkgs; };
+        };
+    });
 }

@@ -3,6 +3,7 @@
   dots,
   inputs,
   lib,
+  libCustom,
   pkgs,
   ...
 }:
@@ -26,36 +27,6 @@ let
     ;
 in
 {
-  imports = [
-    ./audio.nix
-    ./auth.nix
-    ./bluetooth.nix
-    ./boot.nix
-    ./cloudflared.nix
-    ./configuration.nix
-    ./docker.nix
-    ./gaming.nix
-    ./gh.nix
-    ./hdds.nix
-    ./hyprland.nix
-    ./impermanence.nix
-    ./keyd.nix
-    ./nix.nix
-    ./nvidia.nix
-    ./plasma.nix
-    ./qmk.nix
-    ./sonarr.nix
-    ./sops.nix
-    ./specialisations.nix
-    ./syncoid.nix
-    ./transmission.nix
-    ./users.nix
-    ./vercel.nix
-    ./virt-manager.nix
-    ./weeb.nix
-    ./zfs.nix
-  ];
-
   options.custom = {
     shell = {
       packages = mkOption {
@@ -64,7 +35,7 @@ in
           attrs
           package
         ]);
-        apply = lib.custom.mkShellPackages;
+        apply = libCustom.mkShellPackages;
         default = { };
         description = ''
           Attrset of shell packages to install and add to pkgs.custom overlay (for compatibility across multiple shells).
@@ -95,16 +66,15 @@ in
     programs.dconf.enable = true;
 
     environment = {
-      etc =
-        {
-          # universal git settings
-          "gitconfig".text = config.hm.xdg.configFile."git/config".text;
-        }
-        // optionalAttrs (config.hm.custom.wm != "tty") {
-          # get gparted to use system theme
-          "xdg/gtk-3.0/settings.ini".text = config.hm.xdg.configFile."gtk-3.0/settings.ini".text;
-          "xdg/gtk-4.0/settings.ini".text = config.hm.xdg.configFile."gtk-4.0/settings.ini".text;
-        };
+      etc = {
+        # universal git settings
+        "gitconfig".text = config.hm.xdg.configFile."git/config".text;
+      }
+      // optionalAttrs (config.hm.custom.wm != "tty") {
+        # get gparted to use system theme
+        "xdg/gtk-3.0/settings.ini".text = config.hm.xdg.configFile."gtk-3.0/settings.ini".text;
+        "xdg/gtk-4.0/settings.ini".text = config.hm.xdg.configFile."gtk-4.0/settings.ini".text;
+      };
 
       # install fish completions for fish
       # https://github.com/nix-community/home-manager/pull/2408
@@ -119,22 +89,21 @@ in
       };
 
       # use some shell aliases from home manager
-      shellAliases =
-        {
-          inherit (config.hm.programs.bash.shellAliases)
-            eza
-            ls
-            ll
-            la
-            lla
-            ;
-        }
-        // {
-          inherit (config.hm.home.shellAliases)
-            t # eza related
-            y # yazi
-            ;
-        };
+      shellAliases = {
+        inherit (config.hm.programs.bash.shellAliases)
+          eza
+          ls
+          ll
+          la
+          lla
+          ;
+      }
+      // {
+        inherit (config.hm.home.shellAliases)
+          t # eza related
+          y # yazi
+          ;
+      };
 
       systemPackages =
         with pkgs;
@@ -172,13 +141,18 @@ in
     };
 
     # add custom user created shell packages to pkgs.custom.shell
-    nixpkgs.overlays = [
-      (_: prev: {
-        custom = prev.custom // {
-          shell = config.custom.shell.packages // config.hm.custom.shell.packages;
-        };
-      })
-    ];
+    nixpkgs = {
+      config.allowUnfree = true;
+
+      # add custom user created shell packages to pkgs.custom.shell
+      overlays = [
+        (_: prev: {
+          custom = (prev.custom or { }) // {
+            shell = config.custom.shell.packages // config.hm.custom.shell.packages;
+          };
+        })
+      ];
+    };
 
     # create symlink to dotfiles from default /etc/nixos
     custom.symlinks = {
@@ -189,7 +163,8 @@ in
     systemd.tmpfiles.rules = [
       # cleanup systemd coredumps once a week
       "D! /var/lib/systemd/coredump root root 7d"
-    ] ++ (mapAttrsToList (dest: src: "L+ ${dest} - - - - ${src}") config.custom.symlinks);
+    ]
+    ++ (mapAttrsToList (dest: src: "L+ ${dest} - - - - ${src}") config.custom.symlinks);
 
     # setup fonts
     fonts = {

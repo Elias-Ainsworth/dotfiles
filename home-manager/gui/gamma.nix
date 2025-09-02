@@ -12,7 +12,7 @@ in
   };
 
   config.services.gammastep = {
-    enable = config.custom.gamma.enable;
+    inherit (config.custom.gamma) enable;
     latitude = 33.45;
     longitude = -112.07;
     temperature = {

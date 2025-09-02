@@ -1,5 +1,5 @@
 use execute::Execute;
-use nixinfo::NixMonitorInfo;
+use nixjson::NixMonitor;
 use std::{
     collections::HashMap,
     path::{Path, PathBuf},
@@ -7,11 +7,14 @@ use std::{
 };
 
 pub mod colors;
-pub mod nixinfo;
+pub mod niri;
+pub mod nixjson;
 pub mod rofi;
 pub mod swww;
 pub mod wallpaper;
 pub mod wallust;
+
+pub const MIN_ULTRAWIDE_RATIO: f64 = (21.0_f64 / 9.0).min(3440.0 / 1440.0).min(3840.0 / 1600.0);
 
 pub fn full_path<P>(p: P) -> PathBuf
 where
@@ -99,15 +102,20 @@ macro_rules! log {
     ($($arg:tt)*) => {
         {
             use std::io::Write;
+            let log_fname = if cfg!(debug_assertions) {
+                "/tmp/wm-ipc-debug.log"
+            } else {
+                "/tmp/wm-ipc.log"
+            };
             let mut log_file = std::fs::OpenOptions::new()
                 .create(true)
                 .append(true)
-                .open("/tmp/hypr-ipc.log")
+                .open(log_fname)
                 .expect("could not open log file");
 
             println!($($arg)*);
-            writeln!(log_file, $($arg)*).expect("could not write to hypr-ipc.log");
-            log_file.flush().expect("could not flush hypr-ipc.log");
+            writeln!(log_file, $($arg)*).unwrap_or_else(|_| panic!("could not write to {log_fname}"));
+            log_file.flush().unwrap_or_else(|_| panic!("could not flush {log_fname}"));
         }
     };
 }
@@ -145,20 +153,11 @@ pub fn vertical_dimensions(mon: &hyprland::data::Monitor) -> (u32, u32) {
     }
 }
 
-pub fn find_monitor_by_name(name: &str) -> Option<hyprland::data::Monitor> {
-    use hyprland::shared::HyprData;
-    hyprland::data::Monitors::get()
-        .expect("could not get monitors")
-        .iter()
-        .find(|mon| mon.name == name)
-        .cloned()
-}
-
-pub type WorkspacesByMonitor = HashMap<NixMonitorInfo, Vec<i32>>;
+pub type WorkspacesByMonitor = HashMap<String, Vec<i32>>;
 
 /// assign workspaces to their rules if possible, otherwise add them to the other monitors
 pub fn rearranged_workspaces<S: ::std::hash::BuildHasher>(
-    nix_monitors: &[NixMonitorInfo],
+    nix_monitors: &[NixMonitor],
     active_workspaces: &HashMap<String, i32, S>,
 ) -> WorkspacesByMonitor {
     let mut workspaces_by_mon: WorkspacesByMonitor = HashMap::new();
@@ -175,12 +174,12 @@ pub fn rearranged_workspaces<S: ::std::hash::BuildHasher>(
         if active_workspaces.get(&mon.name).is_some() {
             // active, use current workspaces
             workspaces_by_mon
-                .entry(mon.clone())
+                .entry(mon.name.clone())
                 .or_default()
                 .extend(&mon.workspaces);
         } else {
             workspaces_by_mon
-                .entry(least_workspaces_mon.clone())
+                .entry(least_workspaces_mon.name.clone())
                 .or_default()
                 .extend(&mon.workspaces);
         }
@@ -193,6 +192,97 @@ pub fn rearranged_workspaces<S: ::std::hash::BuildHasher>(
     workspaces_by_mon
 }
 
+pub fn is_waybar_hidden() -> bool {
+    #[cfg(feature = "niri")]
+    {
+        use niri_ipc::{Request, Response, socket::Socket};
+
+        const WAYBAR_HEIGHT: f64 = 36.0;
+
+        let mut socket = Socket::connect().expect("failed to connect to niri socket");
+
+        let Ok(Response::Windows(windows)) = socket
+            .send(Request::Windows)
+            .expect("failed to send Windows")
+        else {
+            panic!("invalid reply for Windows");
+        };
+
+        let Ok(Response::Workspaces(workspaces)) = socket
+            .send(Request::Workspaces)
+            .expect("failed to send Workspaces")
+        else {
+            panic!("invalid reply for Workspaces");
+        };
+
+        let Ok(Response::Outputs(monitors)) = socket
+            .send(Request::Outputs)
+            .expect("failed to send Outputs")
+        else {
+            panic!("invalid reply for Outputs");
+        };
+
+        for win in &windows {
+            let Some(wksp_id) = win.workspace_id else {
+                continue;
+            };
+
+            // must be top tile in column
+            let Some((_, 1)) = win.layout.pos_in_scrolling_layout else {
+                continue;
+            };
+
+            // get workspace for the window
+            let Some(wksp) = workspaces.iter().find(|wksp| wksp.id == wksp_id) else {
+                continue;
+            };
+
+            // get monitor for the workspace
+            let Some((mon_w, mon_h)) = monitors.values().find_map(|mon| {
+                use crate::niri::MonitorExt;
+
+                if Some(&mon.name) != wksp.output.as_ref() {
+                    return None;
+                }
+
+                mon.dimensions()
+            }) else {
+                continue;
+            };
+
+            let (win_w, win_h) = win.layout.window_size;
+
+            // is fullscreen!
+            if mon_w == win_w && mon_h == win_h {
+                continue;
+            }
+
+            // should be within 1 or 2 multiples of the waybar height
+            let height_diff_multiple = f64::from(mon_h - win_h) / WAYBAR_HEIGHT;
+            if height_diff_multiple > 1.0 && height_diff_multiple < 2.0 {
+                return false;
+            }
+        }
+
+        true
+    }
+
+    #[cfg(feature = "hyprland")]
+    {
+        use hyprland::{data::Monitor, shared::HyprDataActive};
+
+        let mon = Monitor::get_active().expect("failed to get active monitor");
+        let (_, height, _, _) = mon.reserved;
+
+        height == 0
+    }
+
+    #[cfg(not(any(feature = "hyprland", feature = "niri")))]
+    {
+        unimplemented!("is_waybar_hidden is not implemented outside of niri or hyprland!")
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -202,27 +292,27 @@ mod tests {
         let by_workspace_name = |wksps_by_mon: &WorkspacesByMonitor| -> HashMap<String, Vec<i32>> {
             wksps_by_mon
                 .iter()
-                .map(|(mon, wksps)| (mon.name.clone(), wksps.clone()))
+                .map(|(mon_name, wksps)| (mon_name.clone(), wksps.clone()))
                 .collect()
         };
 
         let nix_monitors = vec![
-            NixMonitorInfo {
+            NixMonitor {
                 name: "UW".into(),
                 workspaces: vec![1, 2, 3, 4, 5],
                 ..Default::default()
             },
-            NixMonitorInfo {
+            NixMonitor {
                 name: "VERT".into(),
                 workspaces: vec![6, 7],
                 ..Default::default()
             },
-            NixMonitorInfo {
+            NixMonitor {
                 name: "PP".into(),
                 workspaces: vec![9],
                 ..Default::default()
             },
-            NixMonitorInfo {
+            NixMonitor {
                 name: "FWVERT".into(),
                 workspaces: vec![8, 10],
                 ..Default::default()

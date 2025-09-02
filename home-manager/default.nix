@@ -11,6 +11,7 @@ let
   inherit (lib)
     hasPrefix
     mapAttrsToList
+    mkEnableOption
     mkOption
     optionals
     ;
@@ -24,28 +25,16 @@ let
     ;
 in
 {
-  imports = [
-    ./hardware.nix
-    ./gui
-    ./impermanence.nix # only contains options
-    ./shell
-  ];
-
   options.custom = {
     autologinCommand = mkOption {
       type = nullOr str;
       default = null;
       description = "Command to run after autologin";
     };
-    currentSpecialisation = mkOption {
-      type = str;
-      default = "";
-      description = "The current specialisation being used";
-    };
     colorscheme = {
       theme = mkOption {
         type = str;
-        default = "catppuccin";
+        default = "oxocarbon";
         description = "System colorscheme";
       };
       transparent = mkOption {
@@ -55,7 +44,7 @@ in
       };
       variant = mkOption {
         type = str;
-        default = "mocha";
+        default = "dark";
         description = "System colorscheme variant";
       };
     };
@@ -79,6 +68,17 @@ in
         type = listOf package;
         description = "The packages to install for the fonts";
       };
+    };
+    specialisation = {
+      current = mkOption {
+        type = str;
+        default = "";
+        description = "The current specialisation being used";
+      };
+
+      hyprland.enable = mkEnableOption "hyprland specialisation";
+      niri.enable = mkEnableOption "niri specialisation";
+      mango.enable = mkEnableOption "mango specialisation";
     };
     symlinks = mkOption {
       type = attrsOf str;
@@ -114,6 +114,7 @@ in
 
       sessionVariables = {
         __IS_NIXOS = if isNixOS then "1" else "0";
+        __SPECIALISATION = config.custom.specialisation.current;
         NIXPKGS_ALLOW_UNFREE = "1";
       };
 

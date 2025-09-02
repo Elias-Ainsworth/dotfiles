@@ -1,10 +1,12 @@
 use crate::wallpaper::WallInfo;
 use execute::Execute;
-use fast_image_resize::{images::Image, PixelType, ResizeOptions, Resizer};
+use fast_image_resize::{PixelType, ResizeOptions, Resizer, images::Image};
 use image::codecs::webp::WebPEncoder;
 use image::{ImageEncoder, ImageReader};
 use rayon::prelude::*;
+use serde::Deserialize;
 use std::path::{Path, PathBuf};
+use std::process::Stdio;
 
 /// chooses a random transition
 // taken from ZaneyOS: https://gitlab.com/Zaney/zaneyos/-/blob/main/config/scripts/wallsetter.nix
@@ -67,28 +69,6 @@ impl Swww {
 
     // no crop info, just let swww crop the center
     fn mon_without_crop(&self, mon_name: &str, transition_args: &[String]) {
-        eprintln!("Warning: No geometry data found for {mon_name}, falling back to center crop");
-
-        let img = ImageReader::open(&self.wall)
-            .expect("could not open image")
-            .decode()
-            .expect("could not decode image")
-            .to_rgb8();
-
-        let fname = format!("/tmp/swww__{mon_name}.webp");
-        let mut result_buf =
-            std::io::BufWriter::new(std::fs::File::create(&fname).expect("could not create file"));
-
-        #[allow(clippy::cast_sign_loss)]
-        WebPEncoder::new_lossless(&mut result_buf)
-            .write_image(
-                &img,
-                img.width(),
-                img.height(),
-                image::ColorType::Rgb8.into(),
-            )
-            .expect("failed to savea webp image for swww");
-
         execute::command_args!("swww", "img", "--outputs")
             .arg(mon_name)
             .args(transition_args)
@@ -101,10 +81,9 @@ impl Swww {
     fn mon_with_crop(
         &self,
         mon_name: &str,
-        mon_width: u32,
-        mon_height: u32,
+        (mon_w, mon_h): (u32, u32),
+        (w, h, x, y): (f64, f64, f64, f64),
         mon_scale: f64,
-        wall_info: &WallInfo,
         transition_args: &[String],
     ) {
         let img = ImageReader::open(&self.wall)
@@ -113,20 +92,11 @@ impl Swww {
             .expect("could not decode image")
             .to_rgb8();
 
-        let Some((w, h, x, y)) = wall_info.get_geometry(mon_width, mon_height) else {
-            // panic!("unable to get geometry for {mon_name}: {mon_width}x{mon_height}",);
-            eprintln!("Warning: No geometry data found for {mon_name} ({mon_width}x{mon_height}), falling back to center crop");
-            self.mon_without_crop(mon_name, transition_args);
-            return;
-        };
-
         // convert to rgb8 pixel type
         let src = Image::from_vec_u8(img.width(), img.height(), img.into_raw(), PixelType::U8x3)
             .expect("Failed to create source image view");
 
-        #[allow(clippy::cast_sign_loss)]
-        let mut dest = Image::new(mon_width, mon_height, PixelType::U8x3);
-
+        let mut dest = Image::new(mon_w, mon_h, PixelType::U8x3);
         Resizer::new()
             .resize(
                 &src,
@@ -139,14 +109,8 @@ impl Swww {
         let mut result_buf =
             std::io::BufWriter::new(std::fs::File::create(&fname).expect("could not create file"));
 
-        #[allow(clippy::cast_sign_loss)]
         WebPEncoder::new_lossless(&mut result_buf)
-            .write_image(
-                dest.buffer(),
-                mon_width,
-                mon_height,
-                image::ColorType::Rgb8.into(),
-            )
+            .write_image(dest.buffer(), mon_w, mon_h, image::ColorType::Rgb8.into())
             .expect("failed to savea webp image for swww");
 
         // HACK: get swww to update the scale, or it thinks it's still 1.0???
@@ -196,75 +160,68 @@ impl Swww {
     }
 
     pub fn run(&self, wall_info: &WallInfo, transition: Option<&str>) {
+        #[derive(Debug, Deserialize)]
+        #[serde(rename_all = "camelCase")]
+        pub struct WlrMonitor {
+            pub enabled: bool,
+            pub name: String,
+            pub modes: Vec<WlrMode>,
+            pub transform: String,
+            pub scale: f64,
+        }
+
+        #[derive(Debug, Deserialize)]
+        #[serde(rename_all = "camelCase")]
+        pub struct WlrMode {
+            pub width: u32,
+            pub height: u32,
+            pub current: bool,
+        }
+
         let transition_args = transition.as_ref().map_or_else(get_random_transition, |t| {
             vec!["--transition-type".to_string(), (*t).to_string()]
         });
 
-        // set the wallpaper per monitor
-        #[cfg(feature = "hyprland")]
-        {
-            use crate::vertical_dimensions;
-            use hyprland::shared::{HyprData, HyprDataVec};
-            let monitors = hyprland::data::Monitors::get()
-                .expect("could not get monitors")
-                .to_vec();
+        // set the wallpaper per monitor, use wlr-randr so it is wm agnostic
+        let wlr_cmd = execute::command_args!("wlr-randr", "--json")
+            .stdout(Stdio::piped())
+            .execute_output()
+            .expect("failed to run wlr-randr");
+        let wlr_json = String::from_utf8(wlr_cmd.stdout).expect("invalid utf8 from wlr-randr");
+        let monitors: Vec<WlrMonitor> =
+            serde_json::from_str(&wlr_json).expect("failed to parse json");
 
-            monitors.par_iter().for_each(|mon| {
-                let (mw, mh) = vertical_dimensions(mon);
+        monitors
+            .par_iter()
+            .filter_map(|mon| {
+                if !mon.enabled {
+                    return None;
+                }
 
-                match wall_info.get_geometry_str(mw, mh) {
-                    Some(_) => self.mon_with_crop(
+                // get current mode for each monitor
+                mon.modes
+                    .iter()
+                    .find(|mode| mode.current)
+                    .map(|mode| (mon, mode))
+            })
+            .for_each(|(mon, mode)| {
+                let (mon_w, mon_h) =
+                    if mon.transform.contains("90") || mon.transform.contains("270") {
+                        (mode.height, mode.width)
+                    } else {
+                        (mode.width, mode.height)
+                    };
+
+                match wall_info.get_geometry(mon_w, mon_h) {
+                    Some(geom) => self.mon_with_crop(
                         &mon.name,
-                        mw,
-                        mh,
-                        f64::from(mon.scale),
-                        wall_info,
+                        (mon_w, mon_h),
+                        geom,
+                        mon.scale,
                         &transition_args,
                     ),
                     None => self.mon_without_crop(&mon.name, &transition_args),
                 }
             });
-        }
-
-        #[cfg(feature = "niri")]
-        {
-            use niri_ipc::{socket::Socket, Request, Response};
-
-            let Ok(Response::Outputs(monitors)) = Socket::connect()
-                .expect("failed to connect to niri socket")
-                .send(Request::Outputs)
-                .expect("failed to send Outputs request to niri")
-            else {
-                panic!("unexpected response from niri, should be Outputs");
-            };
-
-            monitors
-                .par_iter()
-                // ignore disabled monitors
-                .for_each(|(_, mon)| match mon.logical {
-                    None => self.mon_without_crop(&mon.name, &transition_args),
-                    Some(logical) => {
-                        #[allow(clippy::cast_possible_truncation)]
-                        #[allow(clippy::cast_sign_loss)]
-                        let (mw, mh) = if (logical.scale - 1.0).abs() < f64::EPSILON {
-                            (logical.width, logical.height)
-                        } else {
-                            (
-                                (f64::from(logical.width) * logical.scale) as u32,
-                                (f64::from(logical.height) * logical.scale) as u32,
-                            )
-                        };
-
-                        self.mon_with_crop(
-                            &mon.name,
-                            mw,
-                            mh,
-                            logical.scale,
-                            wall_info,
-                            &transition_args,
-                        );
-                    }
-                });
-        }
     }
 }

@@ -14,59 +14,50 @@ let
 in
 mkIf (config.custom.wm == "hyprland") {
   custom = {
-    autologinCommand = "uwsm start hyprland-uwsm.desktop";
+    autologinCommand = "Hyprland";
   };
 
   wayland.windowManager.hyprland.settings = {
-    exec-once =
-      [
-        # init ipc listener
-        "hypr-ipc &"
-        # stop fucking with my cursors
-        "hyprctl setcursor ${config.home.pointerCursor.name} ${toString config.home.pointerCursor.size}"
-        "hyprctl dispatch workspace 1"
-      ]
-      # generate from startup options
-      ++ map (
-        {
-          enable,
-          spawn,
-          workspace,
-          ...
-        }:
-        let
-          rules = optionalString (workspace != null) "[workspace ${toString workspace} silent]";
-          exec = concatStringsSep " " spawn;
-        in
-        if enable then "${rules} uwsm app -- ${exec}" else ""
-      ) config.custom.startup;
+    exec-once = [
+      # stop fucking with my cursors
+      "hyprctl setcursor ${config.home.pointerCursor.name} ${toString config.home.pointerCursor.size}"
+      "hyprctl dispatch workspace 1"
+      # disable middle click paste
+      "${getExe' pkgs.wl-clipboard "wl-paste"} -p --watch ${getExe' pkgs.wl-clipboard "wl-copy"} -pc"
+    ]
+    # generate from startup options
+    ++ map (
+      {
+        enable,
+        spawn,
+        workspace,
+        ...
+      }:
+      let
+        rules = optionalString (workspace != null) "[workspace ${toString workspace} silent]";
+        exec = concatStringsSep " " spawn;
+      in
+      if enable then "${rules} ${exec}" else ""
+    ) config.custom.startup;
   };
 
-  # start swww and wallpaper via systemd to minimize reloads
-  services.swww.enable = true;
-
   systemd.user.services = {
-    wallpaper = {
-      Install.WantedBy = [ "swww.service" ];
-      Unit = {
-        Description = "Set the wallpaper and update colorscheme";
-        PartOf = [ config.wayland.systemd.target ];
-        After = [ "swww.service" ];
-        Requires = [ "swww.service" ];
+    # listen to events from hyprland, done as a service so it will restart from nixos-rebuild
+    hypr-ipc = {
+      Install = {
+        WantedBy = [ config.wayland.systemd.target ];
       };
+
+      Unit = {
+        ConditionEnvironment = "WAYLAND_DISPLAY";
+        Description = "Custom hypr-ipc from dotfiles-rs";
+        After = [ "hyprland-session.target" ];
+        PartOf = [ config.wayland.systemd.target ];
+      };
+
       Service = {
-        Type = "oneshot";
-        ExecStart =
-          let
-            dotsExe = getExe' config.custom.dotfiles.package;
-          in
-          pkgs.writeShellScript "wallpaper-startup" ''
-            ${dotsExe "wallpaper"}
-            ${optionalString (config.custom.wm == "hyprland") dotsExe "hypr-monitors"}
-          '';
-        # possible race condition, introduce a small delay before starting
-        # https://github.com/LGFae/swww/issues/317#issuecomment-2131282832
-        ExecStartPre = "${getExe' pkgs.coreutils "sleep"} 1";
+        ExecStart = "${getExe' config.custom.dotfiles.package "hypr-ipc"}";
+        Restart = "on-failure";
       };
     };
   };

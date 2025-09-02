@@ -142,7 +142,7 @@ fn apply_hyprland_colors(accents: &[Rgb], colors: &HashMap<String, Rgb>) {
 
 #[cfg(feature = "niri")]
 fn apply_niri_colors(accents: &[Rgb], colors: &HashMap<String, Rgb>) {
-    use crate::nixinfo::NixInfo;
+    use crate::nixjson::NixJson;
     let config_path = full_path("~/.config/niri/config.kdl");
 
     // replace symlink to nix store if needed
@@ -181,13 +181,14 @@ fn apply_niri_colors(accents: &[Rgb], colors: &HashMap<String, Rgb>) {
     ];
 
     // add blur settings if enabled, has to be done here as niri-flake cannot be extended :(
-    if Some(true) == NixInfo::new().niri_blur {
-        if let Ok(content) = std::fs::read_to_string(&config_path) {
-            // add the blur settings if they're not already there
-            if !content.contains("blur {") {
-                replacements.push((
-                    "always-center-single-column",
-                    r"
+    if Some(true) == NixJson::new().niri_blur
+        && let Ok(content) = std::fs::read_to_string(&config_path)
+    {
+        // add the blur settings if they're not already there
+        if !content.contains("blur {") {
+            replacements.push((
+                "always-center-single-column",
+                r"
     always-center-single-column
 
     blur {
@@ -196,8 +197,7 @@ fn apply_niri_colors(accents: &[Rgb], colors: &HashMap<String, Rgb>) {
         radius 2.0
     }
     ",
-                ));
-            }
+            ));
         }
     }
 
@@ -279,7 +279,6 @@ pub fn apply_colors() {
 
         let by_contrast = accents_by_contrast(&colors);
 
-        #[allow(clippy::cast_precision_loss)]
         let accents = by_contrast
             .iter()
             // calculate score for each color
@@ -287,7 +286,6 @@ pub fn apply_colors() {
                 // how much of the score should be based on contrast
                 let contrast_pct = 0.78;
 
-                #[allow(clippy::cast_precision_loss)]
                 (
                     (*i as f64).mul_add(
                         contrast_pct,
@@ -383,11 +381,11 @@ pub fn set_gtk_and_icon_theme(nixcolors: &NixColors, accent: &Rgb) {
         .expect("failed to apply gtk theme");
 
     // update qt (kvantum) theme
-    let qt_theme = format!("catppuccin-mocha-{variant}");
-    replace_in_file(
-        full_path("~/.config/Kvantum/kvantum.kvconfig"),
-        vec![(r"catppuccin-mocha-.*", &qt_theme)],
-    );
+    let kvantum = full_path("~/.config/Kvantum/kvantum.kvconfig");
+    if kvantum.exists() {
+        let qt_theme = format!("catppuccin-mocha-{variant}");
+        replace_in_file(kvantum, vec![(r"catppuccin-mocha-.*", &qt_theme)]);
+    }
 
     // requires the single quotes to be GVariant compatible for dconf
     let icon_theme = format!("Tela-{variant}-dark");
@@ -429,7 +427,7 @@ pub fn set_waybar_colors(accent: &Rgb) {
     // write persistent workspaces config to waybar
     #[cfg(feature = "hyprland")]
     {
-        use crate::{nixinfo::NixInfo, rearranged_workspaces};
+        use crate::{nixjson::NixJson, rearranged_workspaces};
         use hyprland::{data::Monitors, shared::HyprData};
 
         // add / remove persistent workspaces to waybar before launching
@@ -438,36 +436,22 @@ pub fn set_waybar_colors(accent: &Rgb) {
         let mut cfg: serde_json::Value =
             json::load(&cfg_file).unwrap_or_else(|_| panic!("unable to read waybar config"));
 
-        if let NixInfo {
-            waybar_persistent_workspaces: Some(true),
-            monitors,
-            ..
-        } = NixInfo::new()
-        {
-            let active_workspaces: HashMap<_, _> = Monitors::get()
-                .expect("could not get monitors")
+        let monitors = NixJson::new().monitors;
+        let active_workspaces: HashMap<_, _> = Monitors::get()
+            .expect("could not get monitors")
+            .iter()
+            .map(|mon| (mon.name.clone(), mon.active_workspace.id))
+            .collect();
+
+        let new_wksps: HashMap<String, Vec<i32>> =
+            rearranged_workspaces(&monitors, &active_workspaces)
                 .iter()
-                .map(|mon| (mon.name.clone(), mon.active_workspace.id))
+                .map(|(mon_name, wksps)| (mon_name.clone(), wksps.clone()))
                 .collect();
 
-            let new_wksps: HashMap<String, Vec<i32>> =
-                rearranged_workspaces(&monitors, &active_workspaces)
-                    .iter()
-                    .map(|(mon, wksps)| (mon.name.clone(), wksps.clone()))
-                    .collect();
-            cfg["hyprland/workspaces"]["persistentWorkspaces"] = serde_json::to_value(new_wksps)
-                .expect("failed to convert rearranged workspaces to json");
-        } else {
-            let hyprland_workspaces = cfg["hyprland/workspaces"]
-                .as_object_mut()
-                .expect("invalid hyprland workspaces");
-            hyprland_workspaces.remove("persistentWorkspaces");
+        cfg["hyprland/workspaces"]["persistent-workspaces"] = serde_json::to_value(new_wksps)
+            .expect("failed to convert rearranged workspaces to json");
 
-            cfg["hyprland/workspaces"] = serde_json::to_value(hyprland_workspaces)
-                .expect("failed to convert hyprland workspaces to json");
-        }
-
-        // write waybar_config back to waybar_config_file as json
         json::write(&cfg_file, &cfg).expect("failed to write updated waybar config");
     }
 }

@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  libCustom,
   pkgs,
   user,
   ...
@@ -148,7 +149,7 @@ in
 
         # process downloaded files
         shell.packages = {
-          renamer = lib.custom.direnvCargoRun {
+          renamer = libCustom.direnvCargoRun {
             dir = "${homeDir}/projects/renamer";
           };
         };
@@ -159,14 +160,6 @@ in
     {
       hm = {
         home.packages = [ pkgs.filezilla ];
-
-        # full column width for niri
-        programs.niri.settings.window-rules = [
-          {
-            matches = [ { app-id = "^FileZilla$"; } ];
-            open-maximized = true;
-          }
-        ];
       };
 
       custom = {

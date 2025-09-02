@@ -2,6 +2,7 @@
   config,
   dots,
   lib,
+  libCustom,
   pkgs,
   ...
 }:
@@ -21,7 +22,7 @@ in
             package
           ]);
         default = { };
-        apply = lib.custom.mkShellPackages;
+        apply = libCustom.mkShellPackages;
         description = ''
           Attrset of shell packages to install and add to pkgs.custom overlay (for compatibility across multiple shells).
           Both string and attr values will be passed as arguments to writeShellApplicationCompletions
@@ -124,11 +125,13 @@ in
         which = {
           text = # sh
             ''readlink -f "$(which "$1")"'';
-        } // binariesCompletion "which";
+        }
+        // binariesCompletion "which";
         cnwhich = {
           text = # sh
             ''cat "$(which "$1")"'';
-        } // binariesCompletion "cnwhich";
+        }
+        // binariesCompletion "cnwhich";
         ynwhich = {
           runtimeInputs = with pkgs; [
             config.programs.yazi.package
@@ -136,7 +139,8 @@ in
           ];
           text = # sh
             ''yazi "$(dirname "$(dirname "$(which "$1")")")"'';
-        } // binariesCompletion "ynwhich";
+        }
+        // binariesCompletion "ynwhich";
         # uniq but maintain original order
         uuniq = "awk '!x[$0]++'";
       };

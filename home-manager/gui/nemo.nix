@@ -19,10 +19,17 @@ mkIf (config.custom.wm != "tty") {
     nemo-fileroller
     nemo-with-extensions
     webp-pixbuf-loader # for webp thumbnails
-    xdg-terminal-exec
   ];
 
   xdg = {
+    # fix opening terminal for nemo / thunar by using xdg-terminal-exec spec
+    terminal-exec = {
+      enable = true;
+      settings = {
+        default = [ config.custom.terminal.desktop ];
+      };
+    };
+
     # fix mimetype associations
     mimeApps.defaultApplications = {
       "inode/directory" = "nemo.desktop";
@@ -34,12 +41,11 @@ mkIf (config.custom.wm != "tty") {
       "application/x-tar" = "org.gnome.FileRoller.desktop";
     };
 
-    configFile =
-      {
-        "mimeapps.list".force = true;
-      }
-      # other OSes seem to override this file
-      // optionalAttrs (!isNixOS) { "gtk-3.0/bookmarks".force = true; };
+    configFile = {
+      "mimeapps.list".force = true;
+    }
+    # other OSes seem to override this file
+    // optionalAttrs (!isNixOS) { "gtk-3.0/bookmarks".force = true; };
   };
 
   gtk.gtk3.bookmarks =
@@ -65,10 +71,10 @@ mkIf (config.custom.wm != "tty") {
   dconf.settings = {
     # fix open in terminal
     "org/gnome/desktop/applications/terminal" = {
-      exec = getExe pkgs.xdg-terminal-exec;
+      exec = getExe config.xdg.terminal-exec.package;
     };
     "org/cinnamon/desktop/applications/terminal" = {
-      exec = getExe pkgs.xdg-terminal-exec;
+      exec = getExe config.xdg.terminal-exec.package;
     };
     "org/nemo/preferences" = {
       default-folder-viewer = "list-view";
@@ -93,14 +99,6 @@ mkIf (config.custom.wm != "tty") {
     # disable transparency for file delete dialog
     windowrule = [ "forcergbx,floating:1,class:(nemo)" ];
   };
-
-  # full column width for niri
-  programs.niri.settings.window-rules = [
-    {
-      matches = [ { app-id = "^nemo$"; } ];
-      open-maximized = true;
-    }
-  ];
 
   custom.persist = {
     home = {

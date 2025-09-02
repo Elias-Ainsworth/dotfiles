@@ -25,14 +25,6 @@ let
 
 in
 {
-  imports = [
-    ./beets.nix
-    ./mpd.nix
-    ./ncmpcpp.nix
-    ./rmpc.nix
-    ./sptlrx.nix
-  ];
-
   options.custom = {
     beets = {
       enable = mkEnableOption "beets";

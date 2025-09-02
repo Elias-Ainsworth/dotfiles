@@ -25,7 +25,7 @@ _: {
         fi
 
         # run eza with resolved arguments
-        eza -la --git-ignore --icons --tree --hyperlink --level 3 "$@"
+        eza -la --git-ignore --icons --tree --hyperlink --level 5 "$@"
       '';
   };
 
@@ -34,7 +34,6 @@ _: {
     icons = "always";
     enableBashIntegration = true;
     enableFishIntegration = true;
-    enableNushellIntegration = true;
     extraOptions = [
       "--group-directories-first"
       "--header"

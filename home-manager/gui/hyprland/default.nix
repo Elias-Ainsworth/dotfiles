@@ -4,12 +4,14 @@
   isLaptop,
   isVm,
   lib,
+  libCustom,
   pkgs,
   ...
 }:
 let
   inherit (lib)
     length
+    listToAttrs
     mkDefault
     mkEnableOption
     mkIf
@@ -17,15 +19,8 @@ let
     optionalString
     optionals
     ;
-  inherit (config.custom) monitors;
 in
 {
-  imports = [
-    ./hyprnstack.nix
-    ./keybinds.nix
-    ./startup.nix
-  ];
-
   options.custom = {
     hyprland = {
       hyprnstack = mkEnableOption "hyprnstack";
@@ -50,10 +45,6 @@ in
       #   assert (assertMsg (versionOlder config.programs.hyprland.package.version "0.42") "hyprland: use version from nixpkgs?");
       #   inputs.hyprland.packages.${pkgs.system}.hyprland;
 
-      # https://wiki.hyprland.org/Useful-Utilities/Systemd-start/#installation
-      # conflicts with programs.hyprland.withUWSM in nixos
-      systemd.enable = false;
-
       plugins = optionals config.custom.hyprland.hypr-darkwindow [
         # always build with actual hyprland to keep versions in sync
         (pkgs.custom.hypr-darkwindow.override {
@@ -61,23 +52,19 @@ in
         })
       ];
 
-      importantPrefixes = [
-        "$"
-        "bezier"
-        "name"
-        "output"
-      ];
-
       settings = {
         monitor = [ ",preferred,auto,auto" ];
 
-        monitorv2 = map (d: {
-          output = d.name;
-          mode = "${toString d.width}x${toString d.height}@${toString d.refreshRate}";
-          position = "${toString d.position-x}x${toString d.position-y}";
-          supports_hdr = if d.supports_hdr then 1 else 0;
-          inherit (d) scale transform vrr;
-        }) monitors;
+        monitorv2 = map (
+          d:
+          {
+            output = d.name;
+            mode = "${toString d.width}x${toString d.height}@${toString d.refreshRate}";
+            position = "${toString d.positionX}x${toString d.positionY}";
+            inherit (d) scale transform vrr;
+          }
+          // d.extraHyprlandConfig
+        ) config.custom.monitors;
 
         input = {
           kb_layout = "us";
@@ -178,6 +165,15 @@ in
           swallow_regex = "^([Kk]itty|[Ww]ezterm|[Gg]hostty)$";
         };
 
+        # HDR related settings
+        # render = {
+        #   cm_auto_hdr = 1;
+        # };
+
+        # experimental = {
+        #   xx_color_management_v4 = true;
+        # };
+
         ecosystem = {
           no_update_news = true;
           no_donation_nag = true;
@@ -201,12 +197,12 @@ in
       }
       //
         # bind workspaces to monitors, don't bother if there is only one monitor
-        optionalAttrs (length monitors > 1) {
-          workspace = lib.custom.mapWorkspaces (
+        optionalAttrs (length config.custom.monitors > 1) {
+          workspace = libCustom.mapWorkspaces (
             { workspace, monitor, ... }:
             "${workspace},monitor:${monitor.name}"
             + optionalString (workspace == toString monitor.defaultWorkspace) ",default:true"
-          ) monitors;
+          ) config.custom.monitors;
         }
       //
         # nvidia specific settings
@@ -222,6 +218,12 @@ in
     custom.waybar.config = {
       "hyprland/workspaces" = {
         format = "{name}";
+        persistent-workspaces = listToAttrs (
+          map (mon: {
+            inherit (mon) name;
+            value = mon.workspaces;
+          }) config.custom.monitors
+        );
       };
     };
 

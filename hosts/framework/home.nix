@@ -1,15 +1,25 @@
-{ lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib) getExe;
 in
 {
   custom = {
+    specialisation = {
+      hyprland.enable = true;
+    };
+
     monitors = [
       {
         name = "eDP-1";
         width = 2880;
         height = 1920;
-        refreshRate = 120;
+        # 60.001 for 60 fps
+        refreshRate = if config.custom.wm == "hyprland" then "120" else "120.000";
         scale = 1.5;
         vrr = true;
         workspaces = [

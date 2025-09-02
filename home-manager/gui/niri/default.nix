@@ -4,28 +4,28 @@
   inputs,
   isVm,
   lib,
+  libCustom,
   pkgs,
   ...
 }:
 let
   inherit (lib)
+    getExe
+    getExe'
     imap0
     listToAttrs
+    mkEnableOption
     mkIf
     mkMerge
     mod
     optionals
+    toInt
     ;
 in
 {
-  imports = [
-    ./keybinds.nix
-    ./startup.nix
-  ];
-
   options.custom = {
     niri = {
-      blur.enable = lib.mkEnableOption "blur behind windows using PR";
+      blur.enable = mkEnableOption "blur behind windows using PR";
 
       # create a copy of niri settings for wallust, loads of nix option black magic, that is
       # waayyyyyyyyyyyyyyyy over my head, see:
@@ -39,6 +39,11 @@ in
   };
 
   config = mkIf (config.custom.wm == "niri") {
+    home.sessionVariables = {
+      DISPLAY = ":0";
+      NIXOS_OZONE_WL = "1";
+    };
+
     # NOTE: named workspaces are used, because dynamic workspaces are just... urgh
     # the workspaces are name W1, W2, etc as simply naming them as "1", "2", etc
     # causes waybar to just coerce them back into numbers, so workspaces end up being a
@@ -49,17 +54,25 @@ in
       package = inputs.niri.packages.${pkgs.system}.niri-unstable.overrideAttrs (o: {
         patches =
           (o.patches or [ ])
-          # increase maximum shadow spread to be able to fake dimaround on ultrawide
-          # see: https://github.com/YaLTeR/niri/discussions/1806
-          ++ [ ./larger-shadow-spread.patch ]
           ++ optionals config.custom.niri.blur.enable [
             (pkgs.fetchpatch {
               url = "https://patch-diff.githubusercontent.com/raw/YaLTeR/niri/pull/1634.diff";
-              hash = "sha256-ucIBkohHGoALm8dyYxNDd90tyjR1Vr/F/rUWh1+6bRs=";
+              hash = "sha256-nEyYtMOnZmYJPhu1/5p4H9RWBKHMq0/IYwvkorMgwoo=";
               name = "blur-behind-windows";
             })
             # additional patch to fix blur on vertical monitors, sadly there's still an artifact on the bottom right
             ./fix-vertical-blur.patch
+          ]
+          # not compatible with blur patch
+          ++ optionals (!config.custom.niri.blur.enable) [
+            # fix fullscreen windows have a black background
+            # https://github.com/YaLTeR/niri/discussions/1399#discussioncomment-12745734
+            ./transparent-fullscreen.patch
+          ]
+          ++ [
+            # increase maximum shadow spread to be able to fake dimaround on ultrawide
+            # see: https://github.com/YaLTeR/niri/discussions/1806
+            ./larger-shadow-spread.patch
           ];
 
         doCheck = false;
@@ -67,11 +80,6 @@ in
 
       settings = mkMerge [
         {
-          environment = {
-            DISPLAY = ":0";
-            NIXOS_OZONE_WL = "1";
-          };
-
           input = {
             keyboard = {
               xkb = {
@@ -126,6 +134,7 @@ in
                 { proportion = 0.33333; }
                 { proportion = 0.5; }
                 { proportion = 0.66667; }
+                { proportion = 1.0; }
               ];
 
               # heights that "switch-preset-window-height" (Mod+Shift+R) toggles between.
@@ -133,6 +142,7 @@ in
                 { proportion = 0.33333; }
                 { proportion = 0.5; }
                 { proportion = 0.66667; }
+                { proportion = 1.0; }
               ];
 
               # default width of the new windows, empty for deciding initial width
@@ -203,6 +213,10 @@ in
 
           animations = { };
 
+          gestures = {
+            hot-corners.enable = false;
+          };
+
           cursor = {
             theme = config.home.pointerCursor.name;
             inherit (config.home.pointerCursor) size;
@@ -242,20 +256,24 @@ in
             skip-at-startup = true;
           };
 
+          clipboard = {
+            disable-primary = true;
+          };
+
           overview = {
             zoom = 0.4;
           };
 
           xwayland-satellite = {
             enable = true;
-            path = lib.getExe inputs.niri.packages.${pkgs.system}.xwayland-satellite-unstable;
+            path = getExe inputs.niri.packages.${pkgs.system}.xwayland-satellite-unstable;
           };
         }
 
         # create workspaces config
         {
           workspaces = listToAttrs (
-            lib.custom.mapWorkspaces (
+            libCustom.mapWorkspaces (
               {
                 workspace,
                 monitor,
@@ -263,7 +281,7 @@ in
               }:
               {
                 # start from 0 instead to prevent "1" and "10" from sorting wrongly in lexigraphical order
-                name = toString ((lib.toInt workspace) - 1);
+                name = toString ((toInt workspace) - 1);
                 value = {
                   open-on-output = monitor.name;
                   name = "W${toString workspace}";
@@ -286,8 +304,8 @@ in
                   # refresh = d.refreshRate * 1.0;
                 };
                 position = {
-                  x = d.position-x;
-                  y = d.position-y;
+                  x = d.positionX;
+                  y = d.positionY;
                 };
                 variable-refresh-rate = d.vrr;
                 transform = {
@@ -307,7 +325,25 @@ in
     };
 
     # allow override of modified file by the wallpaper theme changer
-    xdg.configFile.niri-config.force = true;
+    xdg.configFile.niri-config = {
+      force = true;
+      onChange = "${getExe' config.custom.dotfiles.package "wallpaper"} reload";
+    };
+
+    xdg.portal = {
+      enable = true;
+      config = {
+        common.default = [
+          "gnome"
+        ];
+        niri = {
+          default = "gnome";
+          "org.freedesktop.impl.portal.FileChooser" = "gtk";
+        };
+        obs.default = [ "gnome" ];
+      };
+      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    };
 
     custom = {
       # override niri settings with placeholders for wallust
