@@ -1,7 +1,6 @@
 {
   config,
   host,
-  inputs,
   isVm,
   lib,
   libCustom,
@@ -51,7 +50,8 @@ in
     # 6 7 3
     programs.niri = {
       enable = true;
-      package = inputs.niri.packages.${pkgs.system}.niri-unstable.overrideAttrs (o: {
+      # package = inputs.niri.packages.${pkgs.system}.niri-unstable.overrideAttrs (o: {
+      package = pkgs.niri.overrideAttrs (o: {
         patches =
           (o.patches or [ ])
           ++ optionals config.custom.niri.blur.enable [
@@ -225,6 +225,11 @@ in
           # match focal format
           screenshot-path = "${config.xdg.userDirs.pictures}/Screenshots/%Y-%m-%dT%H:%M:%S%z.png";
 
+          # allows jumping to a window when clicking on notifications
+          debug = {
+            honor-xdg-activation-with-invalid-serial = { };
+          };
+
           window-rules = [
             # rounded corners for all windows
             {
@@ -266,7 +271,7 @@ in
 
           xwayland-satellite = {
             enable = true;
-            path = getExe inputs.niri.packages.${pkgs.system}.xwayland-satellite-unstable;
+            path = getExe pkgs.xwayland-satellite;
           };
         }
 
@@ -333,9 +338,7 @@ in
     xdg.portal = {
       enable = true;
       config = {
-        common.default = [
-          "gnome"
-        ];
+        common.default = [ "gnome" ];
         niri = {
           default = "gnome";
           "org.freedesktop.impl.portal.FileChooser" = "gtk";

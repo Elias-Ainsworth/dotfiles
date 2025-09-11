@@ -19,6 +19,7 @@ mkIf (config.custom.wm != "tty") {
       };
       extraConfig = ''
         include "${config.xdg.cacheHome}/wallust/zathurarc"
+        set selection-clipboard clipboard
       '';
       options = {
         statusbar-h-padding = 0;

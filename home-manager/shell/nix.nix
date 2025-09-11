@@ -37,6 +37,13 @@ in
       flake = dots;
     };
     nix-index.enable = true;
+
+    nix-init = {
+      enable = true;
+      settings = {
+        maintainers = [ "iynaix" ];
+      };
+    };
   };
 
   custom.shell.packages = {
@@ -356,14 +363,13 @@ in
         '';
     };
     # tui for searching nix packages or options
-    nrg = {
+    ntv = {
       runtimeInputs = with pkgs; [
         config.programs.fzf.package
         nix-search-tv
       ];
-      # ignore checks since i didn't write this
-      checkPhase = "";
-      text = builtins.readFile "${pkgs.nix-search-tv.src}/nixpkgs.sh";
+      # prevent IFD, thanks @Michael-C-Buckley
+      text = ''exec "${pkgs.nix-search-tv.src}/nixpkgs.sh" "$@"'';
     };
     nlocate-lib = {
       runtimeInputs = [

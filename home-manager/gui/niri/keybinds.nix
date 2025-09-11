@@ -247,7 +247,7 @@ mkIf (config.custom.wm == "niri") {
               # Switch workspaces with mainMod + [0-9]
               "Mod+${key}".action.focus-workspace = "W${workspace}";
               # Move active window to a workspace with mainMod + SHIFT + [0-9]
-              "Mod+Shift+${key}".action.move-column-to-workspace = "W${workspace}";
+              "Mod+Shift+${key}".action.move-window-to-workspace = "W${workspace}";
             }
           ]
         ))
@@ -259,7 +259,7 @@ mkIf (config.custom.wm == "niri") {
         action.spawn = [
           (getExe pkgs.brightnessctl)
           "set"
-          "+5%"
+          "5%-"
         ];
         allow-when-locked = true;
       };
@@ -267,7 +267,7 @@ mkIf (config.custom.wm == "niri") {
         action.spawn = [
           (getExe pkgs.brightnessctl)
           "set"
-          "5%-"
+          "+5%"
         ];
         allow-when-locked = true;
       };

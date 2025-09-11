@@ -64,7 +64,7 @@ in
           _o:
           sources.swww
           // {
-            # creating an overlay for buildRustPackage overlay
+            # creating an overlay for buildRustPackage overlay (NOTE: this is an IFD)
             # https://discourse.nixos.org/t/is-it-possible-to-override-cargosha256-in-buildrustpackage/4393/3
             cargoDeps = prev.rustPlatform.importCargoLock {
               lockFile = "${sources.swww.src}/Cargo.lock";
@@ -85,16 +85,13 @@ in
       #   }
       # );
 
-      # nsig keeps breaking, so use updated version from github
-      yt-dlp = prev.yt-dlp.overrideAttrs sources.yt-dlp;
-
-      # TODO: remove once rclip is updated
-      rclip = prev.rclip.overrideAttrs (o: {
-        postPatch = (o.postPatch or "") + ''
-          substituteInPlace pyproject.toml \
-            --replace-fail "^2.24.0" "^3.0.0"
-        '';
+      # fix some ugly styling for nemo in tokyonight
+      tokyo-night-gtk = prev.tokyo-night-gtk.overrideAttrs (o: {
+        patches = (o.patches or [ ]) ++ [ ./tokyonight-style.patch ];
       });
+
+      # youtube breaks yt-dlp frequently, use updated version from github
+      yt-dlp = prev.yt-dlp.overrideAttrs sources.yt-dlp;
     })
   ];
 }

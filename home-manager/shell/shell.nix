@@ -49,6 +49,7 @@ in
         c = "clear";
         cat = "bat";
         ccat = "command cat";
+        cp = "cp -ri";
         crate = "cargo";
         dots = "cd ${dots}";
         isodate = ''date -u "+%Y-%m-%dT%H:%M:%SZ"'';
@@ -66,8 +67,6 @@ in
         # cd aliases
         ".." = "cd ..";
         "..." = "cd ../..";
-        # nu alias
-        "n" = "nu -c";
       };
     };
 
@@ -122,23 +121,23 @@ in
         md = # sh
           ''[[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1"'';
         # improved which for nix
-        which = {
+        nwhich = {
           text = # sh
             ''readlink -f "$(which "$1")"'';
         }
-        // binariesCompletion "which";
+        // binariesCompletion "nwhich";
         cnwhich = {
           text = # sh
-            ''cat "$(which "$1")"'';
+            ''cat "$(nwhich "$1")"'';
         }
         // binariesCompletion "cnwhich";
         ynwhich = {
           runtimeInputs = with pkgs; [
             config.programs.yazi.package
-            custom.shell.which
+            custom.shell.nwhich
           ];
           text = # sh
-            ''yazi "$(dirname "$(dirname "$(which "$1")")")"'';
+            ''yazi "$(dirname "$(dirname "$(nwhich "$1")")")"'';
         }
         // binariesCompletion "ynwhich";
         # uniq but maintain original order

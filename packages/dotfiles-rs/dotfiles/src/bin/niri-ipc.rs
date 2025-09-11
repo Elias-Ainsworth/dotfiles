@@ -214,15 +214,15 @@ fn handle_workspaces_changed(workspaces: &[Workspace], nix_info_monitors: &[NixM
         .map(|(mon, wksps)| (mon, wksps.cloned().collect_vec()))
         .collect();
 
-    if has_unknown_monitors {
-        focus_workspaces(nix_info_monitors);
-    } else {
+    if !has_unknown_monitors {
         renumber_workspaces(&by_monitor);
 
         // reload the wallpaper (which also reloads waybar)
         // only run at most once per 5s
         debounce(Duration::from_secs(5), || wallpaper::reload(None));
     }
+
+    focus_workspaces(nix_info_monitors);
 }
 
 fn waybar_main_pid() -> Option<String> {
@@ -381,20 +381,19 @@ fn handle_window_layouts_changed(
             .max()
             .unwrap_or_default();
 
+        let Some(wksp) = workspaces.iter().find(|wksp| wksp.id == wksp_id) else {
+            continue;
+        };
+
+        let Some(mon) = monitors
+            .values()
+            .find(|mon| Some(mon.name.clone()) == wksp.output)
+        else {
+            continue;
+        };
+
         // check for coming out of fullscreen
         if prev_cols == curr_cols {
-            // find the workspace
-            let Some(wksp) = workspaces.iter().find(|wksp| wksp.id == wksp_id) else {
-                continue;
-            };
-
-            let Some(mon) = monitors
-                .values()
-                .find(|mon| Some(mon.name.clone()) == wksp.output)
-            else {
-                continue;
-            };
-
             if let Some((mon_w, mon_h)) = mon.dimensions() {
                 let (prev_w, prev_h) = prev_win.layout.window_size;
                 let (curr_w, curr_h) = curr_win.layout.window_size;
@@ -406,6 +405,11 @@ fn handle_window_layouts_changed(
         }
         // adding or removing a column
         else {
+            // adding a column, probably going into fullscreen or manually expelling a column
+            if curr_cols > prev_cols && mon.is_vertical() {
+                continue;
+            }
+
             resize_workspace_from_state(wksp_id, Some(curr_win), state);
         }
     }
@@ -429,11 +433,18 @@ fn handle_window_opened_or_changed(
             if let Some(curr_win) = curr_windows.get(id)
                 && curr_win.workspace_id != prev_win.workspace_id
             {
+                let mut socket = Socket::connect().expect("failed to connect to niri socket");
+
                 if let Some(wksp_id) = prev_win.workspace_id {
                     resize_workspace_from_state(wksp_id, None, state);
                 }
                 if let Some(wksp_id) = curr_win.workspace_id {
                     resize_workspace_from_state(wksp_id, Some(window), state);
+
+                    socket
+                        .send(Request::Action(Action::FocusWindow { id: window.id }))
+                        .expect("failed to send FocusWindow")
+                        .ok();
                 }
                 break;
             }

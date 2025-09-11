@@ -58,12 +58,12 @@ in
         ];
       }
     ];
-
     fonts = {
       regular = "Iosevka Etoile";
       monospace = "Iosevka Nerd Font";
     };
     gamma.enable = true;
+    helix.enable = true;
     modelling3d.enable = false;
     printing3d.enable = false;
     pathofbuilding.enable = false;
