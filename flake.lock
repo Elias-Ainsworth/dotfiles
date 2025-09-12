@@ -1287,11 +1287,11 @@
         "systems": "systems_8"
       },
       "locked": {
-        "lastModified": 1757634383,
-        "narHash": "sha256-VevVtiCNxyTjqht5FTq4satTaTx7sD1CKfSPuZOljUY=",
+        "lastModified": 1757719347,
+        "narHash": "sha256-O+oCNCxT1ClMvfRbH+NLsL0xQnJa1WwcPo6BC/9o+4U=",
         "owner": "elias-ainsworth",
         "repo": "thornevim",
-        "rev": "18a2f20f961b8c11dd055bba838bd4a90cfff83b",
+        "rev": "253e7bbf449dbd12ed79b1cc2dcde2c9514f32c2",
         "type": "github"
       },
       "original": {
