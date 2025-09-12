@@ -32,15 +32,15 @@ rec {
   # custom tela built with tokyo-night variant colors
   tela-dynamic-icon-theme = callPackage ./tela-dynamic-icon-theme {
     colors = {
-      Default = "#78a9ff"; # (base09, calm blue)
-      Green = "#42be65"; # (base0D, IBM green)
-      Grey = "#393939"; # (base02, neutral)
-      Orange = "#ee5396"; # (base0A, pink-ish accent)
-      Pink = "#ff7eb6"; # (base0C, true pink)
-      Purple = "#be95ff"; # (base0E, IBM purple)
-      Red = "#3ddbd9"; # (base08, cyan-ish red replacement)
-      Teal = "#08bdba"; # (base07, teal accent)
-      Yellow = "#82cfff"; # (base0F, light blue substitute for yellow)
+      default = "#2e7de9";
+      green = "#387068";
+      grey = "#414868";
+      orange = "#b15c00";
+      pink = "#d20065";
+      purple = "#7847bd";
+      red = "#f52a65";
+      teal = "#118c74";
+      yellow = "#8c6c3e";
     };
   };
 

@@ -13,17 +13,16 @@ in
     gtk = {
       accents = mkOption {
         type = attrsOf str;
-
         default = {
-          Default = "#78a9ff"; # (base09, calm blue)
-          Green = "#42be65"; # (base0D, IBM green)
-          Grey = "#393939"; # (base02, neutral)
-          Orange = "#ee5396"; # (base0A, pink-ish accent)
-          Pink = "#ff7eb6"; # (base0C, true pink)
-          Purple = "#be95ff"; # (base0E, IBM purple)
-          Red = "#3ddbd9"; # (base08, cyan-ish red replacement)
-          Teal = "#08bdba"; # (base07, teal accent)
-          Yellow = "#82cfff"; # (base0F, light blue substitute for yellow)
+          Default = "#2e7de9";
+          Green = "#387068";
+          Grey = "#414868";
+          Orange = "#b15c00";
+          Pink = "#d20065";
+          Purple = "#7847bd";
+          Red = "#f52a65";
+          Teal = "#118c74";
+          Yellow = "#8c6c3e";
         };
         description = "GTK theme accents";
       };
@@ -67,8 +66,8 @@ in
       gtk = {
         enable = true;
         theme = {
-          name = "Oxocarbon-Dark";
-          package = pkgs.colloid-gtk-theme.override {
+          name = "Tokyonight-Dark-Compact";
+          package = pkgs.tokyo-night-gtk.override {
             colorVariants = [ "dark" ];
             sizeVariants = [ "compact" ];
             themeVariants = [ "all" ];

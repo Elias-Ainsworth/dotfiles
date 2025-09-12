@@ -58,6 +58,11 @@ in
         ];
       }
     ];
+
+    colorscheme = {
+      theme = "tokyonight";
+      variant = "night";
+    };
     fonts = {
       regular = "Iosevka Etoile";
       monospace = "Iosevka Nerd Font";
