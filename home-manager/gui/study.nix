@@ -14,7 +14,7 @@ in
 
   config = mkIf config.custom.study.enable {
     home.packages = with pkgs; [
-      bibletime
+      # bibletime
       kjv
       lowfi
       porsmo
@@ -22,8 +22,8 @@ in
 
     custom.persist = {
       home.directories = [
-        ".bibletime/"
-        ".sword/"
+        # ".bibletime/"
+        # ".sword/"
       ];
     };
   };

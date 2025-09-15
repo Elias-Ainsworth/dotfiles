@@ -43,6 +43,31 @@ proceeding or your install WILL NOT BOOT.
 
 Introduction
 
+# ZFS "fileSystems" declarations can be referenced from zfs.nix
+# ZFS also requires the following options to be set within host config:
+#   networking.hostId (can be generated using: head -c 8 /etc/machine-id)
+#   zfs.devNodes
+#       "/dev/disk/by-id" for Intel CPUs
+#       "/dev/disk/by-partuuid" for AMD CPUs / within VMs
+# impermanence setup can be referenced from nixos/impermanence.nix
+
+# It is highly recommended to setup an initialPassword for root and your user(s)
+# as a fallback so you will always be able to login / sudo using that initialPassword, e.g.
+#
+# users = {
+#     mutableUsers = false;
+#     users.root.initialPassword = "password";
+#     users.<USERNAME>.initialPassword = "password";
+# }
+#
+# After initial login, you can then set new passwords for root and your user(s)
+# using `users.<USERNAME>.hashedPasswordFile = /persist/PATH_TO_HASHED_PASSWORD_FILE`
+# read -s -p "" PASSWORD && mkpasswd -m sha-512 "$PASSWORD" | sudo tee -a /persist/PATH_TO_HASHED_PASSWORD_FILE
+
+# NOTE: during rebuild, there will be warnings about setting multiple password options, this is expected :(
+# (https://github.com/NixOS/nixpkgs/pull/287506#issuecomment-1950958990)
+# see nixos/users.nix for a fix to silence the warnings
+
 # in a vm, special case
 if [[ -b "/dev/vda" ]]; then
     DISK="/dev/vda"

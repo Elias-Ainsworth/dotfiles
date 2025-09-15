@@ -73,6 +73,7 @@ in
     printing3d.enable = false;
     pathofbuilding.enable = false;
     rclip.enable = true;
+    study.enable = true;
     wallfacer.enable = true;
     waybar.hidden = false;
 
