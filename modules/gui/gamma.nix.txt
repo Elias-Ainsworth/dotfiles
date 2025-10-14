@@ -1,0 +1,23 @@
+{
+  config,
+  lib,
+  ...
+}:
+let
+  inherit (lib) mkEnableOption;
+in
+{
+  options.custom = {
+    programs.gamma.enable = mkEnableOption "gamma";
+  };
+
+  config.services.gammastep = {
+    inherit (config.custom.programs.gamma) enable;
+    latitude = 33.45;
+    longitude = -112.07;
+    temperature = {
+      day = 4500;
+      night = 3500;
+    };
+  };
+}

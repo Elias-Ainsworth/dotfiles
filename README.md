@@ -1,8 +1,6 @@
 # Elias Ainsworth's NixOS Config (forked from iynaix/dotfiles)
 
-This config is intended to be used with NixOS. There is _experimental_ support
-for running the dotfiles on
-[legacy operating systems](https://github.com/elias-ainsworth/dotfiles/blob/main/home-manager.md).
+This config is intended to be used with NixOS.
 
 ## Features
 

@@ -5,21 +5,21 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
 
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
-
-    home-manager = {
-      url = "github:nix-community/home-manager";
+    hjem = {
+      url = "github:feel-co/hjem";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    home-manager-stable = {
-      url = "github:nix-community/home-manager/release-25.05";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     import-tree.url = "github:vic/import-tree";
+
+    wrappers = {
+      url = "github:Lassulus/wrappers";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
 
     # hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1&rev=918d8340afd652b011b937d29d5eea0be08467f5";
 
@@ -57,11 +57,6 @@
 
     pilum-murialis = {
       url = "github:elias-ainsworth/pilum-murialis.xyz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    tmux-thorne = {
-      url = "github:elias-ainsworth/tmux-thorne";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -114,7 +109,6 @@
           user = "elias-ainsworth";
           hostNixosModule = import ./hosts/nixos.nix { inherit inputs self user; };
           inherit (hostNixosModule) mkNixos mkVm;
-          mkHomeManager = import ./hosts/home-manager.nix { inherit inputs self; };
         in
         {
           nixosConfigurations = {
@@ -143,14 +137,9 @@
           }
           // (import ./hosts/iso { inherit inputs self; });
 
-          homeConfigurations = {
-            desktop = mkHomeManager "x86_64-linux" user "desktop" { };
-            framework = mkHomeManager "x86_64-linux" user "framework" { };
-          };
-
           inherit lib;
 
-          libCustom = import ./lib.nix { inherit lib pkgs; };
+          libCustom = import ./lib.nix { inherit lib pkgs user; };
 
           inherit self; # for repl debugging
 

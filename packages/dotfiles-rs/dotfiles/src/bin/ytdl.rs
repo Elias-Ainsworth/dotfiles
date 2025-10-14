@@ -1,5 +1,5 @@
 use std::{
-    collections::HashSet,
+    collections::BTreeSet,
     env,
     fs::File,
     io::{BufRead, BufReader, Write},
@@ -33,11 +33,12 @@ fn read_yt_txt() -> Vec<String> {
 
 fn main() -> std::io::Result<()> {
     let args: Vec<String> = env::args().skip(1).collect(); // skip program name
-    // has positional arguments, urls / file is provided
-    let use_yt_txt = args.iter().all(|arg| arg.starts_with('-'));
+    // a url is provided, do not use yt.txt
+    let use_yt_txt = !args.iter().any(|arg| arg.starts_with("http"));
 
     let lines = read_yt_txt();
-    let mut urls: HashSet<_> = lines
+    // use BTreeSet to dedupe while preserving order
+    let mut urls: BTreeSet<_> = lines
         .iter()
         .filter(|line| line.starts_with("http"))
         .collect();

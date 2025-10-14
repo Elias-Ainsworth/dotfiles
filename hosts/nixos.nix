@@ -27,43 +27,14 @@ rec {
       };
 
       modules = [
-        ./${host} # host specific configuration
-        ./${host}/hardware.nix # host specific hardware configuration
-        (inputs.import-tree ../nixos)
+        (inputs.import-tree ./${host}) # host specific configuration
+        (inputs.import-tree ../modules)
         ../overlays
-        inputs.home-manager.nixosModules.home-manager
-        {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-
-            extraSpecialArgs = {
-              inherit
-                inputs
-                host
-                self
-                user
-                isVm
-                ;
-              inherit (self) libCustom;
-              isNixOS = true;
-              isLaptop = host == "framework" || host == "x1c" || host == "x1c-8" || host == "t520"; # || host == "t440";
-              dots = "/persist/home/${user}/projects/dotfiles";
-            };
-
-            users.${user} = {
-              imports = [
-                inputs.nix-index-database.homeModules.nix-index
-                inputs.niri.homeModules.niri
-                inputs.mango.hmModules.mango
-                ./${host}/home.nix # host specific home-manager configuration
-                (inputs.import-tree ../home-manager)
-              ];
-            };
-          };
-        }
-        # alias for home-manager
-        (lib.mkAliasOptionModule [ "hm" ] [ "home-manager" "users" user ])
+        inputs.hjem.nixosModules.default
+        inputs.nix-index-database.nixosModules.nix-index
+        inputs.niri.nixosModules.niri
+        # alias for hjem
+        (lib.mkAliasOptionModule [ "hj" ] [ "hjem" "users" user ])
         inputs.mango.nixosModules.mango
         inputs.impermanence.nixosModules.impermanence
         inputs.sops-nix.nixosModules.sops
