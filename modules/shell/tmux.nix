@@ -83,7 +83,7 @@ in
 {
   custom.wrappers = [
     (_: _prev: {
-      wrappers.tmux = {
+      tmux = {
         flags = {
           "-f" = pkgs.writeText "tmux.conf" tmuxConf;
         };
