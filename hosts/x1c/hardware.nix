@@ -8,21 +8,20 @@
   ...
 }:
 {
-  imports = [ inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-6th-gen ];
+  imports = [
+    inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-6th-gen
+  ];
 
   boot = {
     initrd.availableKernelModules = [
-      "nvme"
       "xhci_pci"
-      "thunderbolt"
+      "nvme"
       "usb_storage"
       "sd_mod"
     ];
     initrd.kernelModules = [ ];
     kernelModules = [
-      "iwlwifi"
-      "i915"
-      "thinkpad_acpi"
+      "kvm-intel"
     ];
     extraModulePackages = [ ];
   };
