@@ -49,6 +49,8 @@ rec {
   hyprnstack = callPackage ./hyprnstack { };
   hypr-darkwindow = callPackage ./hypr-darkwindow { };
 
+  helium = callPackage ./helium { };
+
   path-of-building = callPackage ./path-of-building { };
 
   # mpv plugins
