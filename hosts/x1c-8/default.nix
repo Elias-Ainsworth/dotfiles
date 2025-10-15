@@ -109,9 +109,6 @@ in
     # touchpad support
     libinput.enable = true;
 
-    # vlc cast support
-    avahi.enable = true;
-
     # thunderbolt support
     hardware.bolt.enable = true;
 
