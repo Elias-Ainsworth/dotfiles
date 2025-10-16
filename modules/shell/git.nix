@@ -65,7 +65,7 @@ mkMerge [
           };
           user = {
             name = "Elias Ainsworth";
-            email = "pilum_murialis.toge@proton.me";
+            email = "pilum-murialis.toge@proton.me";
           };
         };
       };
