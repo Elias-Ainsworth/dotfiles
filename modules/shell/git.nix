@@ -71,8 +71,8 @@
                 autoUpdate = true;
               };
               user = {
-                name = "Lin Xianyi";
-                email = "iynaix@gmail.com";
+                name = "Elias Ainsworth";
+                email = "pilum-murialis.toge@proton.me";
               };
             };
           };

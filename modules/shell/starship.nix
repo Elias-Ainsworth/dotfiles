@@ -22,7 +22,9 @@
                 # begin left format
                 "$username"
                 "$hostname"
-                "$directory[](${dir_bg}) "
+                "[](${dir_bg})"
+                "$directory(${dir_bg})"
+                "[ ](${dir_bg})"
                 "$git_branch"
                 "$git_state"
                 "$git_status"
@@ -30,9 +32,10 @@
                 # end left format
                 "$fill"
                 # begin right format
-                "[](${dir_bg})"
-                "[ ](${accent_style})"
+                "[](${dir_bg})"
+                "[ ](${accent_style})"
                 "$cmd_duration"
+                "[](${dir_bg})"
                 # end right format
                 "$line_break"
                 "$character"
@@ -40,9 +43,12 @@
 
               # modules
               character = {
-                error_symbol = "[ ](bold red)";
-                success_symbol = "[](purple)";
-                vimcmd_symbol = "[](green)";
+                success_symbol = "[ λ](purple)";
+                error_symbol = "[ λ](red)";
+                vimcmd_symbol = "[ ƛ](green)";
+                # success_symbol = "[ ト](purple)";
+                # error_symbol = "[ ト](red)";
+                # vimcmd_symbol = "[ ヴ](green)";
               };
               username = {
                 style_root = important_style;
@@ -53,7 +59,7 @@
                 style = important_style;
               };
               directory = {
-                format = "[ $path ]($style)";
+                format = "[$path]($style)";
                 style = accent_style;
               };
               git_branch = {

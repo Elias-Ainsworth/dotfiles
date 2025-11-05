@@ -148,8 +148,7 @@
             tls = true;
             auth = true;
             port = 587;
-            inherit user;
-            from = "${user}@gmail.com";
+            from = "pilum-murialis.toge@proton.me";
             # app specific password needed for 2fa
             passwordeval = "cat ${config.sops.secrets.zfs-zed.path}";
           };
@@ -160,7 +159,7 @@
         enableMail = true;
         settings = {
           ZED_DEBUG_LOG = "/tmp/zed.debug.log";
-          ZED_EMAIL_ADDR = [ "${user}@gmail.com" ];
+          ZED_EMAIL_ADDR = [ "pilum-murialis.toge@proton.me" ];
           ZED_EMAIL_PROG = lib.getExe pkgs.msmtp;
           ZED_EMAIL_OPTS = "@ADDRESS@";
 

@@ -46,8 +46,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nvf = {
-      url = "github:notashelf/nvf/v0.8";
+    thornevim = {
+      url = "github:elias-ainsworth/thornevim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -58,6 +58,11 @@
 
     focal = {
       url = "github:iynaix/focal";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    mamelon = {
+      url = "github:elias-ainsworth/mamelon-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

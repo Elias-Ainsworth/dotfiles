@@ -1,20 +1,31 @@
 {
   flake.nixosModules.core =
-    { lib, pkgs, ... }:
+    {
+      inputs,
+      lib,
+      pkgs,
+      ...
+    }:
     let
       inherit (lib) mkOption;
     in
     {
       options.custom = {
+
         fonts = {
           regular = mkOption {
             type = lib.types.str;
             default = "Geist";
             description = "The font to use for regular text";
           };
+          weeb = mkOption {
+            type = lib.types.str;
+            default = "Mamelon";
+            description = "The font to use for weeb text";
+          };
           monospace = mkOption {
             type = lib.types.str;
-            default = "JetBrainsMono Nerd Font";
+            default = "JetBrainsMono Nerd Font"; # Idk I honestly like "Geist Mono NerdFont" as well.
             description = "The font to use for monospace text";
           };
         };
@@ -31,7 +42,10 @@
             noto-fonts
             noto-fonts-cjk-sans
             noto-fonts-emoji
+            nerd-fonts.iosevka
             nerd-fonts.jetbrains-mono
+            inputs.mamelon.packages.${system}.default
+            (iosevka-bin.override { variant = "Etoile"; })
           ];
         };
       };

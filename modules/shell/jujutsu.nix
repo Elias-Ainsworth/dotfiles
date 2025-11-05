@@ -6,8 +6,8 @@
       tomlFormat = pkgs.formats.toml { };
       jujutsuConf = {
         user = {
-          name = "iynaix";
-          email = "iynaix@gmail.com";
+          name = "Elias Ainsworth";
+          email = "pilum-murialis.toge@proton.me";
         };
         template-aliases = {
           "format_short_id(id)" = "id.shortest()";

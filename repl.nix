@@ -6,7 +6,7 @@
   ...
 }:
 let
-  user = "iynaix";
+  user = "elias-ainsworth";
   flake = builtins.getFlake (toString ./.);
   inherit (flake.inputs.nixpkgs) lib;
 in

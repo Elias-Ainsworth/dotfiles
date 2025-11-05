@@ -6,7 +6,7 @@
 }:
 let
   inherit (inputs.nixpkgs) lib;
-  user = "iynaix";
+  user = "elias-ainsworth";
   mkNixos =
     host:
     {
@@ -23,7 +23,7 @@ let
           user
           ;
         isNixOS = true;
-        isLaptop = host == "xps" || host == "framework";
+        isLaptop = host == "x1c-8" || host == "framework";
         dots = "/persist/home/${user}/projects/dotfiles";
       };
 
@@ -48,7 +48,7 @@ in
   flake.nixosConfigurations = {
     desktop = mkNixos "desktop" { };
     framework = mkNixos "framework" { };
-    xps = mkNixos "xps" { };
+    x1c-8 = mkNixos "x1c-8" { };
     # VMs from config
     vm = mkVm "vm" { };
     # hyprland can be used within a VM on AMD
@@ -57,6 +57,6 @@ in
     # nixos-rebuild build-vm --flake .#desktop-vm
     desktop-vm = mkVm "desktop" { };
     framework-vm = mkVm "framework" { };
-    xps-vm = mkVm "xps" { };
+    x1c-8-vm = mkVm "x1c-8" { };
   };
 }

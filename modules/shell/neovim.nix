@@ -1,18 +1,33 @@
 {
   flake.nixosModules.core =
     {
+      config,
       dots,
-      host,
+      inputs,
       lib,
       pkgs,
       ...
     }:
+
     let
       inherit (lib) getExe hiPrio;
-      customNeovim = pkgs.custom.neovim-iynaix.override { inherit dots host; };
+      inherit (config.custom.colorscheme)
+        theme
+        transparent
+        variant
+        ;
+      customNeovim = inputs.thornevim.packages.${pkgs.system}.default.override {
+        colorscheme = theme;
+        inherit variant;
+        inherit transparent;
+        inherit dots;
+      };
       nvim-direnv = pkgs.writeShellApplication {
         name = "nvim-direnv";
-        runtimeInputs = [ pkgs.direnv ];
+        runtimeInputs = [
+          pkgs.direnv
+          customNeovim
+        ];
         text = # sh
           ''
             if ! direnv exec "$(dirname "$1")" nvim "$@"; then
