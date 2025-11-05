@@ -6,7 +6,7 @@
 }:
 let
   inherit (self) lib;
-  repo_url = "https://raw.githubusercontent.com/iynaix/dotfiles";
+  repo_url = "https://raw.githubusercontent.com/elias-ainsworth/dotfiles";
   mkIso =
     nixpkgs: isoPath:
     # use the lib from the nixpkgs passed in, so the nixos version will be correct
@@ -26,19 +26,19 @@ let
                 with pkgs;
                 [
                   (pkgs.writeShellApplication {
-                    name = "iynaixos-install";
+                    name = "thorneos-install";
                     runtimeInputs = [ pkgs.curl ];
                     text = # sh
                       "sh <(curl -L ${repo_url}/main/install.sh)";
                   })
                   (pkgs.writeShellApplication {
-                    name = "iynaixos-recover";
+                    name = "thorneos-recover";
                     runtimeInputs = [ pkgs.curl ];
                     text = # sh
                       "sh <(curl -L ${repo_url}/main/recover.sh)";
                   })
                   (pkgs.writeShellApplication {
-                    name = "iynaixos-reinstall";
+                    name = "thorneos-reinstall";
                     runtimeInputs = [ pkgs.curl ];
                     text = # sh
                       "sh <(curl -L ${repo_url}/main/recover.sh)";
@@ -48,7 +48,7 @@ let
                   eza
                   tree
                   # custom neovim
-                  self.packages.${system}.neovim-iynaix
+                  inputs.thornevim.packages.${pkgs.system}.default
                 ]
                 ++ lib.optionals (lib.hasInfix "plasma" isoPath) [ ghostty ];
 

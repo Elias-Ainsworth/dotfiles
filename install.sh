@@ -10,14 +10,20 @@ function yesno() {
     while true; do
         read -rp "$prompt [y/n] " yn
         case $yn in
-            [Yy]* ) echo "y"; return;;
-            [Nn]* ) echo "n"; return;;
-            * ) echo "Please answer yes or no.";;
+        [Yy]*)
+            echo "y"
+            return
+            ;;
+        [Nn]*)
+            echo "n"
+            return
+            ;;
+        *) echo "Please answer yes or no." ;;
         esac
     done
 }
 
-cat << Introduction
+cat <<Introduction
 The *entire* disk will be formatted with a 1GB boot partition
 (labelled NIXBOOT), 16GB of swap, and the rest allocated to ZFS.
 
@@ -74,7 +80,7 @@ else
 
     echo -e "\nAvailable disks:\n"
     for i in "${!disks[@]}"; do
-        printf "%d) %s\n" $((i+1)) "${disks[i]}"
+        printf "%d) %s\n" $((i + 1)) "${disks[i]}"
     done
 
     # Get user selection
@@ -89,7 +95,7 @@ else
     done
 
     # Get the selected disk
-    DISK="/dev/$(echo "${disks[$selection-1]}" | awk '{print $1}')"
+    DISK="/dev/$(echo "${disks[$selection - 1]}" | awk '{print $1}')"
 fi
 
 # if disk contains "nvme", append "p" to partitions
@@ -122,7 +128,7 @@ sudo sgdisk -n2:0:+16G -t2:8200 "$DISK"
 sudo sgdisk -n1:0:0 -t1:BF01 "$DISK"
 
 # notify kernel of partition changes
-sudo sgdisk -p "$DISK" > /dev/null
+sudo sgdisk -p "$DISK" >/dev/null
 sleep 5
 
 echo "Creating Swap"
@@ -191,7 +197,7 @@ if [[ $restore_snapshot == "y" ]]; then
     echo "Creating /persist"
     # disable shellcheck (sudo doesn't affect redirects)
     # shellcheck disable=SC2024
-    sudo zfs receive -o mountpoint=legacy zroot/persist < "$snapshot_file_path"
+    sudo zfs receive -o mountpoint=legacy zroot/persist <"$snapshot_file_path"
 
 else
     echo "Creating /persist"
@@ -200,45 +206,45 @@ fi
 sudo mount --mkdir -t zfs zroot/persist /mnt/persist
 
 # get repo to install from
-read -rp "Enter flake URL (default: github:iynaix/dotfiles): " repo
-repo="${repo:-github:iynaix/dotfiles}"
+read -rp "Enter flake URL (default: github:elias-ainsworth/dotfiles): " repo
+repo="${repo:-github:elias-ainsworth/dotfiles}"
 
-# only relevant for IynaixOS
-if [[ $repo == "github:iynaix/dotfiles" ]]; then
-    hosts=("desktop" "framework" "xps" "vm" "vm-hyprland")
+# only relevant for thorneOS
+if [[ $repo == "github:elias-ainsworth/dotfiles" ]]; then
+    hosts=("desktop" "framework" "x1c-8" "vm" "vm-hyprland")
 
     echo "Available hosts:"
     for i in "${!hosts[@]}"; do
-        printf "%d) %s\n" $((i+1)) "${hosts[i]}"
+        printf "%d) %s\n" $((i + 1)) "${hosts[i]}"
     done
 
     while true; do
         echo ""
         read -rp "Enter the number of the host to install: " selection
         if [[ "$selection" =~ ^[0-9]+$ ]] && [ "$selection" -ge 1 ] && [ "$selection" -le ${#hosts[@]} ]; then
-            host="${hosts[$selection-1]}"
+            host="${hosts[$selection - 1]}"
             break
         else
             echo "Invalid selection. Please enter a number between 1 and ${#hosts[@]}."
         fi
     done
 else
-    # non IynaixOS, prompt for host
+    # non thorneOS, prompt for host
     read -rp "Which host to install?" host
 fi
 
 read -rp "Enter git rev for flake (default: main): " git_rev
 
 echo "Installing NixOS"
-if [[ $repo == "github:iynaix/dotfiles" ]]; then
+if [[ $repo == "github:elias-ainsworth/dotfiles" ]]; then
     # root password is irrelevant if initialPassword is set in the config
-    sudo nixos-install --no-root-password --flake "$repo/${git_rev:-main}#$host" --option tarball-ttl 0
+    sudo nixos-install --no-root-password --flake "$repo/${git_rev:-main}#$host" --option tarball-ttl 0 --option experimental-features 'nix-command flakes pipe-operators'
 else
-    sudo nixos-install --flake "$repo/${git_rev:-main}#$host" --option tarball-ttl 0
+    sudo nixos-install --flake "$repo/${git_rev:-main}#$host" --option tarball-ttl 0 --option experimental-features 'nix-command flakes pipe-operators'
 fi
 
-# only relevant for IynaixOS
-if [[ $repo == "github:iynaix/dotfiles" ]]; then
+# only relevant for thorneOS
+if [[ $repo == "github:elias-ainsworth/dotfiles" ]]; then
     echo "To setup secrets, run \"install-remote-secrets\" on the other host."
 
     IP_ADDR=$(ifconfig | awk '/inet / && !/127.0.0.1/ {print $2; exit}')
