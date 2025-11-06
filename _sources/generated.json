@@ -119,27 +119,6 @@
         },
         "version": "9a5cda4fc8f0896cec27dca60a32251009c0e9c5"
     },
-    "path-of-building": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "path-of-building",
-        "passthru": null,
-        "pinned": false,
-        "src": {
-            "deepClone": false,
-            "fetchSubmodules": false,
-            "leaveDotGit": false,
-            "name": null,
-            "owner": "PathOfBuildingCommunity",
-            "repo": "PathOfBuilding",
-            "rev": "v2.56.0",
-            "sha256": "sha256-vzTMkrZgXtsCtEyxaDkea/MRj8tZDzDV3JAc440xrM8=",
-            "sparseCheckout": [],
-            "type": "github"
-        },
-        "version": "v2.56.0"
-    },
     "rofi-themes": {
         "cargoLocks": null,
         "date": "2025-07-26",

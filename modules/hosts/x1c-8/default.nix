@@ -14,12 +14,10 @@ topLevel: {
         wm
 
         ### programs
-        # deadbeef
         freecad
-        # helix
+        helix
         # orca-slicer
         # obs-studio
-        # path-of-building
         # vlc
         music
         wallfacer

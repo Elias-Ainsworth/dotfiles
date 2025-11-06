@@ -12,7 +12,7 @@ topLevel: {
         # helix
         # orca-slicer
         # obs-studio
-        # path-of-building
+        # 
         # vlc
         # wallfacer
         # zoom

@@ -1,21 +1,8 @@
-{ inputs, pkgs, ... }:
+{ pkgs, ... }:
 let
   inherit (pkgs) callPackage;
 in
 {
-  # full neovim with nixd setup (requires path to dotfiles repo)
-  neovim-iynaix = pkgs.callPackage (
-    {
-      dots ? null,
-      host ? "desktop",
-    }:
-    (inputs.nvf.lib.neovimConfiguration {
-      inherit pkgs;
-      modules = [ ./neovim-iynaix ];
-      extraSpecialArgs = { inherit dots host; };
-    }).neovim
-  ) { };
-
   dotfiles-rs = callPackage ./dotfiles-rs { };
 
   tela-dynamic-icon-theme = callPackage ./tela-dynamic-icon-theme { };
