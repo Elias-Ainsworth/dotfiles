@@ -43,7 +43,7 @@
           set  -g focus-events      off
           setw -g aggressive-resize off
           setw -g clock-mode-style  24
-          set  -s escape-time       500
+          set  -s escape-time       50
           set  -g history-limit     2000
 
           # load plugins

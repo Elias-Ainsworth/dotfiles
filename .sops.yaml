@@ -5,7 +5,7 @@
 keys:
   - &elias-ainsworth age1d343d47etrvwvcu5mpvue6u8clunj2k0jjfygn06rvv9elxhtfmqjkysxa
 creation_rules:
-  - path_regex: hosts/secrets.json$
+  - path_regex: modules/hosts/secrets.json$
     key_groups:
     - age:
       - *elias-ainsworth
