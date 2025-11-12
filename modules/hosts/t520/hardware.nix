@@ -2,24 +2,29 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 {
-  flake.nixosModules.host-xps =
+  flake.nixosModules.host-t520 =
     {
       config,
+      inputs,
       lib,
       ...
     }:
     {
+      imports = [ inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t520 ];
+
       boot = {
         initrd.availableKernelModules = [
-          "xhci_pci"
           "nvme"
-          "ehci_pci"
-          "ahci"
+          "xhci_pci"
+          "thunderbolt"
+          "usb_storage"
           "sd_mod"
-          "rtsx_pci_sdmmc"
         ];
         initrd.kernelModules = [ ];
-        kernelModules = [ "iwlwifi" ];
+        kernelModules = [
+          "kvm-intel"
+          "thinkpad_acpi"
+        ];
         extraModulePackages = [ ];
       };
 
@@ -28,10 +33,10 @@
       # still possible to use this option, but it's recommended to use it in conjunction
       # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
       networking.useDHCP = lib.mkDefault true;
-      # networking.interfaces.enp0s20u2.useDHCP = lib.mkDefault true;
+      # networking.interfaces.wlp1s0.useDHCP = lib.mkDefault true;
       hardware.enableRedistributableFirmware = true;
 
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-      hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+      hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     };
 }

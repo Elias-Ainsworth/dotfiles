@@ -23,7 +23,7 @@ let
           user
           ;
         isNixOS = true;
-        isLaptop = host == "x1c-8" || host == "framework";
+        isLaptop = host == "x1c" || host == "x1c-8" || host == "t520" || host == "framework";
         dots = "/persist/home/${user}/projects/dotfiles";
       };
 
@@ -48,7 +48,9 @@ in
   flake.nixosConfigurations = {
     desktop = mkNixos "desktop" { };
     framework = mkNixos "framework" { };
+    x1c = mkNixos "x1c" { };
     x1c-8 = mkNixos "x1c-8" { };
+    t520 = mkNixos "t520" { };
     # VMs from config
     vm = mkVm "vm" { };
     # hyprland can be used within a VM on AMD
@@ -57,6 +59,8 @@ in
     # nixos-rebuild build-vm --flake .#desktop-vm
     desktop-vm = mkVm "desktop" { };
     framework-vm = mkVm "framework" { };
+    x1c-vm = mkVm "x1c" { };
     x1c-8-vm = mkVm "x1c-8" { };
+    t520-vm = mkVm "t520" { };
   };
 }

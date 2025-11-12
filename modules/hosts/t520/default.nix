@@ -1,5 +1,5 @@
 topLevel: {
-  flake.nixosModules.host-xps =
+  flake.nixosModules.host-t520 =
     {
       config,
       lib,

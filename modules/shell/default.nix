@@ -12,6 +12,7 @@
       inherit (lib)
         attrValues
         functionArgs
+        hiPrio
         intersectAttrs
         isDerivation
         isString

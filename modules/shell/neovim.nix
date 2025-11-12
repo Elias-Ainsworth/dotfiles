@@ -16,7 +16,7 @@
         transparent
         variant
         ;
-      customNeovim = inputs.thornevim.packages.${pkgs.system}.default.override {
+      customNeovim = inputs.thornevim.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
         colorscheme = theme;
         inherit variant;
         inherit transparent;

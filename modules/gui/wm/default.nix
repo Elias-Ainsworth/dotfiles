@@ -1,7 +1,7 @@
 {
   flake.nixosModules.wm =
-    { config, lib, ... }:
-    lib.mkIf config.custom.isWm {
+    { pkgs, ... }:
+    {
       environment = {
         sessionVariables = {
           DISPLAY = ":0";
@@ -9,6 +9,15 @@
           QT_QPA_PLATFORM = "wayland;xcb";
           # GDK_BACKEND = "wayland,x11,*";
         };
+      };
+
+      xdg.portal = {
+        enable = true;
+        config = {
+          common.default = [ "gnome" ];
+          obs.default = [ "gnome" ];
+        };
+        extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
       };
     };
 }

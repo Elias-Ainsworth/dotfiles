@@ -1,4 +1,3 @@
-{ lib, ... }:
 {
   flake.nixosModules.wm =
     {
@@ -64,7 +63,7 @@
       launcherPath = "${rofiThemesPkg}/launchers/type-2/style-2.rasi";
       powermenuDir = "${rofiThemesPkg}/powermenu/type-4";
     in
-    lib.mkIf config.custom.isWm {
+    {
       nixpkgs.overlays = [
         (_: prev: {
           # TODO: bake theme in instead of using ~/.config/rofi/config.rasi?
@@ -85,11 +84,14 @@
 
       environment.systemPackages = [
         pkgs.rofi
-        self.packages.${pkgs.system}.reboot-to-windows
+        self.packages.${pkgs.stdenv.hostPlatform.system}.reboot-to-windows
         # NOTE: rofi-power-menu only works for powermenuType = 4!
         (pkgs.custom.rofi-power-menu.override {
           reboot-to-windows =
-            if (host == "desktop") then self.packages.${pkgs.system}.reboot-to-windows else null;
+            if (host == "desktop") then
+              self.packages.${pkgs.stdenv.hostPlatform.system}.reboot-to-windows
+            else
+              null;
         })
       ];
 

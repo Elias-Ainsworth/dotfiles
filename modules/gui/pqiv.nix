@@ -81,7 +81,7 @@ in
 
       config.package = config.pkgs.pqiv;
       # force wayland, it behaves weird when run through a niri keybind otherwise
-      config.env.GDK_BACKEND = "wayland";
+      # config.env.GDK_BACKEND = "wayland";
       config.env.PQIVRC_PATH = toString config.pqivrc.path;
     }
   );
@@ -90,7 +90,7 @@ in
   perSystem =
     { pkgs, ... }:
     {
-      packages.pqiv' = self.wrapperModules.pqiv.apply { inherit pkgs; };
+      packages.pqiv' = (self.wrapperModules.pqiv.apply { inherit pkgs; }).wrapper;
     };
 
   flake.nixosModules.gui =
@@ -99,14 +99,15 @@ in
       nixpkgs.overlays = [
         (_: prev: {
           # overlay so that dotfiles-rs can pick up wrapped package
-          pqiv = self.wrapperModules.pqiv.apply {
-            pkgs = prev;
-            keybindings = ''
-              c { command(nomacs $1) }
-              w { command(wallpaper $1) }
-              m { command(mv $1 "${config.hj.directory}/Pictures/wallpapers_in") }
-            '';
-          };
+          pqiv =
+            (self.wrapperModules.pqiv.apply {
+              pkgs = prev;
+              keybindings = ''
+                c { command(nomacs $1) }
+                w { command(wallpaper $1) }
+                m { command(mv $1 "${config.hj.directory}/Pictures/wallpapers_in") }
+              '';
+            }).wrapper;
         })
       ];
 

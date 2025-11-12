@@ -22,14 +22,14 @@ topLevel: {
         # helix
         orca-slicer
         obs-studio
-        
+        path-of-building
         vlc
         wallfacer
         # zoom
 
         ### hardware
         # bluetooth
-        # qmk
+        qmk
         # laptop
 
         ### services

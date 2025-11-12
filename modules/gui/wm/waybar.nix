@@ -43,7 +43,6 @@ in
   flake.nixosModules.wm =
     {
       config,
-      isNixOS,
       lib,
       pkgs,
       ...
@@ -52,8 +51,8 @@ in
       inherit (lib.strings) toJSON;
       cfg = config.custom.programs.waybar;
     in
-    mkIf config.custom.isWm {
-      programs.waybar.enable = isNixOS;
+    {
+      programs.waybar.enable = true;
 
       systemd.user.services.waybar = {
         # wait for colorscheme to be ready on boot

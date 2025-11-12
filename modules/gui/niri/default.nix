@@ -68,7 +68,7 @@ in
       programs.niri = {
         enable = true;
         # package = pkgs.niri.overrideAttrs (o: {
-        package = inputs.niri.packages.${pkgs.system}.niri-unstable.overrideAttrs (o: {
+        package = inputs.niri.packages.${pkgs.stdenv.hostPlatform.system}.niri-unstable.overrideAttrs (o: {
           patches =
             (o.patches or [ ])
             # not compatible with blur patch
@@ -89,16 +89,12 @@ in
       hj.xdg.config.files."niri/config.kdl".source = niriConf;
 
       xdg.portal = {
-        enable = true;
         config = {
-          common.default = [ "gnome" ];
           niri = {
             default = "gnome";
             "org.freedesktop.impl.portal.FileChooser" = "gtk";
           };
-          obs.default = [ "gnome" ];
         };
-        extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
       };
 
       custom = {

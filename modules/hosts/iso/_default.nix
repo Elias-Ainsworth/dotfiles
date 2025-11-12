@@ -48,7 +48,7 @@ let
                   eza
                   tree
                   # custom neovim
-                  inputs.thornevim.packages.${pkgs.system}.default
+                  inputs.thornevim.packages.${pkgs.stdenv.hostPlatform.system}.default
                 ]
                 ++ lib.optionals (lib.hasInfix "plasma" isoPath) [ ghostty ];
 

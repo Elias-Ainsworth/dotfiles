@@ -85,8 +85,12 @@ in
       };
 
       xdg.portal = {
-        enable = true;
-        extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+        config = {
+          hyprland = {
+            default = "hyprland";
+            "org.freedesktop.impl.portal.FileChooser" = "gtk";
+          };
+        };
       };
 
       # use the config file in home as wrapping the package produces as an error
@@ -96,7 +100,7 @@ in
       programs.hyprland = {
         enable =
           assert (
-            assertMsg (versionOlder config.programs.hyprland.package.version "0.52") "hyprland updated, sync with hyprnstack?"
+            assertMsg (versionOlder config.programs.hyprland.package.version "0.54") "hyprland updated, sync with hyprnstack?"
           );
           true;
         # fix chromium based browsers crashing on monitor change:
@@ -111,7 +115,7 @@ in
         });
         # package =
         #   assert (assertMsg (versionOlder config.programs.hyprland.package.version "0.42") "hyprland: use version from nixpkgs?");
-        #   inputs.hyprland.packages.${pkgs.system}.hyprland;
+        #   inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
       };
 
       # hyprland-session systemd service, from home-manager
