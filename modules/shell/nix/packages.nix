@@ -1,31 +1,42 @@
 { inputs, lib, ... }:
+let
+  inherit (lib)
+    concatLines
+    filter
+    getExe
+    isAttrs
+    optionalAttrs
+    ;
+in
 {
   flake.nixosModules.core =
     {
       config,
       dots,
       host,
-      isNixOS,
       pkgs,
-      user,
       ...
     }:
     let
-      inherit (lib) concatLines getExe optionalAttrs;
       tomlFormat = pkgs.formats.toml { };
-      nix-init' = inputs.wrappers.lib.wrapPackage {
-        inherit pkgs;
-        package = pkgs.nix-init;
-        flags = {
-          "--config" = tomlFormat.generate "config.toml" { maintainers = [ "iynaix" ]; };
-        };
-      };
-      nixpkgs-review' = pkgs.nixpkgs-review.override { withNom = true; };
     in
     {
-      environment.systemPackages = [
-        nix-init'
-        nixpkgs-review'
+      nixpkgs.overlays = [
+        (_: prev: {
+          nix-init' = inputs.wrappers.lib.wrapPackage {
+            pkgs = prev;
+            package = prev.nix-init;
+            flags = {
+              "--config" = tomlFormat.generate "config.toml" { maintainers = [ "iynaix" ]; };
+            };
+          };
+          nixpkgs-review' = prev.nixpkgs-review.override { withNom = true; };
+        })
+      ];
+
+      environment.systemPackages = with pkgs; [
+        nix-init # overlay-ed above
+        nixpkgs-review # overlay-ed above
       ];
 
       custom = {
@@ -407,14 +418,10 @@
           nix-list-packages = {
             text =
               let
-                allPkgs = map (p: p.name) (
-                  config.environment.systemPackages ++ config.users.users.${user}.packages
-                );
+                allPkgs = config.environment.systemPackages |> filter isAttrs |> map (pkg: pkg.name);
               in
               ''sort -ui <<< "${concatLines allPkgs}"'';
           };
-        }
-        // optionalAttrs isNixOS {
           # nixos-rebuild boot
           nsbt = {
             runtimeInputs = [ pkgs.custom.shell.nsw ];

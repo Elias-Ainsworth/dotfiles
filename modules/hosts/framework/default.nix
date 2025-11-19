@@ -20,7 +20,9 @@ topLevel: {
         # helix
         # orca-slicer
         # obs-studio
-        
+        path-of-building
+        # path-of-exile
+        # steam
         # vlc
         wallfacer
         # zoom

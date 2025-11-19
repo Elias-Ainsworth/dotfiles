@@ -42,8 +42,9 @@
           set  -g mouse             on
           set  -g focus-events      off
           setw -g aggressive-resize off
+          set  -g status-interval   10
           setw -g clock-mode-style  24
-          set  -s escape-time       50
+          set  -s escape-time       500
           set  -g history-limit     2000
 
           # load plugins
@@ -96,6 +97,14 @@
   flake.nixosModules.core =
     { pkgs, self, ... }:
     {
-      environment.systemPackages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.tmux' ];
+      nixpkgs.overlays = [
+        (_: _prev: {
+          tmux = self.packages.${pkgs.stdenv.hostPlatform.system}.tmux';
+        })
+      ];
+
+      environment.systemPackages = [
+        pkgs.tmux # overlay-ed above
+      ];
     };
 }
